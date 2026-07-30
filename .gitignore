@@ -6,3 +6,6 @@ node_modules/
 
 # 临时文件
 screenshots/
+
+# Claude 本地设置
+.claude/
