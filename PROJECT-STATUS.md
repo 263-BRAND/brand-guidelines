@@ -153,6 +153,13 @@
 - [ ] **两路径统一入口** — 考虑一个脚本整合 generate.js 和 vi-apply.js
 - [ ] **错误处理增强** — 非法 JSON 结构时给出明确的错误信息（而非 Node.js 堆栈）
 
+### 待调研
+
+- [ ] **Web chatbot 适配** — 当前系统依赖 Node.js 命令行，纯 web chatbot（ChatGPT 等）无法调用。需评估：
+  - 方案：将 `generate.js` 逻辑搬到前端页面，chatbot 输出 pages.json → 粘贴到页面 → 浏览器端渲染 → 预览/下载
+  - 工作量：generate.js 核心逻辑改写为前端 JS（处理 base64 图片嵌入） + 一个静态页面
+  - 是否需要？什么时候做？待决定
+
 ### Phase 2（待规划）
 
 - [ ] 扩展到全部 12 种页面类型（新增 comparison / data / chart / team / org-chart / contact）
