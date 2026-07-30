@@ -1,9 +1,20 @@
 # 263 VI 规范 PPT 模板系统 — 设计文档
 
 **日期：** 2026-07-30
-**状态：** 设计完成，待审核
+**状态：** Phase 1 已实现
 
 ---
+
+## 三条路径（总览）
+
+```
+用户需求
+├── 已有 HTML PPT（排版完成）→ 路径 B: vi-apply.js 一键换 VI，不改布局
+├── 从零生成（只有内容/提纲） → 路径 A: pages.json → generate.js → slides.html
+└── 已有 PPTX               → 路径 C: .pptx 渲染器（Phase 3 待规划）
+```
+
+路径 A 和 B 是互补关系，不是替代关系。本文档覆盖路径 A 的设计。
 
 ## 背景
 
@@ -75,6 +86,32 @@
 
 **约束：font-size < 16px 渲染器拒绝渲染。**
 
+## 背景系统
+
+背景不写死在渲染器中，agent 在每个 slide 上通过 `background` 字段自由选择。
+
+### 封面背景
+
+| 选项 | 效果 |
+|------|------|
+| `primary-gradient`（默认） | 主色 → 暗色渐变 |
+| `primary-solid` | 纯主色 |
+| `dark-solid` | 深灰纯色 |
+| `white` | 白底 |
+
+封面 Logo 和文字颜色根据背景深浅自动切换（深底 → 反白）。
+
+### 内页背景
+
+封面以外的所有页面限定为两档：
+
+| 选项 | 效果 |
+|------|------|
+| `white` | 白底（content / section / timeline / end 默认） |
+| `light-gray` | 浅灰底（cards 默认） |
+
+**约束：内页不接受封面背景选项，渲染器在校验阶段拒绝。**
+
 ## 页面 Schema（12 种类型）
 
 | 类型 | 用途 | 适用场景 |
@@ -94,6 +131,15 @@
 | `end` | 结束页 | 所有 |
 
 Agent 自由组合页面类型，无固定模板限制。
+
+## 结束页
+
+结束页固定布局，不接受 agent 自定义：
+
+- 居中显示集团 Logo（约占画布 15%）
+- Logo 下方为「连接世界 沟通你我」固定字体设计 PNG
+- 背景可选 `white` 或 `light-gray`，默认 `white`
+- 不再显示"感谢聆听"等文字
 
 ## Agent 指令规则
 
@@ -161,15 +207,26 @@ company-data/
 
 ## 技术实现
 
-- **渲染器：** 单文件 JS，读取 `pages.json` + `vi-tokens.json`，输出完整 `slides.html`
+### 路径 A（从零生成）
+
+- **渲染器：** `generate.js`，读取 `pages.json` + `vi-tokens.json`，输出完整 `slides.html`
 - **播放壳：** 内置全屏切换、键盘翻页（PageUp/PageDown/方向键/空格）、点击翻页、翻页笔兼容
-- **输出格式：** HTML/CSS（Phase 1），未来扩展 .pptx 渲染器（Phase 2）
+- **输出格式：** HTML/CSS（Phase 1），未来扩展 .pptx 渲染器（Phase 3）
 - **依赖：** 零外部依赖，纯 HTML/CSS/JS，浏览器直接打开
+
+### 路径 B（已有 HTML 一键换 VI）
+
+- **应用器：** `vi-apply.js`，读入任意 HTML PPT，替换色值/字体为 VI 规范，注入 Logo
+- **不改动：** 布局、字号、间距、位置、动画全部保留
+- **改动：** 颜色映射到 VI 色板、字体统一微软雅黑、内页注入 Logo
+- **已验证：** 15 页真实 PPT 测试通过
 
 ## 文件结构
 
 ```
 263viForAgent/
+├── generate.js                 # 路径 A 入口：JSON → HTML
+├── vi-apply.js                 # 路径 B 入口：HTML → VI HTML
 ├── vi-tokens.json              # VI 变量
 ├── schema.json                 # 页面类型字段定义
 ├── agent-prompt.md             # Agent 指令
@@ -188,12 +245,22 @@ company-data/
 
 ## 实现路径
 
-**Phase 1（当前）：** HTML 渲染器 + 集团红 + 商务蓝 + 6 种核心页面类型（cover, section, content, cards, timeline, end）
-**Phase 2：** 扩展到全部 12 种类型 + 可视化 pages.json 编辑器
-**Phase 3：** .pptx 渲染器
+**Phase 1（已完成）：** HTML 渲染器 + 双色板 + 6 种页面类型 + 公司数据层 + Agent 指令 + 路径 B VI 应用器初版
+**Phase 2：** 渲染器排版升级（装饰元素、布局变体、层次感）+ 扩展到全部 12 种页面类型 + 路径 B 打磨
+**Phase 3：** .pptx 渲染器 + 可视化 pages.json 编辑器
 
-## 待确认事项
+## 已完成事项
 
-- [ ] 商务蓝衍生色值（亮蓝/暗蓝/浅蓝背景）
-- [ ] company-data/ 中的具体产品信息和历程节点
-- [ ] Logo 反白稿 SVG 文件（商务蓝版本）
+- [x] 商务蓝主色确认为 `#1677FF`
+- [x] 公司数据从官网提取并核对完成（简介、23 条历程、三大业务、办公地点）
+- [x] 愿景更新为「全球数智通信服务商」，删除战略和价值观
+- [x] 集团 Logo 彩稿和反白稿就位
+- [x] 结束页改为居中 Logo + slogan PNG
+- [x] 内页 Logo 位置和大小从原模板提取（右上角 ~113×113px，1920×1080 基准）
+- [x] 背景系统：封面自由 4 选项，内页限定白/浅灰
+- [x] 路径 B vi-apply.js 验证通过
+
+## 待确认
+
+- [ ] 商务蓝衍生色值（亮蓝/暗蓝/浅蓝背景）— 目前推算值
+- [ ] 云通信 Logo 反白稿（缺 SVG）
