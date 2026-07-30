@@ -1,16 +1,16 @@
 // renderer/slides/section.js
-function renderSlide(slide, tokens, pages, index) {
+function renderSlide(slide, tokens, pages, index, resolvedBg) {
   const c = tokens.colorSchemes[pages.colorScheme];
   const l = tokens.layout.contentLogo;
-  var isLight = slide.background === 'light';
-  var bgColor = isLight ? c.white : c.primary;
-  var textColor = isLight ? c.dark : c.white;
-  var subColor = isLight ? c.gray : 'rgba(255,255,255,0.7)';
-  var logoClass = isLight ? 'logo-color-img' : 'logo-white-img';
+  var bgKey = slide.background || 'white';
+  var bgColor = resolvedBg.inner[bgKey] || resolvedBg.inner.white;
+  var isDark = bgKey !== 'white' && bgKey !== 'light-gray';
+  var textColor = isDark ? c.white : c.dark;
+  var subColor = isDark ? 'rgba(255,255,255,0.7)' : c.gray;
+  var logoClass = isDark ? 'logo-white-img' : 'logo-color-img';
 
   var html = '<div class="slide-page" id="s' + index + '" style="background:' + bgColor + '; position:relative;">\n';
 
-  // Fixed logo top-right
   html += '<div style="position:absolute;top:' + l.top + ';right:' + l.right + ';width:' + l.width + ';height:' + l.height + ';">\n';
   html += '<div class="' + logoClass + '" style="width:100%;height:100%;"></div>\n';
   html += '</div>\n';
@@ -23,7 +23,7 @@ function renderSlide(slide, tokens, pages, index) {
     html += '<p style="font-size:' + tokens.typography.sizes.subtitle + ';color:' + subColor + ';margin-top:12px;">' + esc(slide.subtitle) + '</p>\n';
   }
 
-  html += '<div style="width:60px;height:3px;background:' + (isLight ? c.primary : c.white) + ';margin-top:24px;"></div>\n';
+  html += '<div style="width:60px;height:3px;background:' + c.primary + ';margin-top:24px;"></div>\n';
   html += '</div>\n</div>\n';
   return html;
 }

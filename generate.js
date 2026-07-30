@@ -28,6 +28,45 @@ if (!pages.slides || !Array.isArray(pages.slides) || pages.slides.length === 0) 
   process.exit(1);
 }
 
+// Resolve background templates with color scheme values
+var c = tokens.colorSchemes[pages.colorScheme];
+function resolveBg(bgTemplate) {
+  var result = bgTemplate;
+  var keys = Object.keys(c);
+  for (var i = 0; i < keys.length; i++) {
+    result = result.replace(new RegExp('\\{' + keys[i] + '\\}', 'g'), c[keys[i]]);
+  }
+  return result;
+}
+
+// Resolve all background presets
+var resolvedBg = { cover: {}, inner: {} };
+var bgPresets = tokens.backgrounds;
+var coverKeys = Object.keys(bgPresets.cover);
+for (var i = 0; i < coverKeys.length; i++) {
+  resolvedBg.cover[coverKeys[i]] = resolveBg(bgPresets.cover[coverKeys[i]]);
+}
+var innerKeys = Object.keys(bgPresets.inner);
+for (var j = 0; j < innerKeys.length; j++) {
+  resolvedBg.inner[innerKeys[j]] = resolveBg(bgPresets.inner[innerKeys[j]]);
+}
+
+// Validate slide backgrounds
+var innerBgKeys = Object.keys(resolvedBg.inner);
+for (var k = 0; k < pages.slides.length; k++) {
+  var slide = pages.slides[k];
+  var t = slide.type;
+  if (t === 'cover') {
+    if (slide.background && !resolvedBg.cover[slide.background]) {
+      console.error('Slide ' + k + ' (' + t + '): invalid background "' + slide.background + '". Must be one of: ' + Object.keys(resolvedBg.cover).join(', '));
+      process.exit(1);
+    }
+  } else if (slide.background && !resolvedBg.inner[slide.background]) {
+    console.error('Slide ' + k + ' (' + t + '): invalid background "' + slide.background + '". Inner slides must use: ' + innerBgKeys.join(', '));
+    process.exit(1);
+  }
+}
+
 // Load slide renderers
 const slideTypes = ['cover', 'section', 'content', 'cards', 'timeline', 'end'];
 const renderers = {};
@@ -44,7 +83,7 @@ for (let i = 0; i < pages.slides.length; i++) {
     process.exit(1);
   }
   const renderFn = renderers[slide.type];
-  const html = renderFn(slide, tokens, pages, i);
+  const html = renderFn(slide, tokens, pages, i, resolvedBg);
   slideHtmlArray.push(html);
 }
 

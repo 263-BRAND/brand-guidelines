@@ -1,7 +1,9 @@
 // renderer/slides/timeline.js
-function renderSlide(slide, tokens, pages, index) {
+function renderSlide(slide, tokens, pages, index, resolvedBg) {
   const c = tokens.colorSchemes[pages.colorScheme];
   const l = tokens.layout.contentLogo;
+  var bgKey = slide.background || 'white';
+  var bgColor = resolvedBg.inner[bgKey] || resolvedBg.inner.white;
   var events = slide.events || [];
 
   var eventsHtml = '';
@@ -14,13 +16,11 @@ function renderSlide(slide, tokens, pages, index) {
     eventsHtml += '<div style="width:12px;height:12px;background:' + c.primary + ';border-radius:50%;flex-shrink:0;margin-top:6px;z-index:1;"></div>\n';
     eventsHtml += '<div style="flex:1;padding-left:20px;">\n';
     eventsHtml += '<h3 style="font-size:' + tokens.typography.sizes.subtitle + ';color:' + c.dark + ';font-weight:bold;margin-bottom:4px;">' + esc(evt.title) + '</h3>\n';
-    if (evt.description) {
-      eventsHtml += '<p style="font-size:' + tokens.typography.sizes.body + ';color:' + c.gray + ';line-height:1.6;">' + esc(evt.description) + '</p>\n';
-    }
+    if (evt.description) { eventsHtml += '<p style="font-size:' + tokens.typography.sizes.body + ';color:' + c.gray + ';line-height:1.6;">' + esc(evt.description) + '</p>\n'; }
     eventsHtml += '</div>\n</div>\n';
   }
 
-  var html = '<div class="slide-page" id="s' + index + '" style="background:' + c.white + '; position:relative;">\n';
+  var html = '<div class="slide-page" id="s' + index + '" style="background:' + bgColor + '; position:relative;">\n';
 
   html += '<div style="position:absolute;top:' + l.top + ';right:' + l.right + ';width:' + l.width + ';height:' + l.height + ';">\n';
   html += '<div class="logo-color-img" style="width:100%;height:100%;"></div>\n';

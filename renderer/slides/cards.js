@@ -1,7 +1,9 @@
 // renderer/slides/cards.js
-function renderSlide(slide, tokens, pages, index) {
+function renderSlide(slide, tokens, pages, index, resolvedBg) {
   const c = tokens.colorSchemes[pages.colorScheme];
   const l = tokens.layout.contentLogo;
+  var bgKey = slide.background || 'light-gray';
+  var bgColor = resolvedBg.inner[bgKey] || resolvedBg.inner['light-gray'];
   var cols = slide.columns || 3;
   var gap = 20;
   var cardWidth = 'calc((100% - ' + ((cols - 1) * gap) + 'px) / ' + cols + ')';
@@ -11,15 +13,13 @@ function renderSlide(slide, tokens, pages, index) {
   for (var i = 0; i < items.length; i++) {
     var item = items[i];
     cardsHtml += '<div style="flex:0 0 ' + cardWidth + ';background:' + c.white + ';border-radius:8px;padding:28px 24px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border-top:3px solid ' + c.primary + ';">\n';
-    if (item.icon) {
-      cardsHtml += '<div style="font-size:32px;margin-bottom:12px;">' + esc(item.icon) + '</div>\n';
-    }
+    if (item.icon) { cardsHtml += '<div style="font-size:32px;margin-bottom:12px;">' + esc(item.icon) + '</div>\n'; }
     cardsHtml += '<h3 style="font-size:' + tokens.typography.sizes.subtitle + ';color:' + c.dark + ';font-weight:bold;margin-bottom:8px;">' + esc(item.title) + '</h3>\n';
     cardsHtml += '<p style="font-size:' + tokens.typography.sizes.body + ';color:' + c.gray + ';line-height:1.7;">' + esc(item.description) + '</p>\n';
     cardsHtml += '</div>\n';
   }
 
-  var html = '<div class="slide-page" id="s' + index + '" style="background:' + c.lightGray + '; position:relative;">\n';
+  var html = '<div class="slide-page" id="s' + index + '" style="background:' + bgColor + '; position:relative;">\n';
 
   html += '<div style="position:absolute;top:' + l.top + ';right:' + l.right + ';width:' + l.width + ';height:' + l.height + ';">\n';
   html += '<div class="logo-color-img" style="width:100%;height:100%;"></div>\n';

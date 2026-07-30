@@ -1,12 +1,13 @@
 // renderer/slides/end.js
-function renderSlide(slide, tokens, pages, index) {
+function renderSlide(slide, tokens, pages, index, resolvedBg) {
   const c = tokens.colorSchemes[pages.colorScheme];
-  var isLight = slide.background === 'light';
-  var bgStyle = isLight ? c.white : 'linear-gradient(135deg, ' + c.primary + ' 0%, ' + c.primaryDark + ' 100%)';
-  var textColor = isLight ? c.dark : c.white;
-  var subColor = isLight ? c.gray : 'rgba(255,255,255,0.7)';
+  var bgKey = slide.background || 'white';
+  var bgColor = resolvedBg.inner[bgKey] || resolvedBg.inner.white;
+  var isDark = bgKey !== 'white' && bgKey !== 'light-gray';
+  var textColor = isDark ? c.white : c.dark;
+  var subColor = isDark ? 'rgba(255,255,255,0.7)' : c.gray;
 
-  var html = '<div class="slide-page" id="s' + index + '" style="background:' + bgStyle + '; position:relative;">\n';
+  var html = '<div class="slide-page" id="s' + index + '" style="background:' + bgColor + '; position:relative;">\n';
   html += '<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;">\n';
   html += '<h1 style="font-size:' + tokens.typography.sizes.coverTitle + ';font-weight:bold;color:' + textColor + ';margin-bottom:16px;">' + esc(slide.text || '感谢聆听') + '</h1>\n';
   html += '<div style="width:60px;height:3px;background:' + c.primary + ';margin-bottom:24px;"></div>\n';

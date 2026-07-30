@@ -49,6 +49,18 @@
       "white": "assets/logos/logo-cloud-white.svg"
     }
   },
+  "backgrounds": {
+    "cover": {
+      "primary-gradient": "linear-gradient(135deg, {primary} 0%, {primaryDark} 100%)",
+      "primary-solid": "{primary}",
+      "dark-solid": "{dark}",
+      "white": "{white}"
+    },
+    "inner": {
+      "white": "{white}",
+      "light-gray": "{lightGray}"
+    }
+  },
   "layout": {
     "contentLogo": {
       "right": "80px",
