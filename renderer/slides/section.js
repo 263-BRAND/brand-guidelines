@@ -12,7 +12,7 @@ function renderSlide(slide, tokens, pages, index) {
 
   // Fixed logo top-right
   html += '<div style="position:absolute;top:' + l.top + ';right:' + l.right + ';width:' + l.width + ';height:' + l.height + ';">\n';
-  html += '<img class="' + logoClass + '" style="width:100%;height:100%;object-fit:contain;" alt="Logo">\n';
+  html += '<div class="' + logoClass + '" style="width:100%;height:100%;"></div>\n';
   html += '</div>\n';
 
   html += '<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;">\n';

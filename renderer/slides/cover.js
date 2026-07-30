@@ -9,7 +9,7 @@ function renderSlide(slide, tokens, pages, index) {
 
   // Logo — cover has free logo placement, large top-left
   html += '<div style="position:absolute;top:8%;left:6%;">\n';
-  html += '<img class="logo-white-img" style="width:' + Math.round(W * 0.28) + 'px;height:auto;" alt="Logo">\n';
+  html += '<div class="logo-white-img" style="width:' + Math.round(W * 0.28) + 'px;height:' + Math.round(tokens.slide.height * 0.28) + 'px;"></div>\n';
   html += '</div>\n';
 
   html += '<h1 style="font-size:' + tokens.typography.sizes.coverTitle + ';font-weight:bold;color:' + c.white + ';margin-bottom:16px;max-width:80%;">' + esc(slide.title) + '</h1>\n';

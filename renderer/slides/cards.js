@@ -22,7 +22,7 @@ function renderSlide(slide, tokens, pages, index) {
   var html = '<div class="slide-page" id="s' + index + '" style="background:' + c.lightGray + '; position:relative;">\n';
 
   html += '<div style="position:absolute;top:' + l.top + ';right:' + l.right + ';width:' + l.width + ';height:' + l.height + ';">\n';
-  html += '<img class="logo-color-img" style="width:100%;height:100%;object-fit:contain;" alt="Logo">\n';
+  html += '<div class="logo-color-img" style="width:100%;height:100%;"></div>\n';
   html += '</div>\n';
 
   html += '<div style="position:absolute;top:12%;left:6%;right:6%;">\n';

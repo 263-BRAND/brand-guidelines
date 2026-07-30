@@ -108,8 +108,8 @@ function buildHtml(opts) {
 '  --white: ' + c.white + ';\n' +
 '  --black: ' + c.black + ';\n' +
 '}\n' +
-'.logo-color-img { content: url(' + opts.logoColorB64 + '); }\n' +
-'.logo-white-img { content: url(' + opts.logoWhiteB64 + '); }\n' +
+'.logo-color-img { background: url(' + opts.logoColorB64 + ') no-repeat center/contain; }\n' +
+'.logo-white-img { background: url(' + opts.logoWhiteB64 + ') no-repeat center/contain; }\n' +
 '</style>\n' +
 '</head>\n' +
 '<body>\n' +
