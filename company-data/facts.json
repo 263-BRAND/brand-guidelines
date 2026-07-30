@@ -1,0 +1,25 @@
+{
+  "company": {
+    "fullNameZh": "二六三网络通信股份有限公司",
+    "fullNameEn": "263 Network Communication, Inc.",
+    "shortNames": ["263集团", "二六三集团", "263公司", "二六三公司"],
+    "stockCode": "002467",
+    "founded": "1997",
+    "headquarters": "北京",
+    "offices": ["上海", "广州", "深圳", "杭州", "香港"]
+  },
+  "brand": {
+    "vision": "全球互联网通信云服务领导者",
+    "mission": "提升沟通体验和组织效率",
+    "purpose": "连接世界 沟通你我",
+    "strategy": "打造智能云连接 赋能数字化转型",
+    "values": ["正直", "务实", "包容", "担当", "团队合作", "主动作为"]
+  },
+  "milestones": [
+    { "year": "1997", "title": "公司成立", "description": "创立于北京，提供互联网接入服务，接入号码 263" },
+    { "year": "2010", "title": "深交所上市", "description": "在深圳证券交易所上市，股票代码 002467" },
+    { "year": "2015", "title": "云通信战略", "description": "全面转型云通信服务，推出企业邮箱、云会议等产品" },
+    { "year": "2020", "title": "国际化布局", "description": "成立海外分支机构，服务覆盖全球" },
+    { "year": "2023", "title": "AI 赋能", "description": "推出 AI 数字员工云小朵，RAG 智能客服接入集团官网" }
+  ]
+}
