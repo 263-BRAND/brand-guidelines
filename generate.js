@@ -103,6 +103,7 @@ const logoSet = pages.logoSet || 'group';
 const logos = tokens.logos[logoSet] || tokens.logos.group;
 const logoColorB64 = logoBase64(logos.color);
 const logoWhiteB64 = logoBase64(logos.white);
+const sloganB64 = tokens.slogan ? logoBase64(tokens.slogan) : '';
 
 // Build output
 const html = buildHtml({
@@ -110,7 +111,8 @@ const html = buildHtml({
   tokens: tokens,
   colorScheme: pages.colorScheme,
   logoColorB64: logoColorB64,
-  logoWhiteB64: logoWhiteB64
+  logoWhiteB64: logoWhiteB64,
+  sloganB64: sloganB64
 });
 
 const outPath = pagesPath.replace(/\.json$/, '.html');
@@ -149,6 +151,7 @@ function buildHtml(opts) {
 '}\n' +
 '.logo-color-img { background: url(' + opts.logoColorB64 + ') no-repeat center/contain; }\n' +
 '.logo-white-img { background: url(' + opts.logoWhiteB64 + ') no-repeat center/contain; }\n' +
+'.slogan-img { background: url(' + opts.sloganB64 + ') no-repeat center/contain; }\n' +
 '</style>\n' +
 '</head>\n' +
 '<body>\n' +
