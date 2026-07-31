@@ -5,9 +5,9 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
   var bgColor = resolvedBg.inner[bgKey] || resolvedBg.inner.white;
   var isDark = bgKey !== 'white' && bgKey !== 'light-gray';
   var logoClass = isDark ? 'logo-white-img' : 'logo-color-img';
-  var logoW = Math.round(tokens.slide.width * 0.15);
-  var logoH = Math.round(tokens.slide.height * 0.15);
-  var sloganW = Math.round(tokens.slide.width * 0.4);
+  var logoW = Math.round(1920 * 0.15);
+  var logoH = Math.round(1080 * 0.15);
+  var sloganW = Math.round(1920 * 0.4);
 
   var html = '<div class="slide-page" id="s' + index + '" style="background:' + bgColor + '; position:relative;">\n';
   html += '<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;">\n';

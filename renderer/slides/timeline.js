@@ -1,7 +1,7 @@
 // renderer/slides/timeline.js
 function renderSlide(slide, tokens, pages, index, resolvedBg) {
   const c = tokens.colorSchemes[pages.colorScheme];
-  const l = tokens.layout.contentLogo;
+  const l = tokens.layout.innerPageLogo;
   var bgKey = slide.background || 'white';
   var bgColor = resolvedBg.inner[bgKey] || resolvedBg.inner.white;
   var events = slide.events || [];

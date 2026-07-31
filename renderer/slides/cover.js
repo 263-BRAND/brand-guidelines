@@ -1,7 +1,7 @@
 // renderer/slides/cover.js
 function renderSlide(slide, tokens, pages, index, resolvedBg) {
   const c = tokens.colorSchemes[pages.colorScheme];
-  const W = tokens.slide.width;
+  const W = 1920;
   var bgKey = slide.background || 'primary-gradient';
   var bgStyle = resolvedBg.cover[bgKey] || resolvedBg.cover['primary-gradient'];
   var isDark = bgKey !== 'white';
@@ -16,7 +16,7 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
   html += '<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding-left:6%;">\n';
 
   html += '<div style="position:absolute;top:8%;left:6%;">\n';
-  html += '<div class="' + logoClass + '" style="width:' + Math.round(W * 0.28) + 'px;height:' + Math.round(tokens.slide.height * 0.28) + 'px;"></div>\n';
+  html += '<div class="' + logoClass + '" style="width:' + Math.round(W * 0.28) + 'px;height:' + Math.round(1080 * 0.28) + 'px;"></div>\n';
   html += '</div>\n';
 
   html += '<h1 style="font-size:' + tokens.typography.sizes.coverTitle + ';font-weight:bold;color:' + textColor + ';margin-bottom:16px;max-width:80%;">' + esc(slide.title) + '</h1>\n';

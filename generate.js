@@ -15,7 +15,7 @@ if (!fs.existsSync(pagesPath)) {
   process.exit(1);
 }
 
-const tokens = JSON.parse(fs.readFileSync('vi-tokens.json', 'utf-8'));
+const tokens = JSON.parse(fs.readFileSync('brand-tokens.json', 'utf-8'));
 const pages = JSON.parse(fs.readFileSync(pagesPath, 'utf-8'));
 
 // Validate colorScheme
@@ -123,8 +123,8 @@ function buildHtml(opts) {
   const c = opts.tokens.colorSchemes[opts.colorScheme];
   const t = opts.tokens.typography;
   const l = opts.tokens.layout;
-  var W = opts.tokens.slide.width;
-  var H = opts.tokens.slide.height;
+  var W = 1920;
+  var H = 1080;
 
   return '<!DOCTYPE html>\n' +
 '<html lang="zh-CN">\n' +
