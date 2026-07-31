@@ -110,15 +110,37 @@
 
 | 文件 | 用途 | 状态 |
 |------|------|:--:|
-| `docs/superpowers/specs/2026-07-30-ppt-vi-template-system-design.md` | 设计文档 | ✓ |
-| `docs/superpowers/plans/2026-07-30-ppt-vi-template-system-plan.md` | 实现计划 | ✓ |
+| `docs/superpowers/specs/2026-07-30-ppt-vi-template-system-design.md` | Phase 1 设计文档 | ✓ |
+| `docs/superpowers/plans/2026-07-30-ppt-vi-template-system-plan.md` | Phase 1 实现计划 | ✓ |
+| `docs/superpowers/specs/2026-07-31-vi-skill-redesign.md` | VI skill 重构设计文档 | ✓ |
+| `docs/superpowers/plans/2026-07-31-vi-skill-refactor.md` | VI skill 重构实现计划 | ✓ |
+
+---
+
+## 已验证
+
+### 路径 B：已有 HTML 改写 VI ✓
+
+已用 `8-AI工具心得-杜鸣-V8.html`（14 页，真实工作内容）验证完整链路：
+1. VI skill 确认品牌参数 → 输出 brand-tokens.json
+2. frontend-design skill 指导排版（响应式、字体层级、卡片设计）
+3. Logo base64 嵌入、安全区无遮挡、结尾页 VI 规范格式
+4. 色值精确替换（#D0111B → #D0121B）、CSS 变量统一管理
+
+**结论：路径 B 已验证通过。** 已有 HTML PPT 可通过 VI skill + frontend-design 快速统一品牌视觉。
+
+### 路径 A：从零生成 → 待测试
+
+需用真实需求（如"做一份云通信产品介绍PPT"）测试完整流程：LLM 策划内容 → pages.json → 设计 skill 排版。
 
 ---
 
 ## 待继续 / 未完成
 
-- [ ] **补全设计 skill 推荐列表** — 调研 Codex / Trae 平台可用的设计 skill，填入 design-skill-recommendations.json
-- [ ] **设计 skill 调研** — 确认各平台最适合的 PPT/设计 skill
+- [ ] **路径 A 从零生成测试** — 用真实业务场景（如"云通信产品介绍"）端到端测试
+- [x] **Claude Code 设计 skill 调研** — 确认 `frontend-design` 优于 `ui-ux-pro-max`，已填入 design-skill-recommendations.json
+- [ ] **补全其他平台设计 skill 推荐** — 调研 Codex / Trae 平台可用的设计 skill
+- [x] **Logo 安全区规则** — 已写入 skills/263-vi.md：Logo 周围禁止装饰元素遮挡
 
 ### 资产和配置待补充
 
@@ -189,6 +211,18 @@
 ## Git 历史
 
 ```
+a6ec19d fix: recommend frontend-design over ui-ux-pro-max for Claude Code
+5261f89 docs: reconcile PROJECT-STATUS — remove stale references to deleted files
+9f0e56e fix: guard missing white logo variant in generate.js
+534f399 docs: update project status to reflect VI skill refactoring
+bfeee91 refactor: remove vi-tokens.json — replaced by brand-tokens.json
+ee49245 refactor: remove deprecated files — replaced by brand data layer + design skill delegation
+025b69c fix: read brand-tokens.json, hardcode slide dimensions in renderers
+04a4ff5 feat: add 263-vi skill (Claude Code VI spec entry point)
+44b70e9 feat: add design-skill-recommendations.json platform skill mapping config
+9f15685 feat: merge company facts and products into single company-data.json
+b973662 feat: add brand-tokens.json (brand visual data, slide dims removed)
+--- Phase 1 ---
 7904e06 feat: redesign end slide — centered logo + slogan, no text
 b066118 feat: add slogan image to end slide
 481c1eb chore: remove .claude/ from git tracking
