@@ -102,7 +102,7 @@ function logoBase64(logoPath) {
 const logoSet = pages.logoSet || 'group';
 const logos = tokens.logos[logoSet] || tokens.logos.group;
 const logoColorB64 = logoBase64(logos.color);
-const logoWhiteB64 = logoBase64(logos.white);
+const logoWhiteB64 = logos.white ? logoBase64(logos.white) : '';
 const sloganB64 = tokens.slogan ? logoBase64(tokens.slogan) : '';
 
 // Build output
