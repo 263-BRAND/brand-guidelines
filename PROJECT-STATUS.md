@@ -10,25 +10,14 @@
 
 ### 核心思路
 
-**"只约束 VI，不限制布局。"** — 这是一套 agent 可读的 VI 设计系统，不是固定页面模板。Agent 负责内容策划和页面类型组合，VI 系统保证视觉一致性。
+**"品牌数据层，不是渲染引擎。"** — VI skill 是 263 品牌数据的唯一真相源。内容策划交给 LLM，排版渲染交给设计 skill。VI skill 只输出 brand-tokens.json + company-data.json。
 
 ### 三条路径
 
 ```
-┌─────────────────────────────────────────────────────┐
-│                    用户需求                          │
-├──────────────┬──────────────────┬───────────────────┤
-│  已有 HTML   │   从零生成 PPT    │   已有 PPTX       │
-│  (排版完成)   │  (只有内容/提纲)  │  (PowerPoint)     │
-├──────────────┼──────────────────┼───────────────────┤
-│  路径 B      │    路径 A        │   路径 C          │
-│  vi-apply.js │  pages.json      │  (Phase 3)        │
-│  一键换VI    │  → generate.js   │                   │
-│  不改布局    │  → slides.html   │                   │
-├──────────────┼──────────────────┼───────────────────┤
-│  ✓ 已验证    │  ✓ Phase 1 完成  │  待规划            │
-│  初版可用    │  6 种页面类型     │                   │
-└──────────────┴──────────────────┴───────────────────┘
+用户需求
+├── 有设计 skill → VI skill 输出品牌数据 → 设计 skill 专业排版
+└── 无设计 skill → VI skill 输出品牌数据 → 兜底渲染器生成 HTML + 升级建议
 ```
 
 **路径 A：pages.json → generate.js → slides.html**
@@ -65,6 +54,10 @@
 | `schema.json` | 6 种页面类型字段定义（cover / section / content / cards / timeline / end） | ✓ |
 | `agent-prompt.md` | Agent 使用指令：规则、可用类型、数据流 | ✓ |
 | `.gitignore` | 排除视觉参考、.claude、node_modules、screenshots | ✓ |
+| `brand-tokens.json` | 品牌视觉规范（替代 vi-tokens.json） | ✓ |
+| `company-data.json` | 公司信息（合并 company-data/） | ✓ |
+| `design-skill-recommendations.json` | 平台设计 skill 推荐 | ✓ |
+| `skills/263-vi.md` | Claude Code VI skill 文件 | ✓ |
 
 ### 渲染器（路径 A：从 pages.json 生成 PPT）
 
@@ -129,18 +122,8 @@
 
 ## 待继续 / 未完成
 
-### 路径 A 渲染器需要改进
-
-- [ ] **排版不够专业** — 当前生成的内页过于简陋，缺少装饰元素、层次感、间距精细度
-- [ ] **缺少布局变体** — 每种页面类型只有一套固定布局，没有竖版/分栏/左图右文等变体
-- [ ] **cards 卡片视觉效果弱** — 需要更丰富的卡片样式（阴影、悬停、图标背景色等）
-- [ ] **timeline 缺少视觉层次** — 左右交替、图片节点、年份标签等
-
-### 路径 B VI 应用器需要打磨
-
-- [ ] **边界情况处理** — 嵌套 CSS、内联 style 中的颜色、JavaScript 动态注入的元素
-- [ ] **深色背景 Logo 自动反白** — 目前未做自动检测
-- [ ] **颜色映射表扩展** — 覆盖更多常见非标准色值
+- [ ] **补全设计 skill 推荐列表** — 调研 Codex / Trae 平台可用的设计 skill，填入 design-skill-recommendations.json
+- [ ] **设计 skill 调研** — 确认各平台最适合的 PPT/设计 skill
 
 ### 资产和配置待补充
 
@@ -149,8 +132,6 @@
 
 ### 功能扩展
 
-- [ ] **路径 B 正式命名和文档** — vi-apply.js 目前是验证原型，需要整理参数和用法说明
-- [ ] **两路径统一入口** — 考虑一个脚本整合 generate.js 和 vi-apply.js
 - [ ] **错误处理增强** — 非法 JSON 结构时给出明确的错误信息（而非 Node.js 堆栈）
 
 ### 待调研
@@ -162,7 +143,6 @@
 
 ### Phase 2（待规划）
 
-- [ ] 扩展到全部 12 种页面类型（新增 comparison / data / chart / team / org-chart / contact）
 - [ ] 可视化 pages.json 编辑器
 - [ ] 内页布局变体（左文右图 / 上文下图 / 分栏 / 大数字 + 描述等）
 
