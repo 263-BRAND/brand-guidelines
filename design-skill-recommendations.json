@@ -1,7 +1,7 @@
 {
   "claude-code": {
-    "skills": [],
-    "fallbackMessage": "建议安装 ui-ux-pro-max 或 frontend-design skill 以获得专业排版效果。安装后重新运行即可自动调用。"
+    "skills": ["frontend-design"],
+    "fallbackMessage": "建议安装 frontend-design skill 以获得专业排版效果。安装后重新运行即可自动调用。"
   },
   "codex": {
     "skills": [],
