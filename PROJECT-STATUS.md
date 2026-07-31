@@ -1,6 +1,6 @@
 # 263 VI PPT 模板系统 — 项目进度
 
-**更新：2026-07-30**
+**更新：2026-07-31**
 
 ---
 
@@ -25,11 +25,10 @@
 - 渲染器注入 VI 色板/字体/Logo/播放壳
 - 适合从零开始、或只有内容提纲的场景
 
-**路径 B：已有 HTML → vi-apply.js → VI 版 HTML**
-- 读入任意已排版的 HTML PPT
-- 替换颜色/字体为 VI 规范，注入 Logo
-- 不改变布局、字号、位置、动画
-- 适合已有高质量排版、只需统一视觉风格的场景
+**路径 B（已移除）：已有 HTML → 设计 skill 统一 VI**
+- 原 `vi-apply.js` 已删除，功能由设计 skill 替代
+- 已有 HTML PPT 的改造：读取 `brand-tokens.json` 替换色值/字体、注入 Logo
+- 布局、字号、位置、动画由设计 skill 自行决定
 
 **路径 C：pages.json → .pptx 渲染器（Phase 3，待规划）**
 
@@ -37,10 +36,11 @@
 
 | 层 | 内容 | Agent 可见 | 人可改 |
 |----|------|:---:|:---:|
-| VI 规范 (`vi-tokens.json`) | 色板、字体层级、背景选项、Logo 路径 | ✓ | 品牌部 |
-| 公司数据 (`company-data/`) | 简介、历程、产品、股票代码等 | ✓ | 品牌部 |
-| Agent 指令 (`agent-prompt.md`) | System Prompt，教 agent 用系统 | ✓ | — |
-| 渲染器 (`generate.js` / `vi-apply.js`) | HTML 渲染 + 播放壳 | ✗ | 开发者 |
+| 品牌视觉 (`brand-tokens.json`) | 色板、字体层级、背景选项、Logo 路径 | ✓ | 品牌部 |
+| 公司数据 (`company-data.json`) | 简介、历程、产品、股票代码等 | ✓ | 品牌部 |
+| 品牌指令 (`skills/263-vi.md`) | Skill 文件，教 agent 用品牌数据 | ✓ | — |
+| 平台 skill 推荐 (`design-skill-recommendations.json`) | 平台 → 设计 skill 映射 | ✓ | 开发者 |
+| 兜底渲染器 (`generate.js`) | HTML 渲染 + 播放壳（仅无设计 skill 时） | ✗ | 开发者 |
 
 ---
 
@@ -50,16 +50,13 @@
 
 | 文件 | 用途 | 状态 |
 |------|------|:--:|
-| `vi-tokens.json` | 双色板（集团红 #D0121B / 商务蓝 #1677FF）、字体层级、背景系统、Logo 路径 | ✓ |
-| `schema.json` | 6 种页面类型字段定义（cover / section / content / cards / timeline / end） | ✓ |
-| `agent-prompt.md` | Agent 使用指令：规则、可用类型、数据流 | ✓ |
 | `.gitignore` | 排除视觉参考、.claude、node_modules、screenshots | ✓ |
 | `brand-tokens.json` | 品牌视觉规范（替代 vi-tokens.json） | ✓ |
 | `company-data.json` | 公司信息（合并 company-data/） | ✓ |
 | `design-skill-recommendations.json` | 平台设计 skill 推荐 | ✓ |
 | `skills/263-vi.md` | Claude Code VI skill 文件 | ✓ |
 
-### 渲染器（路径 A：从 pages.json 生成 PPT）
+### 兜底渲染器（无设计 skill 时，从 pages.json 生成 HTML）
 
 | 文件 | 用途 | 状态 |
 |------|------|:--:|
@@ -71,20 +68,18 @@
 | `renderer/slides/timeline.js` | 时间轴 — 年份节点 + 描述 | ✓ |
 | `renderer/slides/end.js` | 结束页 — 居中 Logo + slogan PNG | ✓ |
 
-**渲染器特性：**
+**渲染器特性（兜底，仅无设计 skill 时使用）：**
+- 定位：基础兜底模板，不做专业排版；专业排版交给设计 skill
 - 播放壳：全屏/键盘翻页/翻页笔/点击翻页（PageDown/方向键/Space/点击）
 - Logo 自动深底反白切换
 - 背景系统：封面 4 选项，内页限定白/浅灰
 - 字号硬约束 < 16px 拒绝
 - 零外部依赖，输出单一 HTML 文件
+- 不提供：设计装饰、复杂布局变体、悬停动效（由设计 skill 负责）
 
-### VI 应用器（路径 B：已有 HTML 一键换 VI）
+### VI 应用器（路径 B）— 已移除
 
-| 文件 | 用途 | 状态 |
-|------|------|:--:|
-| `vi-apply.js` | 读入任意 HTML PPT → 替换色值/字体 → 注入 Logo → 输出 VI 版 | ✓ 初版可用 |
-
-**已验证：** 15 页 PPT 测试文件，布局/字号/位置完全保留，仅色值+字体+Logo 变更。
+路径 B 功能由设计 skill 替代。`vi-apply.js` 已删除；已有 HTML PPT 的视觉改造交给专业设计 skill，其读取 `brand-tokens.json` 统一色值/字体/Logo，布局由设计 skill 决定。
 
 ### 公司数据
 
@@ -156,11 +151,12 @@
 
 ```
 263viForAgent/
-├── generate.js          ← 路径 A 入口
-├── vi-apply.js          ← 路径 B 入口
-├── vi-tokens.json
-├── schema.json
-├── agent-prompt.md
+├── generate.js              ← 兜底渲染器入口（仅无设计 skill 时）
+├── brand-tokens.json        ← 品牌视觉规范（色板/字体/Logo/背景）
+├── company-data.json        ← 公司信息（合并 facts + products）
+├── design-skill-recommendations.json ← 平台设计 skill 推荐
+├── skills/
+│   └── 263-vi.md            ← VI skill 文件（品牌数据层入口）
 ├── company-data/
 │   ├── facts.json
 │   ├── products.json
