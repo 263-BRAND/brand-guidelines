@@ -1,6 +1,43 @@
 # 263 VI PPT 模板系统 — 项目进度
 
-**更新：2026-07-31**
+**更新：2026-08-07**
+
+---
+
+## 2026-08-07 进展：领域建模 + VI Skill 重构计划
+
+### 领域建模完成
+
+通过 `/grill-with-docs` 会话，建立了两个限界上下文的领域模型：
+
+- **品牌规范上下文** — 色彩、字体层级、Logo 规则、企业概况、产品组合（四层结构）
+- **Agent 管线上下文** — Template/Themed 双模式、路径 A/B × Template/Themed 2×2 矩阵、skill 协作边界、输入格式分级
+
+产出：`CONTEXT.md`（领域术语表），基于 263 集团业务介绍讲义（`视觉参考/`）提取的完整产品结构。
+
+### 关键设计决策
+
+| 决策 | 旧 | 新 |
+|------|----|----|
+| 字号底线 | 16px | 20pt（75寸电视@5m实测） |
+| 生成模式 | 无区分 | Template（母版型）/ Themed（主题型），Agent 特征推理 |
+| 用户交互 | 用户需了解 skill 才能用 | 透明声明："我将按XX模式制作，如用于YY请告诉我" |
+| 产品结构 | 3板块×简易列表 | 3板块×4业务线×N产品能力（讲义稿真实数据） |
+| 输入处理 | VI skill 自行解析 | 外部 Agent 调 MCP/工具 → 归一化后送入管线 |
+| Logo 切换 | 仅集团/云通信二选一 | 品牌上下文：共享框架 + Logo 按业务线覆盖 |
+
+### 实现计划
+
+`docs/superpowers/plans/2026-08-07-vi-skill-align-context.md` — 6 个任务对齐 CONTEXT.md 设计树：
+
+1. brand-tokens.json — 字体层级修正
+2. brand-tokens.json — Logo+硬规则扩展
+3. company-data.json — 产品四层结构重写
+4. skills/263-vi.md — 核心工作流重写（双模式+2×2+透明声明）
+5. CONTEXT.md — 权威数据源引用
+6. 全量一致性验证
+
+**状态：计划已写，待用户指令执行。**
 
 ---
 
@@ -12,25 +49,19 @@
 
 **"品牌数据层，不是渲染引擎。"** — VI skill 是 263 品牌数据的唯一真相源。内容策划交给 LLM，排版渲染交给设计 skill。VI skill 只输出 brand-tokens.json + company-data.json。
 
-### 三条路径
+### 两条路径 × 两种模式
 
 ```
 用户需求
-├── 有设计 skill → VI skill 输出品牌数据 → 设计 skill 专业排版
-└── 无设计 skill → VI skill 输出品牌数据 → 兜底渲染器生成 HTML + 升级建议
+├── 路径 A（从零生成）
+│   ├── Template → AGENT 按母版填空，全硬规则锁死
+│   └── Themed  → AGENT + 设计 skill 从零创作
+└── 路径 B（改写已有）
+    ├── Template → 已有文件对齐母版规范
+    └── Themed  → 已有文件 + 设计 skill 重设计
 ```
 
-**路径 A：pages.json → generate.js → slides.html**
-- Agent 根据需求写出 `pages.json`（结构化内容，不含样式）
-- 渲染器注入 VI 色板/字体/Logo/播放壳
-- 适合从零开始、或只有内容提纲的场景
-
-**路径 B（已移除）：已有 HTML → 设计 skill 统一 VI**
-- 原 `vi-apply.js` 已删除，功能由设计 skill 替代
-- 已有 HTML PPT 的改造：读取 `brand-tokens.json` 替换色值/字体、注入 Logo
-- 布局、字号、位置、动画由设计 skill 自行决定
-
-**路径 C：pages.json → .pptx 渲染器（Phase 3，待规划）**
+详细路径选择逻辑见 `CONTEXT.md` 和 `skills/263-vi.md`。
 
 ### 三层数据体系
 
@@ -137,15 +168,17 @@
 
 ## 待继续 / 未完成
 
+- [ ] **执行 VI skill 重构计划** — `docs/superpowers/plans/2026-08-07-vi-skill-align-context.md`，6 个任务
 - [ ] **路径 A 从零生成测试** — 用真实业务场景（如"云通信产品介绍"）端到端测试
 - [x] **Claude Code 设计 skill 调研** — 确认 `frontend-design` 优于 `ui-ux-pro-max`，已填入 design-skill-recommendations.json
-- [ ] **补全其他平台设计 skill 推荐** — 调研 Codex / Trae 平台可用的设计 skill
 - [x] **Logo 安全区规则** — 已写入 skills/263-vi.md：Logo 周围禁止装饰元素遮挡
+- [x] **产品结构细化** — 从集团介绍讲义提取，3板块×4业务线×N产品能力，写入 CONTEXT.md
+- [x] **领域建模** — CONTEXT.md 已创建，两个限界上下文 + 完整设计树
 
 ### 资产和配置待补充
 
 - [ ] **商务蓝衍生色值** — 亮蓝/暗蓝/浅蓝背景目前是推算值，需官方确认
-- [ ] **云通信 Logo 反白稿** — 只有彩稿（.png），缺白色版本（.svg）
+- [ ] **云通信 Logo 反白稿** — 文件 `视觉参考/logo-云通信-白.png` 已存在，待放入 `assets/logos/`
 
 ### 功能扩展
 
@@ -173,6 +206,7 @@
 
 ```
 263viForAgent/
+├── CONTEXT.md                ← 领域模型（两个限界上下文）
 ├── generate.js              ← 兜底渲染器入口（仅无设计 skill 时）
 ├── brand-tokens.json        ← 品牌视觉规范（色板/字体/Logo/背景）
 ├── company-data.json        ← 公司信息（合并 facts + products）
