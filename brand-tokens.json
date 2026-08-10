@@ -26,14 +26,13 @@
   },
   "typography": {
     "fontFamily": "\"微软雅黑\", \"Microsoft YaHei\", sans-serif",
-    "minSize": 16,
-    "sizes": {
-      "coverTitle": "48px",
-      "sectionTitle": "36px",
-      "pageTitle": "32px",
-      "subtitle": "24px",
-      "body": "20px",
-      "caption": "16px"
+    "minSize": 20,
+    "scale": {
+      "coverTitle":   { "template": "64pt", "themed": { "min": "56pt", "max": "72pt" } },
+      "contentTitle": { "template": "40pt", "themed": { "min": "36pt", "max": "44pt" } },
+      "subtitle":     { "template": "30pt", "themed": { "min": "28pt", "max": "32pt" } },
+      "body":         { "template": "26pt", "themed": { "min": "24pt", "max": "28pt" } },
+      "caption":      { "template": "22pt", "themed": { "min": "20pt", "max": "24pt" } }
     }
   },
   "logos": {

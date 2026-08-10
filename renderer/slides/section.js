@@ -16,11 +16,11 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
   html += '</div>\n';
 
   html += '<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;">\n';
-  html += '<div style="font-size:' + tokens.typography.sizes.coverTitle + ';font-weight:bold;color:' + c.primaryLight + ';opacity:0.15;letter-spacing:8px;">' + esc(slide.sectionNumber) + '</div>\n';
-  html += '<h2 style="font-size:' + tokens.typography.sizes.sectionTitle + ';font-weight:bold;color:' + textColor + ';margin-top:-24px;">' + esc(slide.title) + '</h2>\n';
+  html += '<div style="font-size:' + tokens.typography.scale.coverTitle.template + ';font-weight:bold;color:' + c.primaryLight + ';opacity:0.15;letter-spacing:8px;">' + esc(slide.sectionNumber) + '</div>\n';
+  html += '<h2 style="font-size:' + tokens.typography.scale.contentTitle.template + ';font-weight:bold;color:' + textColor + ';margin-top:-24px;">' + esc(slide.title) + '</h2>\n';
 
   if (slide.subtitle) {
-    html += '<p style="font-size:' + tokens.typography.sizes.subtitle + ';color:' + subColor + ';margin-top:12px;">' + esc(slide.subtitle) + '</p>\n';
+    html += '<p style="font-size:' + tokens.typography.scale.subtitle.template + ';color:' + subColor + ';margin-top:12px;">' + esc(slide.subtitle) + '</p>\n';
   }
 
   html += '<div style="width:60px;height:3px;background:' + c.primary + ';margin-top:24px;"></div>\n';
