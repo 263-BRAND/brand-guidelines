@@ -24,68 +24,65 @@
 
 业务线使用自己的产品 Logo 时，其他品牌规则不变。
 
+### 正文颜色 (Text Colors)
+
+三层体系，严格对应：
+
+| 层级 | 色值 | 用途 |
+|------|------|------|
+| 标题色 | `dark` (#2D3847) | 页面标题、卡片标题、章节标题 |
+| 正文色 | `gray` (#595959) | 段落文本、描述、辅助信息 |
+| 强调色 | `primary` | 链接、标签、重点标记、分割线 |
+
+禁止使用纯黑 `#000000` 作为文本色。
+
 ### 字体层级 (Typography Scale)
 
-以 75 寸电视 @ 5m 会议场景为基准，兼顾笔记本屏幕。正文字体：微软雅黑。数值即 pt，JSON 中以 number 存储（无单位），禁止 pt↔px 换算。
+以 75 寸电视 @ 5m 会议场景为基准，兼顾笔记本屏幕。正文字体：微软雅黑。
 
-| 层级 | HTML | PPTX | 刚性 |
-|------|------|------|------|
-| 封面标题 | 64 | 64 | Template MUST / Themed 区间 |
-| 内容页标题 | 40 | 24 | 同上 |
-| 副标题 | 30 | 20 | 同上 |
-| 正文 | 26 | 18 | MUST |
-| 图表标签/注脚 | 22 | 14 | MUST |
+| 层级 | 字号 | 刚性 |
+|---|---|---|
+| 封面标题 | 48px | Template 固定 / Themed 区间 |
+| 内容页标题 | 32–36px | Template 固定 / Themed 区间 |
+| 副标题 | 24px | Template 固定 / Themed 区间 |
+| 正文 | 20px（底线） | MUST |
+| 图表标签/注脚 | ≥ 16px（极限） | MUST |
 
-数据源：`brand-tokens.json` → `typography.html` / `typography.pptx`。
-HTML/CSS 输出在数字后加 `pt` 后缀，PPTX 直接写入数字（PPTX fontSize 原生单位即 pt）。
+ASCII 字符画（封面 Logo 图）属于装饰图形，不受 16px 底线约束。
+
+### 背景系统
+
+所有页面统一白色底色，不提供背景选项。封面和内页均为 `#FFFFFF`。
+
+### ASCII 字符画（封面 Logo）
+
+263 心形 Logo 的 ASCII 字符画存入 `brand-tokens.json` → `coverAscii.art`。严禁 AI 自行生成或修改，必须从 token 原样读取。渲染规则：
+
+- `<pre>` + `white-space:pre` + `font-family:monospace` 确保跨平台对齐
+- 每行独立 `<span class="ascii-line">`，奇数行左滑入、偶数行右滑入
+- JS `setTimeout(i × 30ms)` 逐行交错触发，0.6s 过渡，全部完成后标题淡入
+- 参数：`font-size:11pt`、`line-height:0.6`、`scaleX:1.8`、`overallScaleX:0.576`、`overallScaleY:0.528`
 
 ### Logo 规则
 
-所有尺寸为画布宽度百分比，格式无关。坐标从 `brand-tokens.json` → `layout` 读取：
-
-| 场景 | 位置 | 尺寸 | 定位 |
-|---|---|---|---|
-| 内页 | 右上角 | 画布宽 × 4.2% | `right:4.2%, top:4.3%` |
-| 封面（Themed） | 左上角 | 画布宽 × 6.5% | `left:6%, top:8%` |
-| 封面（Template） | 不使用 PNG Logo | ASCII 字符画居中 | monospace, 36 行, 品牌主色 |
-
 | 规则 | 刚性 |
 |---|---|
-| 内页 Logo 安全区：内页 Logo 矩形边界框内禁止任何内容像素 | MUST |
-| 封面 Logo 安全区（Themed）：封面 Logo 矩形边界框内禁止任何内容像素（含装饰圆/渐变块） | MUST |
-| 封面 Logo（Template）：ASCII 字符画替代 PNG，距顶约 9%，不放置独立 PNG Logo | MUST |
+| 内页 Logo 尺寸：113×113px | MUST |
+| Logo 安全区内禁止装饰元素 | MUST |
 | 浅色底使用彩稿 Logo | MUST |
 | 深色底使用反白 Logo | MUST |
-| 结尾页：原内容全部丢弃，居中 Logo + slogan PNG（不可用文字代替） | MUST |
-| Logo 安全区 = Logo 图片的矩形边界框，外边界即边缘，不额外 margin | MUST |
-
-**封面生成强制检查（Themed）：** 所有装饰元素的左上边界 ≥ left+size，标题文字 left/padding-left ≥ left+size。
-
-**母版封面规格（Template）：** 浅灰背景（品牌 lightGray），ASCII 字符画（monospace 11pt, line-height:0.6, 品牌主色），标题 64pt 居中，汇报人/部门 26pt 居中，公司全称 22pt 底部居中。`pages.json` 设 `"scene": "template"` 触发。
+| 结尾页：居中 Logo + slogan PNG | MUST |
+| 封面不使用 PNG Logo，ASCII 字符画替代 | MUST |
 
 ### 硬规则 (Hard Rules)
 
-Template 路径全部锁定。Themed 路径在硬规则约束内由设计 skill 自由发挥。完整清单见 `brand-tokens.json` → `hardRules`。
-
-| 规则 | 适用 |
-|---|---|
-| Logo 安全区（内页 + 封面均适用） | Template + Themed |
-| 结尾页格式（居中 Logo + slogan PNG） | Template + Themed |
-| 主色不可偏色 | Template + Themed |
-| 字号底线（HTML ≥ 20pt 正文 ≥ 24pt；PPTX ≥ 12pt 正文 ≥ 16pt） | Template + Themed |
-| 内页 Logo 右上角固定，禁止自定义位置 | Template + Themed |
-| 封面 Logo 左上角固定（Themed） | Template |
-| 封面 ASCII 字符画（Template） | Template |
-| 字体固定微软雅黑 | Template + Themed |
-| 非品牌颜色全量替换（路径 B×Template） | Template |
+Template 路径全部锁定。Themed 路径在硬规则约束内由设计 skill 自由发挥。
 
 ### 企业概况 (CorporateProfile)
 
 独立聚合，与产品组合生命周期分离。包含：公司简介、成立年份（1997）、上市信息（002467.SZ）、总部（北京）、全球 12 处办公地点、15 万企业客户、资质荣誉、594 项软件著作权、23 项专利。
 
 ### 产品组合 (ProductPortfolio)
-
-> **权威数据源：** `company-data.json`。以下为摘要，完整产品能力列表以 JSON 为准。
 
 独立聚合。三大板块，每板块四条业务线，每业务线下含具体产品/能力。
 
@@ -135,16 +132,7 @@ Agent 按特征推理，不硬匹配关键词。用户自然语言纠正即可�
 
 生成结果开头告知用户当前模式，降低误判纠正门槛。格式：
 
-- Template：`"我将按**内部汇报**的设计方式制作（统一母版）。如果你是用于对外展示，请告诉我，我会切换设计风格。"`
-- Themed：`"我将按**对外展示**的设计方式制作（品牌主题 + 个性化设计）。如果你是用于内部工作汇报，请告诉我具体场景，我会切换为统一母版。"`
-
-### 前置步骤（四条路径共用）
-
-1. **判断模式** → Template 还是 Themed（按受众/目的/母版特征推理）
-2. **确定品牌上下文** → 配色方案（默认集团红）+ Logo 归属（默认集团 Logo，按业务线切换）
-3. **生成前确认** → 对话框让用户确认：展示场景 / 配色方案（配色决定 Logo 归属）
-4. **输出透明声明** → 告知用户当前模式和切换方式
-5. **读取品牌数据** → `brand-tokens.json`（必须）+ `company-data.json`（按需）
+> "我将按对外展示（或：内部汇报）的设计方式制作。如果你用于[另一种场景]，请告诉我。"
 
 ### 路径 × 模式（2×2 矩阵）
 
@@ -163,8 +151,6 @@ Agent 按特征推理，不硬匹配关键词。用户自然语言纠正即可�
 Template 路径：VI skill 全控，设计 skill 不介入。
 Themed 路径：VI skill 提供品牌数据 + 硬规则约束，设计 skill 在约束内自由发挥。
 
-**Brand Data Contract：** VI skill 输出给设计 skill 的结构化 JSON，包含 colorScheme / colors / typography / logo / hardRules / mode。设计 skill 在硬规则约束内消费此数据并自由创作。
-
 ### 输入格式分级
 
 VI skill 不负责解析文件。外部 Agent 自行调用 MCP 或工具摘取内容后送入管线。
@@ -179,4 +165,5 @@ VI skill 不负责解析文件。外部 Agent 自行调用 MCP 或工具摘取�
 ## 待定事项
 
 - 商务蓝色值 — 官方确认
-- 多格式打包（.skill for Claude Code, .zip+instructions.md for ChatGPT, .cursorrules for Cursor 等）
+- 硬规则后续补充（如标题字号精确值、禁用色、Logo 最小边距）
+- 云通信 Logo 反白稿

@@ -6,10 +6,11 @@
 <title>263 PPT - group-red</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
-body { background:#000; display:flex; justify-content:center; align-items:center; height:100vh; overflow:hidden; font-family:"微软雅黑", "Microsoft YaHei", sans-serif; }
-#player { width:1920px; height:1080px; position:relative; overflow:hidden; transform-origin:center center; }
-.slide-page { position:absolute; top:0; left:0; width:100%; height:100%; display:none; }
-.slide-page.active { display:block; }
+html, body { width:100%; height:100%; margin:0; overflow:hidden; background:#111; font-family:"微软雅黑", "Microsoft YaHei", sans-serif; }
+:root { --s: 1; }
+#player { width:1920px; height:1080px; position:fixed; top:0; left:50%; transform:translate(-50%,0) scale(var(--s)); overflow:hidden; }
+.slide-page { position:absolute !important; top:0; left:0; width:100%; height:100%; opacity:0; pointer-events:none; transition:opacity 0.35s ease; z-index:0; }
+.slide-page.active { opacity:1; pointer-events:auto; z-index:2; }
 :root {
   --primary: #D0121B;
   --primary-light: #FE343F;
@@ -28,179 +29,217 @@ body { background:#000; display:flex; justify-content:center; align-items:center
 </head>
 <body>
 <div id="player">
-<div class="slide-page" id="s0" style="background:linear-gradient(135deg, #D0121B 0%, #AC000A 100%); position:relative;">
-<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding-left:6%;">
-<div style="position:absolute;top:8%;left:6%;">
-<div class="logo-white-img" style="width:6.5%;aspect-ratio:1;height:auto;"></div>
+<div class="slide-page" id="s0" style="background:#FFFFFF; position:relative; overflow:hidden;">
+<div style="position:absolute;top:12%;left:50%;transform:translateX(-50%);z-index:5;">
+<div style="transform:scale(0.576, 0.528);transform-origin:top center;">
+<pre style="font-family:'Courier New','Source Code Pro',Consolas,monospace;font-size:11pt;line-height:0.6;color:#D0121B;white-space:pre;user-select:none;margin:0;transform:scaleX(1.8);">
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                          ▓▓▓▓▓▒</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                   ▓▓██████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">               ██████████████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">           ▓███████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">        ▒██████████████████████████████▒</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">      ▓█████████████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">    ████████████████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">  ██████████████████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;"> ███████████████████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">▒███████████████████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">████████████████████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">████████████████████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">███████████████████████████████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">▓███▓▓▓▓▓▓▓▓▓▓█▓▓▓██▓▓▓▓▓▓█▓▓▓▓▓▓▓▓▓▓██</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">▒███          █   █      ██          ██</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">▒██████████   █   █▓▓▓▓▓▓█████████   █</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;"> ██          ▓▓          █▓         ▒█</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;"> ██          █           █▒         ▓▒</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;"> ▒█  ▒████████   █████   ████████   ▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">  ▒         ▓█          ▒▓         ▒</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">  ▓         ██         ▓█▓▒▒      ▓▒</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">  ▓███████████████████████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">   ███████████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">   ██████████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">    ████████████████████████████▒</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">    ███████████████████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">     █████████████████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">     ████████████████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">      ██████████████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">      ▓████████████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">       ███████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">        █████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">         ██████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">          ████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">           █████████▒</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">            ▒████▒</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;"></span>
+</pre>
 </div>
-<h1 style="font-size:64pt;font-weight:bold;color:#FFFFFF;margin-bottom:16px;max-width:80%;">全球互联网通信云服务领导者</h1>
-<p style="font-size:30pt;color:rgba(255,255,255,0.85);margin-bottom:32px;">263 云通信产品介绍</p>
-<div style="width:60px;height:4px;background:#FFFFFF;margin-bottom:32px;"></div>
-<div style="font-size:26pt;color:rgba(255,255,255,0.7);line-height:1.8;">
-<span>郭跃</span><span style="margin-left:16px;">云通信事业部</span><span style="margin-left:16px;">2026-07-30</span></div>
-<div style="position:absolute;bottom:6%;left:6%;font-size:22pt;color:rgba(255,255,255,0.5);">
+</div>
+<div class="cover-content" style="position:absolute;top:45%;left:50%;transform:translateX(-50%);text-align:center;z-index:10;width:80%;opacity:0;transition:opacity 0.8s ease;">
+<h1 style="font-size:48px;font-weight:bold;color:#2D3847;letter-spacing:3px;margin-bottom:14px;">全球互联网通信云服务领导者</h1>
+<div style="font-size:24px;color:#595959;display:flex;gap:24px;justify-content:center;">
+<span>汇报人：郭跃</span><span style="color:#D0121B;opacity:0.5;"> · </span><span>云通信事业部</span></div>
+</div>
+<div style="position:absolute;bottom:5%;left:0;width:100%;text-align:center;font-size:16px;color:#595959;opacity:0.45;">
 二六三网络通信股份有限公司
-</div>
 </div>
 </div>
 
 <div class="slide-page" id="s1" style="background:#FFFFFF; position:relative;">
-<div style="position:absolute;top:4.3%;right:4.2%;width:4.2%;aspect-ratio:1;height:auto;">
+<div style="position:absolute;top:46px;right:80px;width:113px;height:113px;">
 <div class="logo-color-img" style="width:100%;height:100%;"></div>
 </div>
 <div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;">
-<div style="font-size:64pt;font-weight:bold;color:#FE343F;opacity:0.15;letter-spacing:8px;">01</div>
-<h2 style="font-size:40pt;font-weight:bold;color:#2D3847;margin-top:-24px;">关于我们</h2>
-<p style="font-size:30pt;color:#595959;margin-top:12px;">了解二六三集团</p>
+<div style="font-size:48px;font-weight:bold;color:#FE343F;opacity:0.15;letter-spacing:8px;">01</div>
+<h2 style="font-size:36px;font-weight:bold;color:#2D3847;margin-top:-24px;">关于我们</h2>
+<p style="font-size:24px;color:#595959;margin-top:12px;">了解二六三集团</p>
 <div style="width:60px;height:3px;background:#D0121B;margin-top:24px;"></div>
 </div>
 </div>
 
 <div class="slide-page" id="s2" style="background:#FFFFFF; position:relative;">
-<div style="position:absolute;top:4.3%;right:4.2%;width:4.2%;aspect-ratio:1;height:auto;">
+<div style="position:absolute;top:46px;right:80px;width:113px;height:113px;">
 <div class="logo-color-img" style="width:100%;height:100%;"></div>
 </div>
 <div style="position:absolute;top:18%;left:6%;right:6%;">
-<div style="font-size:22pt;color:#D0121B;letter-spacing:2px;margin-bottom:4px;">01 / 公司概况</div>
-<h2 style="font-size:40pt;font-weight:bold;color:#2D3847;">关于二六三集团</h2>
+<div style="font-size:16px;color:#D0121B;letter-spacing:2px;margin-bottom:4px;">01 / 公司概况</div>
+<h2 style="font-size:32px;font-weight:bold;color:#2D3847;">关于二六三集团</h2>
 </div>
 <div style="position:absolute;top:32%;left:6%;right:6%;bottom:15%;overflow-y:auto;">
 <div style="margin-bottom:24px;">
-<h3 style="font-size:30pt;color:#FE343F;margin-bottom:8px;font-weight:bold;">公司概述</h3>
-<p style="font-size:26pt;color:#2D3847;line-height:1.8;">263 集团（股票代码：002467）创立于 1997 年，是全球领先的互联网通信云服务商。总部位于北京，并在上海、广州、深圳、杭州、香港和海外设有办事机构。</p>
+<h3 style="font-size:24px;color:#FE343F;margin-bottom:8px;font-weight:bold;">公司概述</h3>
+<p style="font-size:20px;color:#595959;line-height:1.8;">263 集团（股票代码：002467）创立于 1997 年，是全球领先的互联网通信云服务商。总部位于北京，并在上海、广州、深圳、杭州、香港和海外设有办事机构。</p>
 </div>
 <div style="margin-bottom:24px;">
-<h3 style="font-size:30pt;color:#FE343F;margin-bottom:8px;font-weight:bold;">核心优势</h3>
-<p style="font-size:26pt;color:#2D3847;line-height:1.8;">深耕行业二十余年，服务超过 700 万企业客户，日处理消息量超过 15 亿条，服务可用性达 99.99%。</p>
+<h3 style="font-size:24px;color:#FE343F;margin-bottom:8px;font-weight:bold;">核心优势</h3>
+<p style="font-size:20px;color:#595959;line-height:1.8;">深耕行业二十余年，服务超过 700 万企业客户，日处理消息量超过 15 亿条，服务可用性达 99.99%。</p>
 </div>
 </div>
 <div style="position:absolute;bottom:9%;left:6%;right:6%;height:1px;background:#D0121B;opacity:0.4;"></div>
-<div style="position:absolute;bottom:3%;left:6%;right:6%;display:flex;justify-content:space-between;font-size:22pt;color:#595959;">
+<div style="position:absolute;bottom:3%;left:6%;right:6%;display:flex;justify-content:space-between;font-size:16px;color:#595959;">
 <span>二六三网络通信股份有限公司</span>
 <span>3 / 8</span>
 </div>
 </div>
 
 <div class="slide-page" id="s3" style="background:#FFFFFF; position:relative;">
-<div style="position:absolute;top:4.3%;right:4.2%;width:4.2%;aspect-ratio:1;height:auto;">
+<div style="position:absolute;top:46px;right:80px;width:113px;height:113px;">
 <div class="logo-color-img" style="width:100%;height:100%;"></div>
 </div>
 <div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;">
-<div style="font-size:64pt;font-weight:bold;color:#FE343F;opacity:0.15;letter-spacing:8px;">02</div>
-<h2 style="font-size:40pt;font-weight:bold;color:#2D3847;margin-top:-24px;">产品矩阵</h2>
-<p style="font-size:30pt;color:#595959;margin-top:12px;">一站式云通信解决方案</p>
+<div style="font-size:48px;font-weight:bold;color:#FE343F;opacity:0.15;letter-spacing:8px;">02</div>
+<h2 style="font-size:36px;font-weight:bold;color:#2D3847;margin-top:-24px;">产品矩阵</h2>
+<p style="font-size:24px;color:#595959;margin-top:12px;">一站式云通信解决方案</p>
 <div style="width:60px;height:3px;background:#D0121B;margin-top:24px;"></div>
 </div>
 </div>
 
-<div class="slide-page" id="s4" style="background:#F2F2F2; position:relative;">
-<div style="position:absolute;top:4.3%;right:4.2%;width:4.2%;aspect-ratio:1;height:auto;">
+<div class="slide-page" id="s4" style="background:undefined; position:relative;">
+<div style="position:absolute;top:46px;right:80px;width:113px;height:113px;">
 <div class="logo-color-img" style="width:100%;height:100%;"></div>
 </div>
 <div style="position:absolute;top:12%;left:6%;right:6%;">
-<div style="font-size:22pt;color:#D0121B;letter-spacing:2px;margin-bottom:4px;">02 / 产品矩阵</div>
-<h2 style="font-size:40pt;font-weight:bold;color:#2D3847;">云通信产品体系</h2>
+<div style="font-size:16px;color:#D0121B;letter-spacing:2px;margin-bottom:4px;">02 / 产品矩阵</div>
+<h2 style="font-size:32px;font-weight:bold;color:#2D3847;">云通信产品体系</h2>
 </div>
 <div style="position:absolute;top:28%;left:6%;right:6%;bottom:6%;display:flex;flex-wrap:wrap;gap:20px;align-content:flex-start;">
 <div style="flex:0 0 calc((100% - 60px) / 4);background:#FFFFFF;border-radius:8px;padding:28px 24px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border-top:3px solid #D0121B;">
 <div style="font-size:32px;margin-bottom:12px;">📧</div>
-<h3 style="font-size:30pt;color:#2D3847;font-weight:bold;margin-bottom:8px;">企业邮箱</h3>
-<p style="font-size:26pt;color:#595959;line-height:1.7;">安全稳定的企业级邮件系统，支持自定义域名与移动办公。</p>
+<h3 style="font-size:24px;color:#2D3847;font-weight:bold;margin-bottom:8px;">企业邮箱</h3>
+<p style="font-size:20px;color:#595959;line-height:1.7;">安全稳定的企业级邮件系统，支持自定义域名与移动办公。</p>
 </div>
 <div style="flex:0 0 calc((100% - 60px) / 4);background:#FFFFFF;border-radius:8px;padding:28px 24px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border-top:3px solid #D0121B;">
 <div style="font-size:32px;margin-bottom:12px;">📹</div>
-<h3 style="font-size:30pt;color:#2D3847;font-weight:bold;margin-bottom:8px;">云会议</h3>
-<p style="font-size:26pt;color:#595959;line-height:1.7;">高清视频会议，千人同时在线，屏幕共享与实时协作。</p>
+<h3 style="font-size:24px;color:#2D3847;font-weight:bold;margin-bottom:8px;">云会议</h3>
+<p style="font-size:20px;color:#595959;line-height:1.7;">高清视频会议，千人同时在线，屏幕共享与实时协作。</p>
 </div>
 <div style="flex:0 0 calc((100% - 60px) / 4);background:#FFFFFF;border-radius:8px;padding:28px 24px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border-top:3px solid #D0121B;">
 <div style="font-size:32px;margin-bottom:12px;">📡</div>
-<h3 style="font-size:30pt;color:#2D3847;font-weight:bold;margin-bottom:8px;">企业直播</h3>
-<p style="font-size:26pt;color:#595959;line-height:1.7;">一站式直播营销平台，推流、互动、数据分析全覆盖。</p>
+<h3 style="font-size:24px;color:#2D3847;font-weight:bold;margin-bottom:8px;">企业直播</h3>
+<p style="font-size:20px;color:#595959;line-height:1.7;">一站式直播营销平台，推流、互动、数据分析全覆盖。</p>
 </div>
 <div style="flex:0 0 calc((100% - 60px) / 4);background:#FFFFFF;border-radius:8px;padding:28px 24px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border-top:3px solid #D0121B;">
 <div style="font-size:32px;margin-bottom:12px;">📞</div>
-<h3 style="font-size:30pt;color:#2D3847;font-weight:bold;margin-bottom:8px;">云呼叫中心</h3>
-<p style="font-size:26pt;color:#595959;line-height:1.7;">智能全渠道客户联络，整合电话、在线客服与语音导航。</p>
+<h3 style="font-size:24px;color:#2D3847;font-weight:bold;margin-bottom:8px;">云呼叫中心</h3>
+<p style="font-size:20px;color:#595959;line-height:1.7;">智能全渠道客户联络，整合电话、在线客服与语音导航。</p>
 </div>
 </div>
-<div style="position:absolute;bottom:3%;right:6%;font-size:22pt;color:#595959;">5 / 8</div>
+<div style="position:absolute;bottom:3%;right:6%;font-size:16px;color:#595959;">5 / 8</div>
 </div>
 
 <div class="slide-page" id="s5" style="background:#FFFFFF; position:relative;">
-<div style="position:absolute;top:4.3%;right:4.2%;width:4.2%;aspect-ratio:1;height:auto;">
+<div style="position:absolute;top:46px;right:80px;width:113px;height:113px;">
 <div class="logo-color-img" style="width:100%;height:100%;"></div>
 </div>
 <div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;">
-<div style="font-size:64pt;font-weight:bold;color:#FE343F;opacity:0.15;letter-spacing:8px;">03</div>
-<h2 style="font-size:40pt;font-weight:bold;color:#2D3847;margin-top:-24px;">发展历程</h2>
-<p style="font-size:30pt;color:#595959;margin-top:12px;">二十余年深耕通信行业</p>
+<div style="font-size:48px;font-weight:bold;color:#FE343F;opacity:0.15;letter-spacing:8px;">03</div>
+<h2 style="font-size:36px;font-weight:bold;color:#2D3847;margin-top:-24px;">发展历程</h2>
+<p style="font-size:24px;color:#595959;margin-top:12px;">二十余年深耕通信行业</p>
 <div style="width:60px;height:3px;background:#D0121B;margin-top:24px;"></div>
 </div>
 </div>
 
 <div class="slide-page" id="s6" style="background:#FFFFFF; position:relative;">
-<div style="position:absolute;top:4.3%;right:4.2%;width:4.2%;aspect-ratio:1;height:auto;">
+<div style="position:absolute;top:46px;right:80px;width:113px;height:113px;">
 <div class="logo-color-img" style="width:100%;height:100%;"></div>
 </div>
 <div style="position:absolute;top:12%;left:6%;right:6%;">
-<div style="font-size:22pt;color:#D0121B;letter-spacing:2px;margin-bottom:4px;">03 / 发展历程</div>
-<h2 style="font-size:40pt;font-weight:bold;color:#2D3847;">二十余年深耕通信行业</h2>
+<div style="font-size:16px;color:#D0121B;letter-spacing:2px;margin-bottom:4px;">03 / 发展历程</div>
+<h2 style="font-size:32px;font-weight:bold;color:#2D3847;">二十余年深耕通信行业</h2>
 </div>
 <div style="position:absolute;top:26%;left:15%;right:10%;bottom:8%;overflow-y:auto;">
 <div style="border-left:2px solid #F2F2F2;padding-left:0;">
 <div style="display:flex;align-items:flex-start;margin-bottom:28px;position:relative;">
 <div style="flex:0 0 100px;text-align:right;padding-right:20px;">
-<span style="font-size:30pt;font-weight:bold;color:#D0121B;">1997</span>
+<span style="font-size:24px;font-weight:bold;color:#D0121B;">1997</span>
 </div>
 <div style="width:12px;height:12px;background:#D0121B;border-radius:50%;flex-shrink:0;margin-top:6px;z-index:1;"></div>
 <div style="flex:1;padding-left:20px;">
-<h3 style="font-size:30pt;color:#2D3847;font-weight:bold;margin-bottom:4px;">公司成立</h3>
-<p style="font-size:26pt;color:#595959;line-height:1.6;">创立于北京，提供互联网接入服务</p>
+<h3 style="font-size:24px;color:#2D3847;font-weight:bold;margin-bottom:4px;">公司成立</h3>
+<p style="font-size:20px;color:#595959;line-height:1.6;">创立于北京，提供互联网接入服务</p>
 </div>
 </div>
 <div style="display:flex;align-items:flex-start;margin-bottom:28px;position:relative;">
 <div style="flex:0 0 100px;text-align:right;padding-right:20px;">
-<span style="font-size:30pt;font-weight:bold;color:#D0121B;">2010</span>
+<span style="font-size:24px;font-weight:bold;color:#D0121B;">2010</span>
 </div>
 <div style="width:12px;height:12px;background:#D0121B;border-radius:50%;flex-shrink:0;margin-top:6px;z-index:1;"></div>
 <div style="flex:1;padding-left:20px;">
-<h3 style="font-size:30pt;color:#2D3847;font-weight:bold;margin-bottom:4px;">深交所上市</h3>
-<p style="font-size:26pt;color:#595959;line-height:1.6;">在深圳证券交易所上市，股票代码 002467</p>
+<h3 style="font-size:24px;color:#2D3847;font-weight:bold;margin-bottom:4px;">深交所上市</h3>
+<p style="font-size:20px;color:#595959;line-height:1.6;">在深圳证券交易所上市，股票代码 002467</p>
 </div>
 </div>
 <div style="display:flex;align-items:flex-start;margin-bottom:28px;position:relative;">
 <div style="flex:0 0 100px;text-align:right;padding-right:20px;">
-<span style="font-size:30pt;font-weight:bold;color:#D0121B;">2015</span>
+<span style="font-size:24px;font-weight:bold;color:#D0121B;">2015</span>
 </div>
 <div style="width:12px;height:12px;background:#D0121B;border-radius:50%;flex-shrink:0;margin-top:6px;z-index:1;"></div>
 <div style="flex:1;padding-left:20px;">
-<h3 style="font-size:30pt;color:#2D3847;font-weight:bold;margin-bottom:4px;">云通信战略</h3>
-<p style="font-size:26pt;color:#595959;line-height:1.6;">全面转型云通信服务</p>
+<h3 style="font-size:24px;color:#2D3847;font-weight:bold;margin-bottom:4px;">云通信战略</h3>
+<p style="font-size:20px;color:#595959;line-height:1.6;">全面转型云通信服务</p>
 </div>
 </div>
 <div style="display:flex;align-items:flex-start;margin-bottom:28px;position:relative;">
 <div style="flex:0 0 100px;text-align:right;padding-right:20px;">
-<span style="font-size:30pt;font-weight:bold;color:#D0121B;">2020</span>
+<span style="font-size:24px;font-weight:bold;color:#D0121B;">2020</span>
 </div>
 <div style="width:12px;height:12px;background:#D0121B;border-radius:50%;flex-shrink:0;margin-top:6px;z-index:1;"></div>
 <div style="flex:1;padding-left:20px;">
-<h3 style="font-size:30pt;color:#2D3847;font-weight:bold;margin-bottom:4px;">国际化布局</h3>
-<p style="font-size:26pt;color:#595959;line-height:1.6;">成立海外分支机构，服务覆盖全球</p>
+<h3 style="font-size:24px;color:#2D3847;font-weight:bold;margin-bottom:4px;">国际化布局</h3>
+<p style="font-size:20px;color:#595959;line-height:1.6;">成立海外分支机构，服务覆盖全球</p>
 </div>
 </div>
 <div style="display:flex;align-items:flex-start;margin-bottom:28px;position:relative;">
 <div style="flex:0 0 100px;text-align:right;padding-right:20px;">
-<span style="font-size:30pt;font-weight:bold;color:#D0121B;">2023</span>
+<span style="font-size:24px;font-weight:bold;color:#D0121B;">2023</span>
 </div>
 <div style="width:12px;height:12px;background:#D0121B;border-radius:50%;flex-shrink:0;margin-top:6px;z-index:1;"></div>
 <div style="flex:1;padding-left:20px;">
-<h3 style="font-size:30pt;color:#2D3847;font-weight:bold;margin-bottom:4px;">AI 赋能</h3>
-<p style="font-size:26pt;color:#595959;line-height:1.6;">推出 AI 数字员工云小朵，RAG 智能客服</p>
+<h3 style="font-size:24px;color:#2D3847;font-weight:bold;margin-bottom:4px;">AI 赋能</h3>
+<p style="font-size:20px;color:#595959;line-height:1.6;">推出 AI 数字员工云小朵，RAG 智能客服</p>
 </div>
 </div>
 </div>
 </div>
-<div style="position:absolute;bottom:3%;right:6%;font-size:22pt;color:#595959;">7 / 8</div>
+<div style="position:absolute;bottom:3%;right:6%;font-size:16px;color:#595959;">7 / 8</div>
 </div>
 
 <div class="slide-page" id="s7" style="background:#FFFFFF; position:relative;">
@@ -240,15 +279,47 @@ body { background:#000; display:flex; justify-content:center; align-items:center
     }
   });
   show(0);
+  // Double-click to toggle fullscreen
+  document.addEventListener("dblclick", function(e) {
+    e.preventDefault();
+    if (document.fullscreenElement) { document.exitFullscreen(); }
+    else { document.documentElement.requestFullscreen(); }
+  });
+  // ASCII line-by-line staggered entrance
+  var asciiLines = document.querySelectorAll(".ascii-line");
+  if (asciiLines.length) {
+    var stagger = 30;
+    for (var i = 0; i < asciiLines.length; i++) {
+      setTimeout(function(idx) {
+        return function() {
+          asciiLines[idx].style.opacity = "1";
+          asciiLines[idx].style.transform = "translateX(0)";
+        };
+      }(i), i * stagger);
+    }
+    var coverContent = document.querySelector(".cover-content");
+    if (coverContent) {
+      setTimeout(function() {
+        coverContent.style.opacity = "1";
+      }, asciiLines.length * stagger + 200);
+    }
+  }
   function resize() {
-    var pw = 1920, ph = 1080;
-    var scaleX = window.innerWidth / pw;
-    var scaleY = window.innerHeight / ph;
-    var scale = Math.min(scaleX, scaleY);
-    document.getElementById("player").style.transform = "scale(" + scale + ")";
+    var s = window.innerWidth / 1920;
+    document.documentElement.style.setProperty("--s", s);
   }
   window.addEventListener("resize", resize);
   resize();
+  // Auto-enter fullscreen on first interaction (click or keypress)
+  var _autoFS = function() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(function() {});
+    }
+    document.removeEventListener("click", _autoFS);
+    document.removeEventListener("keydown", _autoFS);
+  };
+  document.addEventListener("click", _autoFS);
+  document.addEventListener("keydown", _autoFS);
 })();
 </script>
 </body>

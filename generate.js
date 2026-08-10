@@ -112,8 +112,7 @@ const html = buildHtml({
   colorScheme: pages.colorScheme,
   logoColorB64: logoColorB64,
   logoWhiteB64: logoWhiteB64,
-  sloganB64: sloganB64,
-  totalSlides: pages.slides.length
+  sloganB64: sloganB64
 });
 
 const outPath = pagesPath.replace(/\.json$/, '.html');
@@ -123,6 +122,9 @@ console.log('Generated: ' + outPath + ' (' + pages.slides.length + ' slides)');
 function buildHtml(opts) {
   const c = opts.tokens.colorSchemes[opts.colorScheme];
   const t = opts.tokens.typography;
+  const l = opts.tokens.layout;
+  var W = 1920;
+  var H = 1080;
 
   return '<!DOCTYPE html>\n' +
 '<html lang="zh-CN">\n' +
@@ -132,11 +134,11 @@ function buildHtml(opts) {
 '<title>263 PPT - ' + opts.colorScheme + '</title>\n' +
 '<style>\n' +
 '* { margin:0; padding:0; box-sizing:border-box; }\n' +
-'html, body { width:100%; height:100%; margin:0; overflow:hidden; background:#111; }\n' +
+'html, body { width:100%; height:100%; margin:0; overflow:hidden; background:#111; font-family:' + t.fontFamily + '; }\n' +
 ':root { --s: 1; }\n' +
-'#player { width:1920px; height:1080px; position:fixed; top:0; left:50%; transform:translate(-50%,0) scale(var(--s)); overflow:hidden; }\n' +
-'.slide-page { position:absolute !important; top:0; left:0; width:100%; height:100%; opacity:0; transition:opacity 0.35s ease; z-index:0; pointer-events:none; }\n' +
-'.slide-page.active { opacity:1; z-index:2; pointer-events:auto; }\n' +
+'#player { width:' + W + 'px; height:' + H + 'px; position:fixed; top:0; left:50%; transform:translate(-50%,0) scale(var(--s)); overflow:hidden; }\n' +
+'.slide-page { position:absolute !important; top:0; left:0; width:100%; height:100%; opacity:0; pointer-events:none; transition:opacity 0.35s ease; z-index:0; }\n' +
+'.slide-page.active { opacity:1; pointer-events:auto; z-index:2; }\n' +
 ':root {\n' +
 '  --primary: ' + c.primary + ';\n' +
 '  --primary-light: ' + c.primaryLight + ';\n' +
@@ -161,10 +163,10 @@ opts.slides + '\n' +
 '(function() {\n' +
 '  var slides = document.querySelectorAll(".slide-page");\n' +
 '  var current = 0;\n' +
-'  slides[0].classList.add("active");\n' +
+'  var total = ' + pages.slides.length + ';\n' +
 '  function show(idx) {\n' +
 '    slides[current].classList.remove("active");\n' +
-'    current = ((idx % slides.length) + slides.length) % slides.length;\n' +
+'    current = ((idx % total) + total) % total;\n' +
 '    slides[current].classList.add("active");\n' +
 '  }\n' +
 '  document.getElementById("player").addEventListener("click", function(e) {\n' +
@@ -179,24 +181,45 @@ opts.slides + '\n' +
 '    } else if (key === "ArrowLeft" || key === "ArrowUp" || key === "PageUp") {\n' +
 '      e.preventDefault(); show(current - 1);\n' +
 '    } else if (key === "Home") { e.preventDefault(); show(0); }\n' +
-'    else if (key === "End") { e.preventDefault(); show(slides.length - 1); }\n' +
+'    else if (key === "End") { e.preventDefault(); show(total - 1); }\n' +
 '    else if (key === "f" || key === "F") {\n' +
 '      if (document.fullscreenElement) { document.exitFullscreen(); }\n' +
 '      else { document.documentElement.requestFullscreen(); }\n' +
 '    }\n' +
 '  });\n' +
+'  show(0);\n' +
+'  // Double-click to toggle fullscreen\n' +
 '  document.addEventListener("dblclick", function(e) {\n' +
 '    e.preventDefault();\n' +
 '    if (document.fullscreenElement) { document.exitFullscreen(); }\n' +
 '    else { document.documentElement.requestFullscreen(); }\n' +
 '  });\n' +
-getAsciiAnimationJS() + '\n' +
+'  // ASCII line-by-line staggered entrance\n' +
+'  var asciiLines = document.querySelectorAll(".ascii-line");\n' +
+'  if (asciiLines.length) {\n' +
+'    var stagger = ' + ((tokens.coverAscii && tokens.coverAscii.stagger) || 30) + ';\n' +
+'    for (var i = 0; i < asciiLines.length; i++) {\n' +
+'      setTimeout(function(idx) {\n' +
+'        return function() {\n' +
+'          asciiLines[idx].style.opacity = "1";\n' +
+'          asciiLines[idx].style.transform = "translateX(0)";\n' +
+'        };\n' +
+'      }(i), i * stagger);\n' +
+'    }\n' +
+'    var coverContent = document.querySelector(".cover-content");\n' +
+'    if (coverContent) {\n' +
+'      setTimeout(function() {\n' +
+'        coverContent.style.opacity = "1";\n' +
+'      }, asciiLines.length * stagger + 200);\n' +
+'    }\n' +
+'  }\n' +
 '  function resize() {\n' +
-'    var s = window.innerWidth / 1920;\n' +
+'    var s = window.innerWidth / ' + W + ';\n' +
 '    document.documentElement.style.setProperty("--s", s);\n' +
 '  }\n' +
 '  window.addEventListener("resize", resize);\n' +
 '  resize();\n' +
+'  // Auto-enter fullscreen on first interaction (click or keypress)\n' +
 '  var _autoFS = function() {\n' +
 '    if (!document.fullscreenElement) {\n' +
 '      document.documentElement.requestFullscreen().catch(function() {});\n' +
@@ -210,27 +233,4 @@ getAsciiAnimationJS() + '\n' +
 '</script>\n' +
 '</body>\n' +
 '</html>';
-}
-
-function getAsciiAnimationJS() {
-  return [
-'  // ASCII entrance animation (auto-detects Template cover, no-op otherwise)',
-'  var asciiLines = document.querySelectorAll(".ascii-line");',
-'  if (asciiLines.length) {',
-'    for (var i = 0; i < asciiLines.length; i++) {',
-'      setTimeout(function(idx) {',
-'        return function() {',
-'          asciiLines[idx].style.opacity = "1";',
-'          asciiLines[idx].style.transform = "translateX(0)";',
-'        };',
-'      }(i), i * 30);',
-'    }',
-'    var coverContent = document.querySelector(".cover-content");',
-'    if (coverContent) {',
-'      setTimeout(function() {',
-'        coverContent.style.opacity = "1";',
-'      }, asciiLines.length * 30 + 200);',
-'    }',
-'  }',
-  ].join('\n');
 }

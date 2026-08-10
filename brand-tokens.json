@@ -1,10 +1,5 @@
 {
-  "version": "2.0",
-  "canvas": {
-    "aspectRatio": "16:9",
-    "width": 1920,
-    "height": 1080
-  },
+  "version": "2.1",
   "colorSchemes": {
     "group-red": {
       "primary": "#D0121B",
@@ -29,28 +24,32 @@
       "black": "#000000"
     }
   },
+  "textColors": {
+    "heading": "{dark}",
+    "body": "{gray}",
+    "accent": "{primary}",
+    "rule": "标题用 heading、正文用 body、强调/链接用 accent。禁止使用纯黑 #000000 作为文本色。"
+  },
   "typography": {
     "fontFamily": "\"微软雅黑\", \"Microsoft YaHei\", sans-serif",
-    "unit": "pt",
-    "html": {
-      "minSize": 20,
-      "scale": {
-        "coverTitle":   { "template": 64, "themed": { "min": 56, "max": 72 } },
-        "contentTitle": { "template": 40, "themed": { "min": 36, "max": 44 } },
-        "subtitle":     { "template": 30, "themed": { "min": 28, "max": 32 } },
-        "body":         { "template": 26, "themed": { "min": 24, "max": 28 } },
-        "caption":      { "template": 22, "themed": { "min": 20, "max": 24 } }
-      }
+    "minSize": 16,
+    "sizes": {
+      "coverTitle": "48px",
+      "sectionTitle": "36px",
+      "pageTitle": "32px",
+      "subtitle": "24px",
+      "body": "20px",
+      "caption": "16px"
     },
-    "pptx": {
-      "minSize": 12,
-      "scale": {
-        "coverTitle":   { "template": 64, "themed": { "min": 56, "max": 72 } },
-        "contentTitle": { "template": 24, "themed": { "min": 22, "max": 26 } },
-        "subtitle":     { "template": 20, "themed": { "min": 18, "max": 22 } },
-        "body":         { "template": 18, "themed": { "min": 16, "max": 20 } },
-        "caption":      { "template": 14, "themed": { "min": 12, "max": 16 } }
-      }
+    "asciiArt": {
+      "fontFamily": "'Courier New','Source Code Pro',Consolas,monospace",
+      "fontSize": "11pt",
+      "lineHeight": "0.6",
+      "scaleX": "1.8",
+      "overallScaleX": "0.576",
+      "overallScaleY": "0.528",
+      "offsetX": "0",
+      "exemption": "ASCII 字符画属于装饰图形，不受 minSize 16px 限制"
     }
   },
   "logos": {
@@ -59,55 +58,38 @@
       "white": "assets/logos/logo-group-white.png"
     },
     "cloud": {
-      "color": "assets/logos/logo-cloud-color.png",
-      "white": "assets/logos/logo-cloud-white.png"
-    },
-    "businessLines": {
-      "group": { "color": "assets/logos/logo-group-color.png", "white": "assets/logos/logo-group-white.png" },
-      "cloud-communication": { "color": "assets/logos/logo-cloud-color.png", "white": "assets/logos/logo-cloud-white.png" }
+      "color": "assets/logos/logo-cloud-color.png"
     }
   },
   "slogan": "assets/slogan.png",
-  "hardRules": {
-    "logo": {
-      "innerPageSize": "4.2% of canvas width, square (aspect-ratio:1)",
-      "safeZone": "Logo矩形边界框内禁止任何内容像素进入——包括文字、页码、装饰、图标、分割线、背景图形。无一例外",
-      "shallowBg": "彩稿Logo",
-      "darkBg": "反白Logo",
-      "endingPage": "居中Logo + slogan PNG"
-    },
-    "typography": {
-      "html": { "absoluteMinSize": "20pt", "bodyMinSize": "24pt" },
-      "pptx": { "absoluteMinSize": "12pt", "bodyMinSize": "16pt" },
-      "fontFamily": "微软雅黑"
-    },
-    "color": {
-      "primary": "#D0121B",
-      "disallowed": "严禁使用非色板颜色"
-    }
-  },
   "layout": {
-    "coverLogo": {
-      "left": "6%",
+    "safeArea": {
       "top": "8%",
-      "size": "6.5%"
+      "bottom": "8%",
+      "left": "5%",
+      "right": "5%"
     },
     "innerPageLogo": {
-      "right": "4.2%",
-      "top": "4.3%",
-      "size": "4.2%"
+      "right": "80px",
+      "top": "46px",
+      "width": "113px",
+      "height": "113px"
     }
   },
   "backgrounds": {
     "cover": {
-      "primary-gradient": "linear-gradient(135deg, {primary} 0%, {primaryDark} 100%)",
-      "primary-solid": "{primary}",
-      "dark-solid": "{dark}",
       "white": "{white}"
     },
     "inner": {
-      "white": "{white}",
-      "light-gray": "{lightGray}"
+      "white": "{white}"
     }
+  },
+  "coverAscii": {
+    "art": "                                         ▓▓▓▓▓▒\n                                  ▓▓██████████████▓\n                              ██████████████████████▓\n                          ▓███████████████████████████\n                       ▒██████████████████████████████▒\n                     ▓█████████████████████████████████\n                   ████████████████████████████████████\n                 ██████████████████████████████████████\n                ███████████████████████████████████████\n               ▒███████████████████████████████████████\n               ████████████████████████████████████████\n               ████████████████████████████████████████\n               ███████████████████████████████████████▓\n               ▓███▓▓▓▓▓▓▓▓▓▓█▓▓▓██▓▓▓▓▓▓█▓▓▓▓▓▓▓▓▓▓██\n               ▒███          █   █      ██          ██\n               ▒██████████   █   █▓▓▓▓▓▓█████████   █\n                ██          ▓▓          █▓         ▒█\n                ██          █           █▒         ▓▒\n                ▒█  ▒████████   █████   ████████   ▓\n                 ▒         ▓█          ▒▓         ▒\n                 ▓         ██         ▓█▓▒▒      ▓▒\n                 ▓███████████████████████████████▓\n                  ███████████████████████████████\n                  ██████████████████████████████\n                   ████████████████████████████▒\n                   ███████████████████████████▓\n                    █████████████████████████▓\n                    ████████████████████████▓\n                     ██████████████████████▓\n                     ▓████████████████████▓\n                      ███████████████████\n                       █████████████████\n                        ██████████████▓\n                         ████████████\n                          █████████▒\n                           ▒████▒\n",
+    "color": "{primary}",
+    "stagger": 30,
+    "transition": "0.6s ease",
+    "slideDistance": "60px",
+    "rule": "ASCII 字符画从 brand-tokens.json 读取，禁止 AI 自行生成或修改。每行独立 <span> + 奇偶交错滑入，JS setTimeout 逐行动画。"
   }
 }
