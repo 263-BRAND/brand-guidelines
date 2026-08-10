@@ -10,9 +10,9 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
   var blocks = slide.blocks || [];
   for (var i = 0; i < blocks.length; i++) {
     var b = blocks[i];
-    blocksHtml += '<div style="margin-bottom:24px;">\n';
-    blocksHtml += '<h3 style="font-size:' + tokens.typography.sizes.subtitle.template + ';color:' + c.primaryLight + ';margin-bottom:8px;font-weight:bold;">' + esc(b.heading) + '</h3>\n';
-    blocksHtml += '<p style="font-size:' + tokens.typography.sizes.body.template + ';color:' + c.gray + ';line-height:1.8;">' + esc(b.body) + '</p>\n';
+    blocksHtml += '<div style="margin-bottom:20px;">\n';
+    blocksHtml += '<h3 style="font-size:' + tokens.typography.sizes.subtitle.template + ';color:' + c.primaryLight + ';margin-bottom:6px;font-weight:bold;">' + esc(b.heading) + '</h3>\n';
+    blocksHtml += '<p style="font-size:' + tokens.typography.sizes.body.template + ';color:' + c.gray + ';line-height:1.6;">' + esc(b.body) + '</p>\n';
     blocksHtml += '</div>\n';
   }
 
@@ -29,7 +29,7 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
   html += '<h2 style="font-size:' + tokens.typography.sizes.pageTitle.template + ';font-weight:bold;color:' + textColor + ';">' + esc(slide.title) + '</h2>\n';
   html += '</div>\n';
 
-  html += '<div style="position:absolute;top:32%;left:6%;right:6%;bottom:15%;overflow-y:auto;">\n';
+  html += '<div style="position:absolute;top:28%;left:6%;right:6%;bottom:12%;">\n';
   html += blocksHtml;
   html += '</div>\n';
 

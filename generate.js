@@ -68,7 +68,7 @@ for (var k = 0; k < pages.slides.length; k++) {
 }
 
 // Load slide renderers
-const slideTypes = ['cover', 'section', 'content', 'cards', 'timeline', 'end'];
+const slideTypes = ['cover', 'section', 'content', 'cards', 'timeline', 'end', 'custom'];
 const renderers = {};
 for (const t of slideTypes) {
   renderers[t] = require('./renderer/slides/' + t + '.js');

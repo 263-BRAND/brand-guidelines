@@ -112,9 +112,9 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 
 ### 路径 A × Template（从零生成，内部汇报）
 
-1. 策划内容 → 写 pages.json，设置 `"scene": "template"`
-2. 运行 `node generate.js <pages.json>`
-3. 浏览器打开生成的 HTML
+- **封面 + 结尾页**：skill renderer 固定排版
+- **内容页**：使用 `"type": "custom"`，agent 在 `"html"` 字段写完整的 inline HTML。遵循品牌色值（`dark` 标题、`gray` 正文、`primary` 强调）和字号体系（`typography.sizes`），布局由 agent 自由控制
+- 生成：`node generate.js <pages.json>`
 
 ### 路径 A × Themed（从零生成，对外展示）
 
