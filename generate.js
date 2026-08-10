@@ -234,7 +234,6 @@ opts.slides + '\n' +
 '  for (var rc = 0; rc < rainCanvases.length; rc++) {\n' +
 '    (function(canvas) {\n' +
 '      var ctx = canvas.getContext("2d");\n' +
-'      var parent = canvas.parentElement;\n' +
 '      canvas.width = 1920;\n' +
 '      canvas.height = 1080;\n' +
 '      var chars = "01";\n' +

@@ -24,23 +24,17 @@
       "black": "#000000"
     }
   },
-  "textColors": {
-    "heading": "{dark}",
-    "body": "{gray}",
-    "accent": "{primary}",
-    "rule": "标题用 heading、正文用 body、强调/链接用 accent。禁止使用纯黑 #000000 作为文本色。"
-  },
   "typography": {
     "fontFamily": "\"微软雅黑\", \"Microsoft YaHei\", sans-serif",
-    "minSize": "20pt (HTML) / 12pt (PPTX)",
-    "minBodySize": "26pt (HTML) / 18pt (PPTX)",
+    "minSize": "20pt",
+    "minBodySize": "24pt",
     "sizes": {
-      "coverTitle": "64pt",
-      "sectionTitle": "40pt",
-      "pageTitle": "40pt",
-      "subtitle": "30pt",
-      "body": "26pt",
-      "caption": "22pt"
+      "coverTitle": { "template": "64pt", "themed": { "min": "56pt", "max": "72pt" } },
+      "sectionTitle": { "template": "40pt", "themed": { "min": "36pt", "max": "44pt" } },
+      "pageTitle": { "template": "40pt", "themed": { "min": "36pt", "max": "44pt" } },
+      "subtitle": { "template": "30pt", "themed": { "min": "24pt", "max": "32pt" } },
+      "body": { "template": "26pt", "themed": { "min": "24pt", "max": "28pt" } },
+      "caption": { "template": "22pt", "themed": { "min": "20pt", "max": "24pt" } }
     },
     "asciiArt": {
       "fontFamily": "'Courier New','Source Code Pro',Consolas,monospace",
@@ -70,6 +64,11 @@
       "left": "5%",
       "right": "5%"
     },
+    "coverLogo": {
+      "left": "6%",
+      "top": "8%",
+      "size": "6.5%"
+    },
     "innerPageLogo": {
       "right": "80px",
       "top": "46px",
@@ -79,10 +78,31 @@
   },
   "backgrounds": {
     "cover": {
-      "white": "{white}"
+      "white": "{white}",
+      "primary-gradient": "linear-gradient(135deg, {primary} 0%, {primaryDark} 100%)",
+      "primary-solid": "{primary}",
+      "dark-solid": "{dark}"
     },
     "inner": {
       "white": "{white}"
+    }
+  },
+  "hardRules": {
+    "logo": {
+      "innerPageSize": "4.2% of canvas width, square (aspect-ratio:1)",
+      "safeZone": "Logo矩形边界框内禁止任何内容像素进入",
+      "shallowBg": "彩稿Logo",
+      "darkBg": "反白Logo",
+      "endingPage": "居中Logo + slogan PNG"
+    },
+    "typography": {
+      "html": { "absoluteMinSize": "20pt", "bodyMinSize": "24pt" },
+      "pptx": { "absoluteMinSize": "12pt", "bodyMinSize": "16pt" },
+      "fontFamily": "微软雅黑"
+    },
+    "color": {
+      "primary": "#D0121B",
+      "disallowed": "严禁使用非色板颜色"
     }
   },
   "coverAscii": {
