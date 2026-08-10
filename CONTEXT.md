@@ -26,29 +26,53 @@
 
 ### 字体层级 (Typography Scale)
 
-以 75 寸电视 @ 5m 会议场景为基准，兼顾笔记本屏幕。正文字体：微软雅黑。
+以 75 寸电视 @ 5m 会议场景为基准，兼顾笔记本屏幕。正文字体：微软雅黑。数值即 pt，JSON 中以 number 存储（无单位），禁止 pt↔px 换算。
 
-| 层级 | 字号 | 刚性 |
-|---|---|---|
-| 封面标题 | 56–72pt | Template 固定 / Themed 区间 |
-| 内容页标题 | 36–44pt | Template 固定 / Themed 区间 |
-| 副标题 | 28–32pt | Template 固定 / Themed 区间 |
-| 正文 | 24–28pt（底线） | MUST |
-| 图表标签/注脚 | ≥ 20pt（极限） | MUST |
+| 层级 | HTML | PPTX | 刚性 |
+|------|------|------|------|
+| 封面标题 | 64 | 64 | Template MUST / Themed 区间 |
+| 内容页标题 | 40 | 24 | 同上 |
+| 副标题 | 30 | 20 | 同上 |
+| 正文 | 26 | 18 | MUST |
+| 图表标签/注脚 | 22 | 14 | MUST |
+
+数据源：`brand-tokens.json` → `typography.html` / `typography.pptx`。
+HTML/CSS 输出在数字后加 `pt` 后缀，PPTX 直接写入数字（PPTX fontSize 原生单位即 pt）。
 
 ### Logo 规则
 
+所有尺寸为画布宽度百分比，格式无关。坐标从 `brand-tokens.json` → `layout` 读取：
+
+| 场景 | 位置 | 尺寸 | 定位 |
+|---|---|---|---|
+| 内页 | 右上角 | 画布宽 × 4.2% | `right:4.2%, top:4.3%` |
+| 封面 | 左上角 | 画布宽 × 6.5% | `left:6%, top:8%` |
+
 | 规则 | 刚性 |
 |---|---|
-| 内页 Logo 尺寸：80×80px | MUST |
-| Logo 安全区内禁止装饰元素 | MUST |
+| 内页 Logo 安全区：内页 Logo 矩形边界框内禁止任何内容像素 | MUST |
+| 封面 Logo 安全区：封面 Logo 矩形边界框内禁止任何内容像素（含装饰圆/渐变块） | MUST |
 | 浅色底使用彩稿 Logo | MUST |
 | 深色底使用反白 Logo | MUST |
-| 结尾页：居中 Logo + slogan PNG | MUST |
+| 结尾页：原内容全部丢弃，居中 Logo + slogan PNG（不可用文字代替） | MUST |
+| Logo 安全区 = Logo 图片的矩形边界框，外边界即边缘，不额外 margin | MUST |
+
+**封面生成强制检查：** 所有装饰元素的左上边界 ≥ left+size，标题文字 left/padding-left ≥ left+size。
 
 ### 硬规则 (Hard Rules)
 
-Template 路径全部锁定。Themed 路径在硬规则约束内由设计 skill 自由发挥。
+Template 路径全部锁定。Themed 路径在硬规则约束内由设计 skill 自由发挥。完整清单见 `brand-tokens.json` → `hardRules`。
+
+| 规则 | 适用 |
+|---|---|
+| Logo 安全区（内页 + 封面均适用） | Template + Themed |
+| 结尾页格式（居中 Logo + slogan PNG） | Template + Themed |
+| 主色不可偏色 | Template + Themed |
+| 字号底线（HTML ≥ 20pt 正文 ≥ 24pt；PPTX ≥ 12pt 正文 ≥ 16pt） | Template + Themed |
+| 内页 Logo 右上角固定，禁止自定义位置 | Template + Themed |
+| 封面 Logo 左上角固定 | Template |
+| 字体固定微软雅黑 | Template + Themed |
+| 非品牌颜色全量替换（路径 B×Template） | Template |
 
 ### 企业概况 (CorporateProfile)
 
@@ -106,7 +130,16 @@ Agent 按特征推理，不硬匹配关键词。用户自然语言纠正即可�
 
 生成结果开头告知用户当前模式，降低误判纠正门槛。格式：
 
-> "我将按对外展示（或：内部汇报）的设计方式制作。如果你用于[另一种场景]，请告诉我。"
+- Template：`"我将按**内部汇报**的设计方式制作（统一母版）。如果你是用于对外展示，请告诉我，我会切换设计风格。"`
+- Themed：`"我将按**对外展示**的设计方式制作（品牌主题 + 个性化设计）。如果你是用于内部工作汇报，请告诉我具体场景，我会切换为统一母版。"`
+
+### 前置步骤（四条路径共用）
+
+1. **判断模式** → Template 还是 Themed（按受众/目的/母版特征推理）
+2. **确定品牌上下文** → 配色方案（默认集团红）+ Logo 归属（默认集团 Logo，按业务线切换）
+3. **生成前确认** → 对话框让用户确认：展示场景 / 配色方案（配色决定 Logo 归属）
+4. **输出透明声明** → 告知用户当前模式和切换方式
+5. **读取品牌数据** → `brand-tokens.json`（必须）+ `company-data.json`（按需）
 
 ### 路径 × 模式（2×2 矩阵）
 
@@ -125,6 +158,8 @@ Agent 按特征推理，不硬匹配关键词。用户自然语言纠正即可�
 Template 路径：VI skill 全控，设计 skill 不介入。
 Themed 路径：VI skill 提供品牌数据 + 硬规则约束，设计 skill 在约束内自由发挥。
 
+**Brand Data Contract：** VI skill 输出给设计 skill 的结构化 JSON，包含 colorScheme / colors / typography / logo / hardRules / mode。设计 skill 在硬规则约束内消费此数据并自由创作。
+
 ### 输入格式分级
 
 VI skill 不负责解析文件。外部 Agent 自行调用 MCP 或工具摘取内容后送入管线。
@@ -139,5 +174,4 @@ VI skill 不负责解析文件。外部 Agent 自行调用 MCP 或工具摘取�
 ## 待定事项
 
 - 商务蓝色值 — 官方确认
-- 硬规则后续补充（如标题字号精确值、禁用色、Logo 最小边距）
-- 云通信 Logo 反白稿
+- 多格式打包（.skill for Claude Code, .zip+instructions.md for ChatGPT, .cursorrules for Cursor 等）

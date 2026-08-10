@@ -26,13 +26,26 @@
   },
   "typography": {
     "fontFamily": "\"微软雅黑\", \"Microsoft YaHei\", sans-serif",
-    "minSize": 20,
-    "scale": {
-      "coverTitle":   { "template": "64pt", "themed": { "min": "56pt", "max": "72pt" } },
-      "contentTitle": { "template": "40pt", "themed": { "min": "36pt", "max": "44pt" } },
-      "subtitle":     { "template": "30pt", "themed": { "min": "28pt", "max": "32pt" } },
-      "body":         { "template": "26pt", "themed": { "min": "24pt", "max": "28pt" } },
-      "caption":      { "template": "22pt", "themed": { "min": "20pt", "max": "24pt" } }
+    "unit": "pt",
+    "html": {
+      "minSize": 20,
+      "scale": {
+        "coverTitle":   { "template": 64, "themed": { "min": 56, "max": 72 } },
+        "contentTitle": { "template": 40, "themed": { "min": 36, "max": 44 } },
+        "subtitle":     { "template": 30, "themed": { "min": 28, "max": 32 } },
+        "body":         { "template": 26, "themed": { "min": 24, "max": 28 } },
+        "caption":      { "template": 22, "themed": { "min": 20, "max": 24 } }
+      }
+    },
+    "pptx": {
+      "minSize": 12,
+      "scale": {
+        "coverTitle":   { "template": 64, "themed": { "min": 56, "max": 72 } },
+        "contentTitle": { "template": 24, "themed": { "min": 22, "max": 26 } },
+        "subtitle":     { "template": 20, "themed": { "min": 18, "max": 22 } },
+        "body":         { "template": 18, "themed": { "min": 16, "max": 20 } },
+        "caption":      { "template": 14, "themed": { "min": 12, "max": 16 } }
+      }
     }
   },
   "logos": {
@@ -59,8 +72,8 @@
       "endingPage": "居中Logo + slogan PNG"
     },
     "typography": {
-      "absoluteMinSize": "20pt",
-      "bodyMinSize": "24pt",
+      "html": { "absoluteMinSize": "20pt", "bodyMinSize": "24pt" },
+      "pptx": { "absoluteMinSize": "12pt", "bodyMinSize": "16pt" },
       "fontFamily": "微软雅黑"
     },
     "color": {

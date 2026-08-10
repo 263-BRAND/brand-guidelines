@@ -22,21 +22,21 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
   html += '<div class="' + logoClass + '" style="width:' + coverLogoSize + ';aspect-ratio:1;height:auto;"></div>\n';
   html += '</div>\n';
 
-  html += '<h1 style="font-size:' + tokens.typography.scale.coverTitle.template + ';font-weight:bold;color:' + textColor + ';margin-bottom:16px;max-width:80%;">' + esc(slide.title) + '</h1>\n';
+  html += '<h1 style="font-size:' + tokens.typography.html.scale.coverTitle.template + 'pt;font-weight:bold;color:' + textColor + ';margin-bottom:16px;max-width:80%;">' + esc(slide.title) + '</h1>\n';
 
   if (slide.subtitle) {
-    html += '<p style="font-size:' + tokens.typography.scale.subtitle.template + ';color:' + subTextColor + ';margin-bottom:32px;">' + esc(slide.subtitle) + '</p>\n';
+    html += '<p style="font-size:' + tokens.typography.html.scale.subtitle.template + 'pt;color:' + subTextColor + ';margin-bottom:32px;">' + esc(slide.subtitle) + '</p>\n';
   }
 
   html += '<div style="width:60px;height:4px;background:' + lineColor + ';margin-bottom:32px;"></div>\n';
-  html += '<div style="font-size:' + tokens.typography.scale.body.template + ';color:' + metaColor + ';line-height:1.8;">\n';
+  html += '<div style="font-size:' + tokens.typography.html.scale.body.template + 'pt;color:' + metaColor + ';line-height:1.8;">\n';
 
   if (slide.presenter) { html += '<span>' + esc(slide.presenter) + '</span>'; }
   if (slide.department) { html += '<span style="margin-left:16px;">' + esc(slide.department) + '</span>'; }
   if (slide.date) { html += '<span style="margin-left:16px;">' + esc(slide.date) + '</span>'; }
   html += '</div>\n';
 
-  html += '<div style="position:absolute;bottom:6%;left:6%;font-size:' + tokens.typography.scale.caption.template + ';color:' + footColor + ';">\n';
+  html += '<div style="position:absolute;bottom:6%;left:6%;font-size:' + tokens.typography.html.scale.caption.template + 'pt;color:' + footColor + ';">\n';
   html += esc(pages.companyName || '二六三网络通信股份有限公司') + '\n';
   html += '</div>\n';
 
