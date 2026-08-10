@@ -2,8 +2,8 @@
 function renderSlide(slide, tokens, pages, index, resolvedBg) {
   const c = tokens.colorSchemes[pages.colorScheme];
   const l = tokens.layout.innerPageLogo;
-  var bgKey = slide.background || 'light-gray';
-  var bgColor = resolvedBg.inner[bgKey] || resolvedBg.inner['light-gray'];
+  var bgKey = slide.background || 'white';
+  var bgColor = resolvedBg.inner[bgKey] || resolvedBg.inner.white;
   var cols = slide.columns || 3;
   var gap = 20;
   var cardWidth = 'calc((100% - ' + ((cols - 1) * gap) + 'px) / ' + cols + ')';
