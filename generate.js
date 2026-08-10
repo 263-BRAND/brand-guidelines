@@ -133,7 +133,8 @@ function buildHtml(opts) {
 '<style>\n' +
 '* { margin:0; padding:0; box-sizing:border-box; }\n' +
 'html, body { width:100%; height:100%; overflow:hidden; background:#111; }\n' +
-'#player { width:100vw; height:100vh; position:relative; overflow:hidden; }\n' +
+'body { display:flex; justify-content:center; align-items:center; }\n' +
+'#player { width:1920px; height:1080px; position:relative; overflow:hidden; transform-origin:center center; }\n' +
 '.slide-page { position:absolute !important; top:0; left:0; width:100%; height:100%; opacity:0; transition:opacity 0.35s ease; z-index:0; pointer-events:none; }\n' +
 '.slide-page.active { opacity:1; z-index:2; pointer-events:auto; }\n' +
 ':root {\n' +
@@ -185,6 +186,12 @@ opts.slides + '\n' +
 '    }\n' +
 '  });\n' +
 getAsciiAnimationJS() + '\n' +
+'  function resize() {\n' +
+'    var scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);\n' +
+'    document.getElementById("player").style.transform = "scale(" + scale + ")";\n' +
+'  }\n' +
+'  window.addEventListener("resize", resize);\n' +
+'  resize();\n' +
 '})();\n' +
 '</script>\n' +
 '</body>\n' +
