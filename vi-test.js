@@ -57,7 +57,7 @@ var viSlides = pick.map(function(pi) {
       '  <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;height:100%;gap:32px;">\n' +
       '    <div class="logo-vi-end"></div>\n' +
       '    <div style="width:200px;height:2px;background:' + c.primary + ';opacity:0.3;"></div>\n' +
-      '    <div style="font-size:1.2rem;color:' + c.gray + ';letter-spacing:4px;">连接世界 沟通你我</div>\n' +
+      '    <div class="slogan-vi"></div>\n' +
       '  </div>\n</section>';
   }
 
@@ -102,7 +102,8 @@ try {
 var logoCSS = '\n' +
   '.logo-vi{position:absolute;top:46px;right:80px;width:113px;height:113px;z-index:100;background-size:contain;background-repeat:no-repeat;background-position:center}\n' +
   '.logo-vi-color{background-image:url(data:image/png;base64,' + logoColorB64 + ')}\n' +
-  '.logo-vi-end{width:160px;height:160px;background-size:contain;background-repeat:no-repeat;background-position:center;background-image:url(data:image/png;base64,' + logoColorB64 + ')}\n';
+  '.logo-vi-end{width:160px;height:160px;background-size:contain;background-repeat:no-repeat;background-position:center;background-image:url(data:image/png;base64,' + logoColorB64 + ')}\n' +
+  '.slogan-vi{width:320px;height:48px;background-size:contain;background-repeat:no-repeat;background-position:center;background-image:url(data:image/png;base64,' + sloganB64 + ')}\n';
 style = style.replace('</style>', logoCSS + '</style>');
 
 // Build output
