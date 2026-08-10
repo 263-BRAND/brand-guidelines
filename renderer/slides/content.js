@@ -14,7 +14,7 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
     var b = blocks[i];
     blocksHtml += '<div style="margin-bottom:24px;">\n';
     blocksHtml += '<h3 style="font-size:' + tokens.typography.sizes.subtitle + ';color:' + c.primaryLight + ';margin-bottom:8px;font-weight:bold;">' + esc(b.heading) + '</h3>\n';
-    blocksHtml += '<p style="font-size:' + tokens.typography.sizes.body + ';color:' + textColor + ';line-height:1.8;">' + esc(b.body) + '</p>\n';
+    blocksHtml += '<p style="font-size:' + tokens.typography.sizes.body + ';color:' + c.gray + ';line-height:1.8;">' + esc(b.body) + '</p>\n';
     blocksHtml += '</div>\n';
   }
 

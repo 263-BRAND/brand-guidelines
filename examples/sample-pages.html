@@ -6,10 +6,11 @@
 <title>263 PPT - group-red</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
-body { background:#000; display:flex; justify-content:center; align-items:center; height:100vh; overflow:hidden; font-family:"微软雅黑", "Microsoft YaHei", sans-serif; }
-#player { width:1920px; height:1080px; position:relative; overflow:hidden; transform-origin:center center; }
-.slide-page { position:absolute; top:0; left:0; width:100%; height:100%; display:none; }
-.slide-page.active { display:block; }
+html, body { width:100%; height:100%; overflow:hidden; background:#111; }
+body { display:flex; justify-content:center; align-items:center; font-family:"微软雅黑", "Microsoft YaHei", sans-serif; }
+#player { width:1920px; height:1080px; position:relative; overflow:hidden; transform-origin:center center; flex-shrink:0; }
+.slide-page { position:absolute !important; top:0; left:0; width:100%; height:100%; opacity:0; pointer-events:none; transition:opacity 0.35s ease; z-index:0; }
+.slide-page.active { opacity:1; pointer-events:auto; z-index:2; }
 :root {
   --primary: #D0121B;
   --primary-light: #FE343F;
@@ -28,19 +29,57 @@ body { background:#000; display:flex; justify-content:center; align-items:center
 </head>
 <body>
 <div id="player">
-<div class="slide-page" id="s0" style="background:linear-gradient(135deg, #D0121B 0%, #AC000A 100%); position:relative;">
-<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding-left:6%;">
-<div style="position:absolute;top:8%;left:6%;">
-<div class="logo-white-img" style="width:538px;height:302px;"></div>
+<div class="slide-page" id="s0" style="background:#FFFFFF; position:relative; overflow:hidden;">
+<div style="position:absolute;top:9%;left:50%;transform:translateX(-50%);z-index:5;">
+<div style="transform:scale(0.576, 0.528);transform-origin:top center;">
+<pre style="font-family:'Courier New','Source Code Pro',Consolas,monospace;font-size:11pt;line-height:0.6;color:#D0121B;white-space:pre;user-select:none;margin:0;transform:scaleX(1.8);">
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                                         ▓▓▓▓▓▒</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                                  ▓▓██████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                              ██████████████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                          ▓███████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                       ▒██████████████████████████████▒</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                     ▓█████████████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                   ████████████████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                 ██████████████████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                ███████████████████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">               ▒███████████████████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">               ████████████████████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">               ████████████████████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">               ███████████████████████████████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">               ▓███▓▓▓▓▓▓▓▓▓▓█▓▓▓██▓▓▓▓▓▓█▓▓▓▓▓▓▓▓▓▓██</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">               ▒███          █   █      ██          ██</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">               ▒██████████   █   █▓▓▓▓▓▓█████████   █</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                ██          ▓▓          █▓         ▒█</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                ██          █           █▒         ▓▒</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                ▒█  ▒████████   █████   ████████   ▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                 ▒         ▓█          ▒▓         ▒</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                 ▓         ██         ▓█▓▒▒      ▓▒</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                 ▓███████████████████████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                  ███████████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                  ██████████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                   ████████████████████████████▒</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                   ███████████████████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                    █████████████████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                    ████████████████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                     ██████████████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                     ▓████████████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                      ███████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                       █████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                        ██████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                         ████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                          █████████▒</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                           ▒████▒</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;"></span>
+</pre>
 </div>
-<h1 style="font-size:48px;font-weight:bold;color:#FFFFFF;margin-bottom:16px;max-width:80%;">全球互联网通信云服务领导者</h1>
-<p style="font-size:24px;color:rgba(255,255,255,0.85);margin-bottom:32px;">263 云通信产品介绍</p>
-<div style="width:60px;height:4px;background:#FFFFFF;margin-bottom:32px;"></div>
-<div style="font-size:20px;color:rgba(255,255,255,0.7);line-height:1.8;">
-<span>郭跃</span><span style="margin-left:16px;">云通信事业部</span><span style="margin-left:16px;">2026-07-30</span></div>
-<div style="position:absolute;bottom:6%;left:6%;font-size:16px;color:rgba(255,255,255,0.5);">
+</div>
+<div class="cover-content" style="position:absolute;top:45%;left:50%;transform:translateX(-50%);text-align:center;z-index:10;width:80%;opacity:0;transition:opacity 0.8s ease;">
+<h1 style="font-size:48px;font-weight:bold;color:#2D3847;letter-spacing:3px;margin-bottom:14px;">全球互联网通信云服务领导者</h1>
+<div style="font-size:24px;color:#595959;display:flex;gap:24px;justify-content:center;">
+<span>汇报人：郭跃</span><span style="color:#D0121B;opacity:0.5;"> · </span><span>云通信事业部</span></div>
+</div>
+<div style="position:absolute;bottom:5%;left:0;width:100%;text-align:center;font-size:16px;color:#595959;opacity:0.45;">
 二六三网络通信股份有限公司
-</div>
 </div>
 </div>
 
@@ -67,11 +106,11 @@ body { background:#000; display:flex; justify-content:center; align-items:center
 <div style="position:absolute;top:32%;left:6%;right:6%;bottom:15%;overflow-y:auto;">
 <div style="margin-bottom:24px;">
 <h3 style="font-size:24px;color:#FE343F;margin-bottom:8px;font-weight:bold;">公司概述</h3>
-<p style="font-size:20px;color:#2D3847;line-height:1.8;">263 集团（股票代码：002467）创立于 1997 年，是全球领先的互联网通信云服务商。总部位于北京，并在上海、广州、深圳、杭州、香港和海外设有办事机构。</p>
+<p style="font-size:20px;color:#595959;line-height:1.8;">263 集团（股票代码：002467）创立于 1997 年，是全球领先的互联网通信云服务商。总部位于北京，并在上海、广州、深圳、杭州、香港和海外设有办事机构。</p>
 </div>
 <div style="margin-bottom:24px;">
 <h3 style="font-size:24px;color:#FE343F;margin-bottom:8px;font-weight:bold;">核心优势</h3>
-<p style="font-size:20px;color:#2D3847;line-height:1.8;">深耕行业二十余年，服务超过 700 万企业客户，日处理消息量超过 15 亿条，服务可用性达 99.99%。</p>
+<p style="font-size:20px;color:#595959;line-height:1.8;">深耕行业二十余年，服务超过 700 万企业客户，日处理消息量超过 15 亿条，服务可用性达 99.99%。</p>
 </div>
 </div>
 <div style="position:absolute;bottom:9%;left:6%;right:6%;height:1px;background:#D0121B;opacity:0.4;"></div>
@@ -93,7 +132,7 @@ body { background:#000; display:flex; justify-content:center; align-items:center
 </div>
 </div>
 
-<div class="slide-page" id="s4" style="background:#F2F2F2; position:relative;">
+<div class="slide-page" id="s4" style="background:undefined; position:relative;">
 <div style="position:absolute;top:46px;right:80px;width:113px;height:113px;">
 <div class="logo-color-img" style="width:100%;height:100%;"></div>
 </div>
@@ -240,6 +279,25 @@ body { background:#000; display:flex; justify-content:center; align-items:center
     }
   });
   show(0);
+  // ASCII line-by-line staggered entrance
+  var asciiLines = document.querySelectorAll(".ascii-line");
+  if (asciiLines.length) {
+    var stagger = 30;
+    for (var i = 0; i < asciiLines.length; i++) {
+      setTimeout(function(idx) {
+        return function() {
+          asciiLines[idx].style.opacity = "1";
+          asciiLines[idx].style.transform = "translateX(0)";
+        };
+      }(i), i * stagger);
+    }
+    var coverContent = document.querySelector(".cover-content");
+    if (coverContent) {
+      setTimeout(function() {
+        coverContent.style.opacity = "1";
+      }, asciiLines.length * stagger + 200);
+    }
+  }
   function resize() {
     var pw = 1920, ph = 1080;
     var scaleX = window.innerWidth / pw;

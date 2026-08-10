@@ -134,10 +134,11 @@ function buildHtml(opts) {
 '<title>263 PPT - ' + opts.colorScheme + '</title>\n' +
 '<style>\n' +
 '* { margin:0; padding:0; box-sizing:border-box; }\n' +
-'body { background:#000; display:flex; justify-content:center; align-items:center; height:100vh; overflow:hidden; font-family:' + t.fontFamily + '; }\n' +
-'#player { width:' + W + 'px; height:' + H + 'px; position:relative; overflow:hidden; transform-origin:center center; }\n' +
-'.slide-page { position:absolute; top:0; left:0; width:100%; height:100%; display:none; }\n' +
-'.slide-page.active { display:block; }\n' +
+'html, body { width:100%; height:100%; overflow:hidden; background:#111; }\n' +
+'body { display:flex; justify-content:center; align-items:center; font-family:' + t.fontFamily + '; }\n' +
+'#player { width:' + W + 'px; height:' + H + 'px; position:relative; overflow:hidden; transform-origin:center center; flex-shrink:0; }\n' +
+'.slide-page { position:absolute !important; top:0; left:0; width:100%; height:100%; opacity:0; pointer-events:none; transition:opacity 0.35s ease; z-index:0; }\n' +
+'.slide-page.active { opacity:1; pointer-events:auto; z-index:2; }\n' +
 ':root {\n' +
 '  --primary: ' + c.primary + ';\n' +
 '  --primary-light: ' + c.primaryLight + ';\n' +
@@ -187,6 +188,25 @@ opts.slides + '\n' +
 '    }\n' +
 '  });\n' +
 '  show(0);\n' +
+'  // ASCII line-by-line staggered entrance\n' +
+'  var asciiLines = document.querySelectorAll(".ascii-line");\n' +
+'  if (asciiLines.length) {\n' +
+'    var stagger = ' + ((tokens.coverAscii && tokens.coverAscii.stagger) || 30) + ';\n' +
+'    for (var i = 0; i < asciiLines.length; i++) {\n' +
+'      setTimeout(function(idx) {\n' +
+'        return function() {\n' +
+'          asciiLines[idx].style.opacity = "1";\n' +
+'          asciiLines[idx].style.transform = "translateX(0)";\n' +
+'        };\n' +
+'      }(i), i * stagger);\n' +
+'    }\n' +
+'    var coverContent = document.querySelector(".cover-content");\n' +
+'    if (coverContent) {\n' +
+'      setTimeout(function() {\n' +
+'        coverContent.style.opacity = "1";\n' +
+'      }, asciiLines.length * stagger + 200);\n' +
+'    }\n' +
+'  }\n' +
 '  function resize() {\n' +
 '    var pw = ' + W + ', ph = ' + H + ';\n' +
 '    var scaleX = window.innerWidth / pw;\n' +

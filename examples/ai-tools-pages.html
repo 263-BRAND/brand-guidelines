@@ -6,10 +6,11 @@
 <title>263 PPT - group-red</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
-body { background:#000; display:flex; justify-content:center; align-items:center; height:100vh; overflow:hidden; font-family:"微软雅黑", "Microsoft YaHei", sans-serif; }
-#player { width:1920px; height:1080px; position:relative; overflow:hidden; transform-origin:center center; }
-.slide-page { position:absolute; top:0; left:0; width:100%; height:100%; display:none; }
-.slide-page.active { display:block; }
+html, body { width:100%; height:100%; overflow:hidden; background:#111; }
+body { display:flex; justify-content:center; align-items:center; font-family:"微软雅黑", "Microsoft YaHei", sans-serif; }
+#player { width:1920px; height:1080px; position:relative; overflow:hidden; transform-origin:center center; flex-shrink:0; }
+.slide-page { position:absolute !important; top:0; left:0; width:100%; height:100%; opacity:0; pointer-events:none; transition:opacity 0.35s ease; z-index:0; }
+.slide-page.active { opacity:1; pointer-events:auto; z-index:2; }
 :root {
   --primary: #D0121B;
   --primary-light: #FE343F;
@@ -28,19 +29,57 @@ body { background:#000; display:flex; justify-content:center; align-items:center
 </head>
 <body>
 <div id="player">
-<div class="slide-page" id="s0" style="background:linear-gradient(135deg, #D0121B 0%, #AC000A 100%); position:relative;">
-<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding-left:6%;">
-<div style="position:absolute;top:8%;left:6%;">
-<div class="logo-white-img" style="width:538px;height:302px;"></div>
+<div class="slide-page" id="s0" style="background:#FFFFFF; position:relative; overflow:hidden;">
+<div style="position:absolute;top:9%;left:50%;transform:translateX(-50%);z-index:5;">
+<div style="transform:scale(0.576, 0.528);transform-origin:top center;">
+<pre style="font-family:'Courier New','Source Code Pro',Consolas,monospace;font-size:11pt;line-height:0.6;color:#D0121B;white-space:pre;user-select:none;margin:0;transform:scaleX(1.8);">
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                                         ▓▓▓▓▓▒</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                                  ▓▓██████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                              ██████████████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                          ▓███████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                       ▒██████████████████████████████▒</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                     ▓█████████████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                   ████████████████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                 ██████████████████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                ███████████████████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">               ▒███████████████████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">               ████████████████████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">               ████████████████████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">               ███████████████████████████████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">               ▓███▓▓▓▓▓▓▓▓▓▓█▓▓▓██▓▓▓▓▓▓█▓▓▓▓▓▓▓▓▓▓██</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">               ▒███          █   █      ██          ██</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">               ▒██████████   █   █▓▓▓▓▓▓█████████   █</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                ██          ▓▓          █▓         ▒█</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                ██          █           █▒         ▓▒</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                ▒█  ▒████████   █████   ████████   ▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                 ▒         ▓█          ▒▓         ▒</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                 ▓         ██         ▓█▓▒▒      ▓▒</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                 ▓███████████████████████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                  ███████████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                  ██████████████████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                   ████████████████████████████▒</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                   ███████████████████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                    █████████████████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                    ████████████████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                     ██████████████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                     ▓████████████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                      ███████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                       █████████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                        ██████████████▓</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                         ████████████</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                          █████████▒</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(60px);transition:opacity 0.6s ease,transform 0.6s ease;">                           ▒████▒</span>
+<span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;"></span>
+</pre>
 </div>
-<h1 style="font-size:48px;font-weight:bold;color:#FFFFFF;margin-bottom:16px;max-width:80%;">AI工具心得</h1>
-<p style="font-size:24px;color:rgba(255,255,255,0.85);margin-bottom:32px;">做成的 · 废掉的 · 看透的</p>
-<div style="width:60px;height:4px;background:#FFFFFF;margin-bottom:32px;"></div>
-<div style="font-size:20px;color:rgba(255,255,255,0.7);line-height:1.8;">
-<span>杜鸣</span><span style="margin-left:16px;">2026年7月</span></div>
-<div style="position:absolute;bottom:6%;left:6%;font-size:16px;color:rgba(255,255,255,0.5);">
+</div>
+<div class="cover-content" style="position:absolute;top:45%;left:50%;transform:translateX(-50%);text-align:center;z-index:10;width:80%;opacity:0;transition:opacity 0.8s ease;">
+<h1 style="font-size:48px;font-weight:bold;color:#2D3847;letter-spacing:3px;margin-bottom:14px;">AI工具心得</h1>
+<div style="font-size:24px;color:#595959;display:flex;gap:24px;justify-content:center;">
+<span>汇报人：杜鸣</span></div>
+</div>
+<div style="position:absolute;bottom:5%;left:0;width:100%;text-align:center;font-size:16px;color:#595959;opacity:0.45;">
 二六三网络通信股份有限公司
-</div>
 </div>
 </div>
 
@@ -54,15 +93,15 @@ body { background:#000; display:flex; justify-content:center; align-items:center
 <div style="position:absolute;top:32%;left:6%;right:6%;bottom:15%;overflow-y:auto;">
 <div style="margin-bottom:24px;">
 <h3 style="font-size:24px;color:#FE343F;margin-bottom:8px;font-weight:bold;">做成的</h3>
-<p style="font-size:20px;color:#2D3847;line-height:1.8;">AI与工作结合，那些真正融入日常工作的AI工具。</p>
+<p style="font-size:20px;color:#595959;line-height:1.8;">AI与工作结合，那些真正融入日常工作的AI工具。</p>
 </div>
 <div style="margin-bottom:24px;">
 <h3 style="font-size:24px;color:#FE343F;margin-bottom:8px;font-weight:bold;">废掉的</h3>
-<p style="font-size:20px;color:#2D3847;line-height:1.8;">认识AI的能力边界，那些满怀期待却最终放手的AI尝试。</p>
+<p style="font-size:20px;color:#595959;line-height:1.8;">认识AI的能力边界，那些满怀期待却最终放手的AI尝试。</p>
 </div>
 <div style="margin-bottom:24px;">
 <h3 style="font-size:24px;color:#FE343F;margin-bottom:8px;font-weight:bold;">看透的</h3>
-<p style="font-size:20px;color:#2D3847;line-height:1.8;">掌握正确的方法论，从成败中提炼的AI使用心法。</p>
+<p style="font-size:20px;color:#595959;line-height:1.8;">掌握正确的方法论，从成败中提炼的AI使用心法。</p>
 </div>
 </div>
 <div style="position:absolute;bottom:9%;left:6%;right:6%;height:1px;background:#D0121B;opacity:0.4;"></div>
@@ -94,7 +133,7 @@ body { background:#000; display:flex; justify-content:center; align-items:center
 <div style="position:absolute;top:32%;left:6%;right:6%;bottom:15%;overflow-y:auto;">
 <div style="margin-bottom:24px;">
 <h3 style="font-size:24px;color:#FE343F;margin-bottom:8px;font-weight:bold;">核心理念</h3>
-<p style="font-size:20px;color:#2D3847;line-height:1.8;">基于AI原子能力，按个人偏好组合成专属提效工具。</p>
+<p style="font-size:20px;color:#595959;line-height:1.8;">基于AI原子能力，按个人偏好组合成专属提效工具。</p>
 </div>
 </div>
 <div style="position:absolute;bottom:9%;left:6%;right:6%;height:1px;background:#D0121B;opacity:0.4;"></div>
@@ -104,7 +143,7 @@ body { background:#000; display:flex; justify-content:center; align-items:center
 </div>
 </div>
 
-<div class="slide-page" id="s4" style="background:#F2F2F2; position:relative;">
+<div class="slide-page" id="s4" style="background:undefined; position:relative;">
 <div style="position:absolute;top:46px;right:80px;width:113px;height:113px;">
 <div class="logo-color-img" style="width:100%;height:100%;"></div>
 </div>
@@ -141,7 +180,7 @@ body { background:#000; display:flex; justify-content:center; align-items:center
 <div style="position:absolute;top:32%;left:6%;right:6%;bottom:15%;overflow-y:auto;">
 <div style="margin-bottom:24px;">
 <h3 style="font-size:24px;color:#FE343F;margin-bottom:8px;font-weight:bold;">自动生成</h3>
-<p style="font-size:20px;color:#2D3847;line-height:1.8;">每天早上自动推送一封邮件，包含当日的跟进事项、摘要和行动建议。不是感觉很忙，而是真正有重点、有节奏地推进工作。</p>
+<p style="font-size:20px;color:#595959;line-height:1.8;">每天早上自动推送一封邮件，包含当日的跟进事项、摘要和行动建议。不是感觉很忙，而是真正有重点、有节奏地推进工作。</p>
 </div>
 </div>
 <div style="position:absolute;bottom:9%;left:6%;right:6%;height:1px;background:#D0121B;opacity:0.4;"></div>
@@ -161,11 +200,11 @@ body { background:#000; display:flex; justify-content:center; align-items:center
 <div style="position:absolute;top:32%;left:6%;right:6%;bottom:15%;overflow-y:auto;">
 <div style="margin-bottom:24px;">
 <h3 style="font-size:24px;color:#FE343F;margin-bottom:8px;font-weight:bold;">AI 原子能力</h3>
-<p style="font-size:20px;color:#2D3847;line-height:1.8;">把AI的底层能力拆解为原子技能：文本处理、信息提取、逻辑推理、格式转换。然后像搭乐高一样，按需组合成你的专属工具链。</p>
+<p style="font-size:20px;color:#595959;line-height:1.8;">把AI的底层能力拆解为原子技能：文本处理、信息提取、逻辑推理、格式转换。然后像搭乐高一样，按需组合成你的专属工具链。</p>
 </div>
 <div style="margin-bottom:24px;">
 <h3 style="font-size:24px;color:#FE343F;margin-bottom:8px;font-weight:bold;">说几点真实感受</h3>
-<p style="font-size:20px;color:#2D3847;line-height:1.8;">效率提升是真实的——不是「感觉快了」，而是每天有条理、有重点、有节奏。关键是「组合」而非「单点」——把邮件+日程+建议串起来，1+1&gt;2。纯个性化自定义——按你的习惯调教后，才是「你的」AI助手。</p>
+<p style="font-size:20px;color:#595959;line-height:1.8;">效率提升是真实的——不是「感觉快了」，而是每天有条理、有重点、有节奏。关键是「组合」而非「单点」——把邮件+日程+建议串起来，1+1&gt;2。纯个性化自定义——按你的习惯调教后，才是「你的」AI助手。</p>
 </div>
 </div>
 <div style="position:absolute;bottom:9%;left:6%;right:6%;height:1px;background:#D0121B;opacity:0.4;"></div>
@@ -197,15 +236,15 @@ body { background:#000; display:flex; justify-content:center; align-items:center
 <div style="position:absolute;top:32%;left:6%;right:6%;bottom:15%;overflow-y:auto;">
 <div style="margin-bottom:24px;">
 <h3 style="font-size:24px;color:#FE343F;margin-bottom:8px;font-weight:bold;">最初的想法</h3>
-<p style="font-size:20px;color:#2D3847;line-height:1.8;">全网爬取 → 自动预警 → 生成日报。让AI替你做舆情监控，听起来很美。</p>
+<p style="font-size:20px;color:#595959;line-height:1.8;">全网爬取 → 自动预警 → 生成日报。让AI替你做舆情监控，听起来很美。</p>
 </div>
 <div style="margin-bottom:24px;">
 <h3 style="font-size:24px;color:#FE343F;margin-bottom:8px;font-weight:bold;">现实的问题</h3>
-<p style="font-size:20px;color:#2D3847;line-height:1.8;">数据爬不到、API成本高、效果不如专业产品。投入产出比算不过来。</p>
+<p style="font-size:20px;color:#595959;line-height:1.8;">数据爬不到、API成本高、效果不如专业产品。投入产出比算不过来。</p>
 </div>
 <div style="margin-bottom:24px;">
 <h3 style="font-size:24px;color:#FE343F;margin-bottom:8px;font-weight:bold;">结论</h3>
-<p style="font-size:20px;color:#2D3847;line-height:1.8;">不是AI不行，而是这个场景下直接采购专业产品更划算。认识AI的能力边界，比盲目尝试更重要。</p>
+<p style="font-size:20px;color:#595959;line-height:1.8;">不是AI不行，而是这个场景下直接采购专业产品更划算。认识AI的能力边界，比盲目尝试更重要。</p>
 </div>
 </div>
 <div style="position:absolute;bottom:9%;left:6%;right:6%;height:1px;background:#D0121B;opacity:0.4;"></div>
@@ -237,7 +276,7 @@ body { background:#000; display:flex; justify-content:center; align-items:center
 <div style="position:absolute;top:32%;left:6%;right:6%;bottom:15%;overflow-y:auto;">
 <div style="margin-bottom:24px;">
 <h3 style="font-size:24px;color:#FE343F;margin-bottom:8px;font-weight:bold;">心法</h3>
-<p style="font-size:20px;color:#2D3847;line-height:1.8;">先出规划再执行 / 分步推进而非一步到位 / 每步验证 / 保持合理怀疑 / 从失败中持续优化。</p>
+<p style="font-size:20px;color:#595959;line-height:1.8;">先出规划再执行 / 分步推进而非一步到位 / 每步验证 / 保持合理怀疑 / 从失败中持续优化。</p>
 </div>
 </div>
 <div style="position:absolute;bottom:9%;left:6%;right:6%;height:1px;background:#D0121B;opacity:0.4;"></div>
@@ -257,15 +296,15 @@ body { background:#000; display:flex; justify-content:center; align-items:center
 <div style="position:absolute;top:32%;left:6%;right:6%;bottom:15%;overflow-y:auto;">
 <div style="margin-bottom:24px;">
 <h3 style="font-size:24px;color:#FE343F;margin-bottom:8px;font-weight:bold;">✗ 错误的用法</h3>
-<p style="font-size:20px;color:#2D3847;line-height:1.8;">直接丢需求、期望一次完美、不验证、AI说啥信啥、失败后否定AI。</p>
+<p style="font-size:20px;color:#595959;line-height:1.8;">直接丢需求、期望一次完美、不验证、AI说啥信啥、失败后否定AI。</p>
 </div>
 <div style="margin-bottom:24px;">
 <h3 style="font-size:24px;color:#FE343F;margin-bottom:8px;font-weight:bold;">✓ 正确的用法</h3>
-<p style="font-size:20px;color:#2D3847;line-height:1.8;">交代背景和约束、分步执行、每步验证、保持怀疑、从失败中优化流程。</p>
+<p style="font-size:20px;color:#595959;line-height:1.8;">交代背景和约束、分步执行、每步验证、保持怀疑、从失败中优化流程。</p>
 </div>
 <div style="margin-bottom:24px;">
 <h3 style="font-size:24px;color:#FE343F;margin-bottom:8px;font-weight:bold;">最重要的一句话</h3>
-<p style="font-size:20px;color:#2D3847;line-height:1.8;">AI是你的副驾驶，不是自动驾驶。方向盘永远在自己手里。</p>
+<p style="font-size:20px;color:#595959;line-height:1.8;">AI是你的副驾驶，不是自动驾驶。方向盘永远在自己手里。</p>
 </div>
 </div>
 <div style="position:absolute;bottom:9%;left:6%;right:6%;height:1px;background:#D0121B;opacity:0.4;"></div>
@@ -312,6 +351,25 @@ body { background:#000; display:flex; justify-content:center; align-items:center
     }
   });
   show(0);
+  // ASCII line-by-line staggered entrance
+  var asciiLines = document.querySelectorAll(".ascii-line");
+  if (asciiLines.length) {
+    var stagger = 30;
+    for (var i = 0; i < asciiLines.length; i++) {
+      setTimeout(function(idx) {
+        return function() {
+          asciiLines[idx].style.opacity = "1";
+          asciiLines[idx].style.transform = "translateX(0)";
+        };
+      }(i), i * stagger);
+    }
+    var coverContent = document.querySelector(".cover-content");
+    if (coverContent) {
+      setTimeout(function() {
+        coverContent.style.opacity = "1";
+      }, asciiLines.length * stagger + 200);
+    }
+  }
   function resize() {
     var pw = 1920, ph = 1080;
     var scaleX = window.innerWidth / pw;
