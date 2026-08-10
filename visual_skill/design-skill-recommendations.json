@@ -1,0 +1,18 @@
+{
+  "claude-code": {
+    "skills": ["frontend-design"],
+    "fallbackMessage": "建议安装 frontend-design skill 以获得专业排版效果。安装后重新运行即可自动调用。"
+  },
+  "codex": {
+    "skills": [],
+    "fallbackMessage": "建议安装 PPT 制作相关 skill。"
+  },
+  "trae": {
+    "skills": [],
+    "fallbackMessage": "建议安装 PPT 制作相关 skill。"
+  },
+  "web": {
+    "skills": [],
+    "fallbackMessage": "当前使用内置基础模板。如需专业设计效果，建议使用 Claude Code / Codex / Trae 等桌面工具并安装设计类 skill。"
+  }
+}

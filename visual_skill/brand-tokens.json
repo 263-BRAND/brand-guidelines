@@ -32,15 +32,14 @@
   },
   "typography": {
     "fontFamily": "\"微软雅黑\", \"Microsoft YaHei\", sans-serif",
-    "minSize": "20pt (HTML) / 12pt (PPTX)",
-    "minBodySize": "26pt (HTML) / 18pt (PPTX)",
+    "minSize": 16,
     "sizes": {
-      "coverTitle": "64pt",
-      "sectionTitle": "40pt",
-      "pageTitle": "40pt",
-      "subtitle": "30pt",
-      "body": "26pt",
-      "caption": "22pt"
+      "coverTitle": "48px",
+      "sectionTitle": "36px",
+      "pageTitle": "32px",
+      "subtitle": "24px",
+      "body": "20px",
+      "caption": "16px"
     },
     "asciiArt": {
       "fontFamily": "'Courier New','Source Code Pro',Consolas,monospace",
