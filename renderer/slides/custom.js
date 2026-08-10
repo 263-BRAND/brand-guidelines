@@ -17,11 +17,15 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
     html += slide.html + '\n';
   }
 
-  // Footer — page number
-  html += '<div style="position:absolute;bottom:3%;right:6%;font-size:' + tokens.typography.sizes.caption.template + ';color:' + c.gray + ';">' + (index + 1) + ' / ' + pages.slides.length + '</div>\n';
+  // Footer — company name + page number
+  html += '<div style="position:absolute;bottom:3%;left:6%;right:6%;display:flex;justify-content:space-between;font-size:' + tokens.typography.sizes.caption.template + ';color:' + c.gray + ';">\n';
+  html += '<span>' + esc(pages.companyName || '二六三网络通信股份有限公司') + '</span>\n';
+  html += '<span>' + (index + 1) + ' / ' + pages.slides.length + '</span>\n';
+  html += '</div>\n';
 
   html += '</div>\n';
   return html;
 }
 
+function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 module.exports = renderSlide;

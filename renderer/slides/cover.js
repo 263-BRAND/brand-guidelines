@@ -56,7 +56,7 @@ function renderTemplate(slide, tokens, pages, index, c) {
   html += '</div>\n';
 
   // Footer
-  html += '<div style="position:absolute;bottom:5%;left:0;width:100%;text-align:center;font-size:' + tokens.typography.sizes.caption.template + ';color:' + c.gray + ';opacity:0.45;">\n';
+  html += '<div style="position:absolute;top:82%;left:0;width:100%;text-align:center;font-size:' + tokens.typography.sizes.caption.template + ';color:' + c.gray + ';opacity:0.45;">\n';
   html += esc(pages.companyName || '二六三网络通信股份有限公司') + '\n';
   html += '</div>\n';
 
@@ -102,7 +102,7 @@ function renderThemed(slide, tokens, pages, index, c, resolvedBg) {
   if (slide.date) { html += '<span style="margin-left:16px;">' + esc(slide.date) + '</span>'; }
   html += '</div>\n';
 
-  html += '<div style="position:absolute;bottom:6%;left:6%;font-size:' + tokens.typography.sizes.caption.template + ';color:' + footColor + ';">\n';
+  html += '<div style="position:absolute;top:84%;left:6%;font-size:' + tokens.typography.sizes.caption.template + ';color:' + footColor + ';">\n';
   html += esc(pages.companyName || '二六三网络通信股份有限公司') + '\n';
   html += '</div>\n';
 
