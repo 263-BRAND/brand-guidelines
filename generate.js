@@ -75,6 +75,7 @@ for (const t of slideTypes) {
 }
 
 // Render each slide
+var hasTemplateCover = pages.scene === 'template';
 const slideHtmlArray = [];
 for (let i = 0; i < pages.slides.length; i++) {
   const slide = pages.slides[i];
@@ -112,7 +113,9 @@ const html = buildHtml({
   colorScheme: pages.colorScheme,
   logoColorB64: logoColorB64,
   logoWhiteB64: logoWhiteB64,
-  sloganB64: sloganB64
+  sloganB64: sloganB64,
+  hasTemplateCover: hasTemplateCover,
+  totalSlides: pages.slides.length
 });
 
 const outPath = pagesPath.replace(/\.json$/, '.html');
@@ -122,9 +125,7 @@ console.log('Generated: ' + outPath + ' (' + pages.slides.length + ' slides)');
 function buildHtml(opts) {
   const c = opts.tokens.colorSchemes[opts.colorScheme];
   const t = opts.tokens.typography;
-  const l = opts.tokens.layout;
-  var W = 1920;
-  var H = 1080;
+  var asciiAnimJS = opts.hasTemplateCover ? '\n' + getAsciiAnimationJS() + '\n' : '';
 
   return '<!DOCTYPE html>\n' +
 '<html lang="zh-CN">\n' +
@@ -134,10 +135,10 @@ function buildHtml(opts) {
 '<title>263 PPT - ' + opts.colorScheme + '</title>\n' +
 '<style>\n' +
 '* { margin:0; padding:0; box-sizing:border-box; }\n' +
-'body { background:#111; display:flex; justify-content:center; align-items:center; height:100vh; overflow:hidden; font-family:' + t.fontFamily + '; }\n' +
-'#player { width:1920px; height:1080px; position:relative; overflow:hidden; transform-origin:center center; }\n' +
-'.slide-page { position:absolute; top:0; left:0; width:100%; height:100%; display:none; }\n' +
-'.slide-page.active { display:block; }\n' +
+'html, body { width:100%; height:100%; overflow:hidden; background:#111; }\n' +
+'#player { width:100vw; height:100vh; position:relative; overflow:hidden; }\n' +
+'.slide-page { position:absolute !important; top:0; left:0; width:100%; height:100%; opacity:0; transition:opacity 0.35s ease; z-index:0; pointer-events:none; }\n' +
+'.slide-page.active { opacity:1; z-index:2; pointer-events:auto; }\n' +
 ':root {\n' +
 '  --primary: ' + c.primary + ';\n' +
 '  --primary-light: ' + c.primaryLight + ';\n' +
@@ -162,10 +163,10 @@ opts.slides + '\n' +
 '(function() {\n' +
 '  var slides = document.querySelectorAll(".slide-page");\n' +
 '  var current = 0;\n' +
-'  var total = ' + pages.slides.length + ';\n' +
+'  slides[0].classList.add("active");\n' +
 '  function show(idx) {\n' +
 '    slides[current].classList.remove("active");\n' +
-'    current = ((idx % total) + total) % total;\n' +
+'    current = ((idx % slides.length) + slides.length) % slides.length;\n' +
 '    slides[current].classList.add("active");\n' +
 '  }\n' +
 '  document.getElementById("player").addEventListener("click", function(e) {\n' +
@@ -180,21 +181,38 @@ opts.slides + '\n' +
 '    } else if (key === "ArrowLeft" || key === "ArrowUp" || key === "PageUp") {\n' +
 '      e.preventDefault(); show(current - 1);\n' +
 '    } else if (key === "Home") { e.preventDefault(); show(0); }\n' +
-'    else if (key === "End") { e.preventDefault(); show(total - 1); }\n' +
+'    else if (key === "End") { e.preventDefault(); show(slides.length - 1); }\n' +
 '    else if (key === "f" || key === "F") {\n' +
 '      if (document.fullscreenElement) { document.exitFullscreen(); }\n' +
 '      else { document.documentElement.requestFullscreen(); }\n' +
 '    }\n' +
 '  });\n' +
-'  show(0);\n' +
-'  function resize() {\n' +
-'    var scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);\n' +
-'    document.getElementById("player").style.transform = "scale(" + scale + ")";\n' +
-'  }\n' +
-'  window.addEventListener("resize", resize);\n' +
-'  resize();\n' +
+asciiAnimJS +
 '})();\n' +
 '</script>\n' +
 '</body>\n' +
 '</html>';
+}
+
+function getAsciiAnimationJS() {
+  return [
+'  // ASCII entrance animation for Template cover',
+'  var coverSlide = document.getElementById("s0");',
+'  if (coverSlide) {',
+'    var lines = coverSlide.querySelectorAll(".ascii-line");',
+'    if (lines.length) {',
+'      for (var i = 0; i < lines.length; i++) {',
+'        setTimeout(function(idx) {',
+'          return function() { lines[idx].style.opacity = "1"; };',
+'        }(i), i * 30);',
+'      }',
+'    }',
+'    var content = coverSlide.querySelector(".cover-content");',
+'    if (content) {',
+'      setTimeout(function() {',
+'        content.style.opacity = "1";',
+'      }, lines.length * 30 + 200);',
+'    }',
+'  }',
+  ].join('\n');
 }

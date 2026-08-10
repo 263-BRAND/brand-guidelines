@@ -18,7 +18,7 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
     blocksHtml += '</div>\n';
   }
 
-  var html = '<div class="slide-page" id="s' + index + '" style="background:' + bgColor + '; position:relative;">\n';
+  var html = '<div class="slide-page" id="s' + index + '" style="background:' + bgColor + '; overflow:hidden;">\n';
 
   html += '<div style="position:absolute;top:' + l.top + ';right:' + l.right + ';width:' + l.size + ';aspect-ratio:1;height:auto;">\n';
   html += '<div class="' + logoClass + '" style="width:100%;height:100%;"></div>\n';

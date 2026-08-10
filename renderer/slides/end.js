@@ -9,7 +9,7 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
   var logoH = Math.round(1080 * 0.15);
   var sloganW = Math.round(1920 * 0.4);
 
-  var html = '<div class="slide-page" id="s' + index + '" style="background:' + bgColor + '; position:relative;">\n';
+  var html = '<div class="slide-page" id="s' + index + '" style="background:' + bgColor + '; overflow:hidden;">\n';
   html += '<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;">\n';
 
   // Centered logo

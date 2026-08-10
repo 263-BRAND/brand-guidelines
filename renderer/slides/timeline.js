@@ -9,7 +9,7 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
   var eventsHtml = '';
   for (var i = 0; i < events.length; i++) {
     var evt = events[i];
-    eventsHtml += '<div style="display:flex;align-items:flex-start;margin-bottom:28px;position:relative;">\n';
+    eventsHtml += '<div style="display:flex;align-items:flex-start;margin-bottom:28px;overflow:hidden;">\n';
     eventsHtml += '<div style="flex:0 0 100px;text-align:right;padding-right:20px;">\n';
     eventsHtml += '<span style="font-size:' + tokens.typography.html.scale.subtitle.template + 'pt;font-weight:bold;color:' + c.primary + ';">' + esc(evt.year) + '</span>\n';
     eventsHtml += '</div>\n';
@@ -20,7 +20,7 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
     eventsHtml += '</div>\n</div>\n';
   }
 
-  var html = '<div class="slide-page" id="s' + index + '" style="background:' + bgColor + '; position:relative;">\n';
+  var html = '<div class="slide-page" id="s' + index + '" style="background:' + bgColor + '; overflow:hidden;">\n';
 
   html += '<div style="position:absolute;top:' + l.top + ';right:' + l.right + ';width:' + l.size + ';aspect-ratio:1;height:auto;">\n';
   html += '<div class="logo-color-img" style="width:100%;height:100%;"></div>\n';
