@@ -1,0 +1,91 @@
+{
+  "version": "2.0",
+  "colorSchemes": {
+    "group-red": {
+      "primary": "#D0121B",
+      "primaryLight": "#FE343F",
+      "primaryDark": "#AC000A",
+      "accent": "#FF777F",
+      "dark": "#2D3847",
+      "gray": "#595959",
+      "lightGray": "#F2F2F2",
+      "white": "#FFFFFF",
+      "black": "#000000"
+    },
+    "business-blue": {
+      "primary": "#1677FF",
+      "primaryLight": "#4A9BFF",
+      "primaryDark": "#0055CC",
+      "accent": "#E6F0FF",
+      "dark": "#2D3847",
+      "gray": "#595959",
+      "lightGray": "#F2F2F2",
+      "white": "#FFFFFF",
+      "black": "#000000"
+    }
+  },
+  "typography": {
+    "fontFamily": "\"微软雅黑\", \"Microsoft YaHei\", sans-serif",
+    "minSize": 20,
+    "scale": {
+      "coverTitle":   { "template": "64pt", "themed": { "min": "56pt", "max": "72pt" } },
+      "contentTitle": { "template": "40pt", "themed": { "min": "36pt", "max": "44pt" } },
+      "subtitle":     { "template": "30pt", "themed": { "min": "28pt", "max": "32pt" } },
+      "body":         { "template": "26pt", "themed": { "min": "24pt", "max": "28pt" } },
+      "caption":      { "template": "22pt", "themed": { "min": "20pt", "max": "24pt" } }
+    }
+  },
+  "logos": {
+    "group": {
+      "color": "assets/logos/logo-group-color.png",
+      "white": "assets/logos/logo-group-white.png"
+    },
+    "cloud": {
+      "color": "assets/logos/logo-cloud-color.png",
+      "white": "assets/logos/logo-cloud-white.png"
+    },
+    "businessLines": {
+      "group": { "color": "assets/logos/logo-group-color.png", "white": "assets/logos/logo-group-white.png" },
+      "cloud-communication": { "color": "assets/logos/logo-cloud-color.png", "white": "assets/logos/logo-cloud-white.png" }
+    }
+  },
+  "slogan": "assets/slogan.png",
+  "hardRules": {
+    "logo": {
+      "innerPageSize": "113x113px",
+      "safeZone": "Logo安全区内禁止任何装饰元素、文字、图标、分割线",
+      "shallowBg": "彩稿Logo",
+      "darkBg": "反白Logo",
+      "endingPage": "居中Logo + slogan PNG"
+    },
+    "typography": {
+      "absoluteMinSize": "20pt",
+      "bodyMinSize": "24pt",
+      "fontFamily": "微软雅黑"
+    },
+    "color": {
+      "primary": "#D0121B",
+      "disallowed": "严禁使用非色板颜色"
+    }
+  },
+  "layout": {
+    "innerPageLogo": {
+      "right": "80px",
+      "top": "46px",
+      "width": "113px",
+      "height": "113px"
+    }
+  },
+  "backgrounds": {
+    "cover": {
+      "primary-gradient": "linear-gradient(135deg, {primary} 0%, {primaryDark} 100%)",
+      "primary-solid": "{primary}",
+      "dark-solid": "{dark}",
+      "white": "{white}"
+    },
+    "inner": {
+      "white": "{white}",
+      "light-gray": "{lightGray}"
+    }
+  }
+}
