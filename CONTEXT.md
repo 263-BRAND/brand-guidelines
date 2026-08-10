@@ -46,18 +46,22 @@ HTML/CSS 输出在数字后加 `pt` 后缀，PPTX 直接写入数字（PPTX font
 | 场景 | 位置 | 尺寸 | 定位 |
 |---|---|---|---|
 | 内页 | 右上角 | 画布宽 × 4.2% | `right:4.2%, top:4.3%` |
-| 封面 | 左上角 | 画布宽 × 6.5% | `left:6%, top:8%` |
+| 封面（Themed） | 左上角 | 画布宽 × 6.5% | `left:6%, top:8%` |
+| 封面（Template） | 不使用 PNG Logo | ASCII 字符画居中 | monospace, 36 行, 品牌主色 |
 
 | 规则 | 刚性 |
 |---|---|
 | 内页 Logo 安全区：内页 Logo 矩形边界框内禁止任何内容像素 | MUST |
-| 封面 Logo 安全区：封面 Logo 矩形边界框内禁止任何内容像素（含装饰圆/渐变块） | MUST |
+| 封面 Logo 安全区（Themed）：封面 Logo 矩形边界框内禁止任何内容像素（含装饰圆/渐变块） | MUST |
+| 封面 Logo（Template）：ASCII 字符画替代 PNG，距顶约 9%，不放置独立 PNG Logo | MUST |
 | 浅色底使用彩稿 Logo | MUST |
 | 深色底使用反白 Logo | MUST |
 | 结尾页：原内容全部丢弃，居中 Logo + slogan PNG（不可用文字代替） | MUST |
 | Logo 安全区 = Logo 图片的矩形边界框，外边界即边缘，不额外 margin | MUST |
 
-**封面生成强制检查：** 所有装饰元素的左上边界 ≥ left+size，标题文字 left/padding-left ≥ left+size。
+**封面生成强制检查（Themed）：** 所有装饰元素的左上边界 ≥ left+size，标题文字 left/padding-left ≥ left+size。
+
+**母版封面规格（Template）：** 浅灰背景（品牌 lightGray），ASCII 字符画（monospace 11pt, line-height:0.6, 品牌主色），标题 64pt 居中，汇报人/部门 26pt 居中，公司全称 22pt 底部居中。`pages.json` 设 `"scene": "template"` 触发。
 
 ### 硬规则 (Hard Rules)
 
@@ -70,7 +74,8 @@ Template 路径全部锁定。Themed 路径在硬规则约束内由设计 skill 
 | 主色不可偏色 | Template + Themed |
 | 字号底线（HTML ≥ 20pt 正文 ≥ 24pt；PPTX ≥ 12pt 正文 ≥ 16pt） | Template + Themed |
 | 内页 Logo 右上角固定，禁止自定义位置 | Template + Themed |
-| 封面 Logo 左上角固定 | Template |
+| 封面 Logo 左上角固定（Themed） | Template |
+| 封面 ASCII 字符画（Template） | Template |
 | 字体固定微软雅黑 | Template + Themed |
 | 非品牌颜色全量替换（路径 B×Template） | Template |
 
