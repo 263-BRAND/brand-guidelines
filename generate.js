@@ -182,7 +182,6 @@ opts.slides + '\n' +
 '      e.preventDefault(); show(current - 1);\n' +
 '    } else if (key === "Home") { e.preventDefault(); show(0); }\n' +
 '    else if (key === "End") { e.preventDefault(); show(total - 1); }\n' +
- +
 '  });\n' +
 '  show(0);\n' +
 '  // ASCII line-by-line staggered entrance\n' +
