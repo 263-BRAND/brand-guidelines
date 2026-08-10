@@ -100,7 +100,7 @@ try {
 
 // Logo CSS
 var logoCSS = '\n' +
-  '.logo-vi{position:absolute;top:46px;right:80px;width:113px;height:113px;z-index:100;background-size:contain;background-repeat:no-repeat;background-position:center}\n' +
+  '.logo-vi{position:absolute;top:46px;right:80px;width:80px;height:80px;z-index:100;background-size:contain;background-repeat:no-repeat;background-position:center}\n' +
   '.logo-vi-color{background-image:url(data:image/png;base64,' + logoColorB64 + ')}\n' +
   '.logo-vi-end{width:160px;height:160px;background-size:contain;background-repeat:no-repeat;background-position:center;background-image:url(data:image/png;base64,' + logoColorB64 + ')}\n' +
   '.slogan-vi{width:320px;height:48px;background-size:contain;background-repeat:no-repeat;background-position:center;background-image:url(data:image/png;base64,' + sloganB64 + ')}\n';

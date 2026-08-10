@@ -52,8 +52,8 @@
   "slogan": "assets/slogan.png",
   "hardRules": {
     "logo": {
-      "innerPageSize": "113x113px",
-      "safeZone": "Logo安全区内禁止任何装饰元素、文字、图标、分割线",
+      "innerPageSize": "80x80px",
+      "safeZone": "Logo矩形边界框内禁止任何内容像素进入——包括文字、页码、装饰、图标、分割线、背景图形。无一例外",
       "shallowBg": "彩稿Logo",
       "darkBg": "反白Logo",
       "endingPage": "居中Logo + slogan PNG"
@@ -72,8 +72,8 @@
     "innerPageLogo": {
       "right": "80px",
       "top": "46px",
-      "width": "113px",
-      "height": "113px"
+      "width": "80px",
+      "height": "80px"
     }
   },
   "backgrounds": {
