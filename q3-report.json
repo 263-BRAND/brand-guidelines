@@ -4,90 +4,20 @@
   "scene": "template",
   "companyName": "二六三网络通信股份有限公司",
   "slides": [
-    {
-      "type": "cover",
-      "background": "primary-gradient",
-      "title": "2026 Q3 季度工作汇报",
-      "subtitle": "品牌行政部",
-      "presenter": "郭悦",
-      "department": "品牌行政部"
-    },
-    {
-      "type": "section",
-      "sectionNumber": "01",
-      "title": "季度工作概览",
-      "subtitle": "两大板块并行推进"
-    },
-    {
-      "type": "cards",
-      "sectionLabel": "01 / 季度工作概览",
-      "title": "两大板块成果",
-      "columns": 2,
-      "items": [
-        {
-          "icon": "📈",
-          "title": "内容工作·自媒体矩阵",
-          "description": "抖音/快手/小红书三平台协同运营，整体引流提升 200%，超额完成季度目标。"
-        },
-        {
-          "icon": "🎤",
-          "title": "文化活动·AI 沙龙",
-          "description": "从策划到执行全流程闭环落地，覆盖策划、主持、执行、会后宣传四大环节。"
-        }
-      ]
-    },
-    {
-      "type": "section",
-      "sectionNumber": "02",
-      "title": "内容工作",
-      "subtitle": "自媒体矩阵运营"
-    },
-    {
-      "type": "content",
-      "sectionLabel": "02 / 内容工作",
-      "title": "自媒体矩阵运营",
-      "blocks": [
-        {
-          "heading": "核心成果：引流提升 +200%",
-          "body": "Q3 季度抖音、快手、小红书三平台协同发力，通过内容矩阵化运营、热点话题借势、KOC 合作种草三大策略，实现整体流量同比增长 200%，超额完成季度 KPI。"
-        },
-        {
-          "heading": "运营动作",
-          "body": "① 抖音：短视频日更 + 直播常态化，单条爆款播放量破 50 万；② 快手：深耕垂类社区，粉丝增长 35%；③ 小红书：种草笔记矩阵，品牌搜索指数提升 80%。"
-        },
-        {
-          "heading": "关键经验",
-          "body": "内容矩阵化运营的核心在于平台差异化定位——抖音做爆款、快手做社区、小红书做心智，三者互补形成流量闭环。"
-        }
-      ]
-    },
-    {
-      "type": "section",
-      "sectionNumber": "03",
-      "title": "文化活动",
-      "subtitle": "AI 沙龙全流程落地"
-    },
-    {
-      "type": "content",
-      "sectionLabel": "03 / 文化活动",
-      "title": "AI 沙龙·全流程闭环落地",
-      "blocks": [
-        {
-          "heading": "项目概述",
-          "body": "Q3 季度主导策划「AI 赋能品牌」主题沙龙，覆盖集团内部 12 个部门、参与人数 80+。个人承担策划统筹、现场主持、执行协调三重角色，实现从 0 到 1 的全流程闭环。"
-        },
-        {
-          "heading": "四步落地流程",
-          "body": "① 策划阶段：需求调研 + 嘉宾邀约 + 议程设计 + 场地布置，周期 2 周；② 主持阶段：全场 3 小时控场，引导 5 位嘉宾分享 + 圆桌讨论 + Q&A 互动；③ 执行阶段：现场 AV 保障、茶歇协调、签到接待、应急响应；④ 会后宣传：新闻稿撰写 + 内部通讯发布 + 活动影像归档，全员覆盖率 95%。"
-        },
-        {
-          "heading": "成果与反馈",
-          "body": "会后满意度调研 4.8/5.0，部门负责人评价「流程丝滑、内容扎实」。活动模式已被 2 个兄弟部门复用，形成可复制的沙龙 SOP。"
-        }
-      ]
-    },
-    {
-      "type": "end"
-    }
+    { "type": "cover", "title": "2026 Q3 季度工作汇报", "subtitle": "品牌行政部", "presenter": "郭悦", "department": "品牌行政部" },
+
+    { "type": "section", "sectionNumber": "01", "title": "季度工作概览", "subtitle": "两大板块并行推进" },
+
+    { "type": "custom", "html": "<div style=\"position:absolute;top:12%;left:6%;right:6%;\"><div style=\"font-size:22pt;color:#D0121B;letter-spacing:2px;margin-bottom:4px;\">01 / 季度工作概览</div><h2 style=\"font-size:40pt;font-weight:bold;color:#2D3847;\">两大板块<span style=\"color:#D0121B;\">成果</span></h2></div><div style=\"position:absolute;top:28%;left:6%;right:6%;bottom:12%;display:flex;gap:40px;\"><div style=\"flex:1;background:#F2F2F2;border-radius:12px;padding:40px;display:flex;flex-direction:column;justify-content:center;border-top:4px solid #D0121B;\"><div style=\"font-size:30pt;font-weight:bold;color:#2D3847;margin-bottom:16px;\">📈 内容工作</div><div style=\"font-size:26pt;color:#595959;line-height:1.6;\">自媒体矩阵运营<br>整体引流提升 <span style=\"color:#D0121B;font-weight:bold;\">+200%</span></div></div><div style=\"flex:1;background:#F2F2F2;border-radius:12px;padding:40px;display:flex;flex-direction:column;justify-content:center;border-top:4px solid #D0121B;\"><div style=\"font-size:30pt;font-weight:bold;color:#2D3847;margin-bottom:16px;\">🎤 文化活动</div><div style=\"font-size:26pt;color:#595959;line-height:1.6;\">AI 沙龙全流程落地<br>策划 · 主持 · 执行 · 宣传</div></div></div>" },
+
+    { "type": "section", "sectionNumber": "02", "title": "内容工作", "subtitle": "自媒体矩阵运营" },
+
+    { "type": "custom", "html": "<div style=\"position:absolute;top:12%;left:6%;right:6%;\"><div style=\"font-size:22pt;color:#D0121B;letter-spacing:2px;margin-bottom:4px;\">02 / 内容工作</div><h2 style=\"font-size:40pt;font-weight:bold;color:#2D3847;\">自媒体矩阵<span style=\"color:#D0121B;\">运营</span></h2></div><div style=\"position:absolute;top:28%;left:6%;right:6%;bottom:12%;display:flex;gap:48px;\"><div style=\"flex:0 0 38%;background:#D0121B;border-radius:16px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:48px;\"><div style=\"font-size:22pt;color:rgba(255,255,255,0.85);margin-bottom:16px;\">整体引流提升</div><div style=\"font-size:96pt;font-weight:bold;color:#FFFFFF;line-height:1;\">+200%</div></div><div style=\"flex:1;display:flex;flex-direction:column;justify-content:center;gap:32px;\"><div style=\"display:flex;align-items:flex-start;gap:20px;\"><div style=\"width:48px;height:48px;background:#D0121B;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#FFF;font-size:24pt;font-weight:bold;\">抖</div><div><div style=\"font-size:30pt;font-weight:bold;color:#2D3847;margin-bottom:8px;\">抖音</div><div style=\"font-size:26pt;color:#595959;line-height:1.5;\">短视频日更 + 直播常态化，单条爆款播放量破 50 万</div></div></div><div style=\"display:flex;align-items:flex-start;gap:20px;\"><div style=\"width:48px;height:48px;background:#D0121B;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#FFF;font-size:24pt;font-weight:bold;\">快</div><div><div style=\"font-size:30pt;font-weight:bold;color:#2D3847;margin-bottom:8px;\">快手</div><div style=\"font-size:26pt;color:#595959;line-height:1.5;\">深耕垂类社区，粉丝增长 35%</div></div></div><div style=\"display:flex;align-items:flex-start;gap:20px;\"><div style=\"width:48px;height:48px;background:#D0121B;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#FFF;font-size:24pt;font-weight:bold;\">红</div><div><div style=\"font-size:30pt;font-weight:bold;color:#2D3847;margin-bottom:8px;\">小红书</div><div style=\"font-size:26pt;color:#595959;line-height:1.5;\">种草笔记矩阵，品牌搜索指数提升 80%</div></div></div></div></div>" },
+
+    { "type": "section", "sectionNumber": "03", "title": "文化活动", "subtitle": "AI 沙龙全流程落地" },
+
+    { "type": "custom", "html": "<div style=\"position:absolute;top:12%;left:6%;right:6%;\"><div style=\"font-size:22pt;color:#D0121B;letter-spacing:2px;margin-bottom:4px;\">03 / 文化活动</div><h2 style=\"font-size:40pt;font-weight:bold;color:#2D3847;\">AI 沙龙<span style=\"color:#D0121B;\">全流程落地</span></h2></div><div style=\"position:absolute;top:26%;left:6%;right:6%;bottom:12%;display:flex;gap:48px;\"><div style=\"flex:0 0 42%;display:flex;flex-direction:column;justify-content:center;\"><div style=\"background:#F2F2F2;border-radius:12px;padding:36px;\"><div style=\"font-size:30pt;font-weight:bold;color:#2D3847;margin-bottom:16px;\">项目概述</div><div style=\"font-size:26pt;color:#595959;line-height:1.7;\">覆盖集团 <span style=\"color:#D0121B;font-weight:bold;\">12 个部门</span>、参与 <span style=\"color:#D0121B;font-weight:bold;\">80+ 人</span>。个人承担<span style=\"color:#D0121B;\">策划统筹、现场主持、执行协调</span>三重角色。</div></div></div><div style=\"flex:1;display:flex;flex-direction:column;justify-content:center;gap:20px;\"><div style=\"display:flex;align-items:center;gap:24px;\"><div style=\"width:56px;height:56px;background:#D0121B;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#FFF;font-size:28pt;font-weight:bold;\">①</div><div><div style=\"font-size:30pt;font-weight:bold;color:#2D3847;margin-bottom:4px;\">策划</div><div style=\"font-size:26pt;color:#595959;line-height:1.5;\">需求调研 + 嘉宾邀约 + 议程设计</div></div></div><div style=\"display:flex;align-items:center;gap:24px;\"><div style=\"width:56px;height:56px;background:#D0121B;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#FFF;font-size:28pt;font-weight:bold;\">②</div><div><div style=\"font-size:30pt;font-weight:bold;color:#2D3847;margin-bottom:4px;\">主持</div><div style=\"font-size:26pt;color:#595959;line-height:1.5;\">3 小时全程控场，5 位嘉宾 + 圆桌讨论</div></div></div><div style=\"display:flex;align-items:center;gap:24px;\"><div style=\"width:56px;height:56px;background:#D0121B;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#FFF;font-size:28pt;font-weight:bold;\">③</div><div><div style=\"font-size:30pt;font-weight:bold;color:#2D3847;margin-bottom:4px;\">执行</div><div style=\"font-size:26pt;color:#595959;line-height:1.5;\">现场 AV 保障 + 茶歇协调 + 签到接待</div></div></div><div style=\"display:flex;align-items:center;gap:24px;\"><div style=\"width:56px;height:56px;background:#D0121B;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#FFF;font-size:28pt;font-weight:bold;\">④</div><div><div style=\"font-size:30pt;font-weight:bold;color:#2D3847;margin-bottom:4px;\">会后宣传</div><div style=\"font-size:26pt;color:#595959;line-height:1.5;\">新闻稿 + 内部通讯发布，覆盖率 95%</div></div></div></div></div>" },
+
+    { "type": "end" }
   ]
 }

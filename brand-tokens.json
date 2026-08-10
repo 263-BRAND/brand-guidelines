@@ -70,10 +70,10 @@
       "size": "6.5%"
     },
     "innerPageLogo": {
-      "right": "80px",
-      "top": "46px",
-      "width": "113px",
-      "height": "113px"
+      "right": "5.2%",
+      "top": "5.3%",
+      "width": "80px",
+      "height": "80px"
     }
   },
   "backgrounds": {
@@ -89,7 +89,7 @@
   },
   "hardRules": {
     "logo": {
-      "innerPageSize": "4.2% of canvas width, square (aspect-ratio:1)",
+      "innerPageSize": "80x80px (4.2% of 1920px canvas width), square",
       "safeZone": "Logo矩形边界框内禁止任何内容像素进入",
       "shallowBg": "彩稿Logo",
       "darkBg": "反白Logo",
