@@ -51,37 +51,35 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
 
 // === Template cover: light bg, ASCII logo, centered text ===
 function renderTemplate(slide, tokens, pages, index, c) {
-  // Convert 1920px-reference pt to vw: vw = pt/1920*100
-  var titleVW = (tokens.typography.html.scale.coverTitle.template / 1920 * 100).toFixed(2);
-  var bodyVW = (tokens.typography.html.scale.body.template / 1920 * 100).toFixed(2);
-  var captionVW = (tokens.typography.html.scale.caption.template / 1920 * 100).toFixed(2);
-  var asciiVW = 0.55; // 11pt at 1920px ≈ 0.57vw, calibrated to match preview
+  var titleFontSize = tokens.typography.html.scale.coverTitle.template;
+  var bodyFontSize = tokens.typography.html.scale.body.template;
+  var captionFontSize = tokens.typography.html.scale.caption.template;
+  var asciiFontSize = 11; // pt — calibrated at 1920px reference
 
   var html = '<div class="slide-page" id="s' + index + '" style="background:' + c.lightGray + '; position:relative; overflow:hidden;">\n';
 
   // ASCII logo
   html += '<div style="position:absolute;top:9%;left:50%;transform:translateX(-50%);z-index:5;">\n';
-  html += '<pre style="font-family:\'Courier New\',\'Source Code Pro\',Consolas,monospace;font-size:' + asciiVW + 'vw;line-height:0.6;color:' + c.primary + ';white-space:pre;user-select:none;margin:0;">\n';
+  html += '<pre style="font-family:\'Courier New\',\'Source Code Pro\',Consolas,monospace;font-size:' + asciiFontSize + 'pt;line-height:0.6;color:' + c.primary + ';white-space:pre;user-select:none;margin:0;">\n';
   for (var li = 0; li < ASCII_LOGO.length; li++) {
     html += esc(ASCII_LOGO[li]) + '\n';
   }
   html += '</pre>\n</div>\n';
 
   // Title + meta
-  var contentTop = 9 + 36; // top% + ascii approx height%
-  html += '<div style="position:absolute;top:' + contentTop + '%;left:50%;transform:translateX(-50%);text-align:center;z-index:10;width:80%;">\n';
-  html += '<h1 style="font-size:' + titleVW + 'vw;font-weight:bold;color:' + c.dark + ';letter-spacing:0.15vw;margin-bottom:1.5vh;">' + esc(slide.title) + '</h1>\n';
+  html += '<div style="position:absolute;top:45%;left:50%;transform:translateX(-50%);text-align:center;z-index:10;width:80%;">\n';
+  html += '<h1 style="font-size:' + titleFontSize + 'pt;font-weight:bold;color:' + c.dark + ';letter-spacing:3px;margin-bottom:14px;">' + esc(slide.title) + '</h1>\n';
 
   var parts = [];
   if (slide.presenter) parts.push('<span>汇报人：' + esc(slide.presenter) + '</span>');
-  if (slide.department) parts.push('<span style="margin-left:1.2vw;">' + esc(slide.department) + '</span>');
-  html += '<div style="font-size:' + bodyVW + 'vw;color:' + c.gray + ';display:flex;gap:1.2vw;justify-content:center;">\n';
+  if (slide.department) parts.push('<span style="margin-left:24px;">' + esc(slide.department) + '</span>');
+  html += '<div style="font-size:' + bodyFontSize + 'pt;color:' + c.gray + ';display:flex;gap:24px;justify-content:center;">\n';
   html += parts.join('<span style="color:' + c.primary + ';opacity:0.5;"> · </span>') + '\n';
   html += '</div>\n';
   html += '</div>\n';
 
   // Company name
-  html += '<div style="position:absolute;bottom:5%;left:0;width:100%;text-align:center;font-size:' + captionVW + 'vw;color:' + c.gray + ';opacity:0.45;">\n';
+  html += '<div style="position:absolute;bottom:5%;left:0;width:100%;text-align:center;font-size:' + captionFontSize + 'pt;color:' + c.gray + ';opacity:0.45;">\n';
   html += esc(pages.companyName || '二六三网络通信股份有限公司') + '\n';
   html += '</div>\n';
 
