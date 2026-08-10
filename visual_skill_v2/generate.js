@@ -182,9 +182,18 @@ opts.slides + '\n' +
 '      e.preventDefault(); show(current - 1);\n' +
 '    } else if (key === "Home") { e.preventDefault(); show(0); }\n' +
 '    else if (key === "End") { e.preventDefault(); show(total - 1); }\n' +
- +
+'    else if (key === "f" || key === "F") {\n' +
+'      if (document.fullscreenElement) { document.exitFullscreen(); }\n' +
+'      else { document.documentElement.requestFullscreen(); }\n' +
+'    }\n' +
 '  });\n' +
 '  show(0);\n' +
+'  // Double-click to toggle fullscreen\n' +
+'  document.addEventListener("dblclick", function(e) {\n' +
+'    e.preventDefault();\n' +
+'    if (document.fullscreenElement) { document.exitFullscreen(); }\n' +
+'    else { document.documentElement.requestFullscreen(); }\n' +
+'  });\n' +
 '  // ASCII line-by-line staggered entrance\n' +
 '  var asciiLines = document.querySelectorAll(".ascii-line");\n' +
 '  if (asciiLines.length) {\n' +
@@ -210,6 +219,16 @@ opts.slides + '\n' +
 '  }\n' +
 '  window.addEventListener("resize", resize);\n' +
 '  resize();\n' +
+'  // Auto-enter fullscreen on first interaction (click or keypress)\n' +
+'  var _autoFS = function() {\n' +
+'    if (!document.fullscreenElement) {\n' +
+'      document.documentElement.requestFullscreen().catch(function() {});\n' +
+'    }\n' +
+'    document.removeEventListener("click", _autoFS);\n' +
+'    document.removeEventListener("keydown", _autoFS);\n' +
+'  };\n' +
+'  document.addEventListener("click", _autoFS);\n' +
+'  document.addEventListener("keydown", _autoFS);\n' +
 '  // Binary rain (Matrix-style) for cover slides\n' +
 '  var rainCanvases = document.querySelectorAll("canvas[id^=binaryRain]");\n' +
 '  for (var rc = 0; rc < rainCanvases.length; rc++) {\n' +
