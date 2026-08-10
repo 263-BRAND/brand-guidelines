@@ -1,19 +1,45 @@
 # 263 VI PPT 模板系统 — 项目进度
 
-**更新：2026-08-07**
+**更新：2026-08-10**
+
+---
+
+## 2026-08-10 进展：Template 封面定稿 + 渲染器双模
+
+### Template 封面设计完成
+
+经过多轮迭代，Template（内部汇报）封面定稿：
+
+- **浅灰背景**：品牌 lightGray `#F2F2F2`
+- **ASCII 心形 Logo**：从集团红心 Logo 提取，36 行 monospace 字符，比例已校准（字符正方形 + 等距采样），品牌主色 `#D0121B`
+- **居中排版**：标题 64pt，汇报人/部门 26pt，公司全称 22pt 底部居中
+- **动画入场**：隔行左右穿插滑入（30ms 交错），标题 1.2s 后淡入
+- **品牌色合规**：所有颜色从 brand-tokens.json 读取，不硬编码
+
+### 渲染器双模支持
+
+`renderer/slides/cover.js` 重构为双模：
+- `scene: "template"` → ASCII 封面（浅灰底 + 居中排版）
+- 默认（无 scene 或 themed）→ 红底渐变封面（左上角 Logo + 左对齐排版）
+
+`pages.json` 示例：
+```json
+{ "scene": "template", "colorScheme": "group-red", "slides": [...] }
+```
+
+### 文档更新
+
+- `skills/263-vi.md` — 新增"母版封面页"章节，完整规格表
+- `CONTEXT.md` — Logo 规则表、硬规则表同步更新
+- `skill.md` — 通用入口，供非 Claude Code 工具识别
+
+### 打包分发
+
+`skill-test-planB.zip` — 完整 skill 包（305KB），含 skill.md + skills/263-vi.md + brand-tokens.json + renderer/ + 截图
 
 ---
 
 ## 2026-08-07 进展：领域建模 + VI Skill 重构计划
-
-### 领域建模完成
-
-通过 `/grill-with-docs` 会话，建立了两个限界上下文的领域模型：
-
-- **品牌规范上下文** — 色彩、字体层级、Logo 规则、企业概况、产品组合（四层结构）
-- **Agent 管线上下文** — Template/Themed 双模式、路径 A/B × Template/Themed 2×2 矩阵、skill 协作边界、输入格式分级
-
-产出：`CONTEXT.md`（领域术语表），基于 263 集团业务介绍讲义（`视觉参考/`）提取的完整产品结构。
 
 ### 关键设计决策
 
@@ -26,28 +52,9 @@
 | 输入处理 | VI skill 自行解析 | 外部 Agent 调 MCP/工具 → 归一化后送入管线 |
 | Logo 切换 | 仅集团/云通信二选一 | 品牌上下文：共享框架 + Logo 按业务线覆盖 |
 
-### 实现计划
-
-`docs/superpowers/plans/2026-08-07-vi-skill-align-context.md` — 6 个任务对齐 CONTEXT.md 设计树：
-
-1. brand-tokens.json — 字体层级修正
-2. brand-tokens.json — Logo+硬规则扩展
-3. company-data.json — 产品四层结构重写
-4. skills/263-vi.md — 核心工作流重写（双模式+2×2+透明声明）
-5. CONTEXT.md — 权威数据源引用
-6. 全量一致性验证
-
-**状态：计划已写，待用户指令执行。**
-
 ---
 
 ## 设计框架
-
-详细设计文档：`docs/superpowers/specs/2026-07-30-ppt-vi-template-system-design.md`
-
-### 核心思路
-
-**"品牌数据层，不是渲染引擎。"** — VI skill 是 263 品牌数据的唯一真相源。内容策划交给 LLM，排版渲染交给设计 skill。VI skill 只输出 brand-tokens.json + company-data.json。
 
 ### 两条路径 × 两种模式
 
@@ -60,8 +67,6 @@
     ├── Template → 已有文件对齐母版规范
     └── Themed  → 已有文件 + 设计 skill 重设计
 ```
-
-详细路径选择逻辑见 `CONTEXT.md` 和 `skills/263-vi.md`。
 
 ### 三层数据体系
 
@@ -81,45 +86,25 @@
 
 | 文件 | 用途 | 状态 |
 |------|------|:--:|
-| `.gitignore` | 排除视觉参考、.claude、node_modules、screenshots | ✓ |
-| `brand-tokens.json` | 品牌视觉规范（替代 vi-tokens.json） | ✓ |
+| `brand-tokens.json` | 品牌视觉规范（含 canvas 尺寸、html/pptx 双字体层级） | ✓ |
 | `company-data.json` | 公司信息（合并 company-data/） | ✓ |
 | `design-skill-recommendations.json` | 平台设计 skill 推荐 | ✓ |
-| `skills/263-vi.md` | Claude Code VI skill 文件 | ✓ |
+| `skills/263-vi.md` | 主 skill 文件（2×2 路径矩阵 + 母版封面规格） | ✓ |
+| `skill.md` | 通用入口（非 Claude Code 工具兼容） | ✓ |
+| `CONTEXT.md` | 领域模型 + 母版封面规格 | ✓ |
+| `PROJECT-STATUS.md` | 本文件 | ✓ |
 
-### 兜底渲染器（无设计 skill 时，从 pages.json 生成 HTML）
-
-| 文件 | 用途 | 状态 |
-|------|------|:--:|
-| `generate.js` | 渲染器入口：读取 pages.json → 输出自包含 slides.html | ✓ |
-| `renderer/slides/cover.js` | 封面页渲染 — 自由背景、自由 Logo 布局 | ✓ |
-| `renderer/slides/section.js` | 章节过渡页 — 大号编号 + 标题 + 分割线 | ✓ |
-| `renderer/slides/content.js` | 通用内容页 — 标题 + 文本段落 | ✓ |
-| `renderer/slides/cards.js` | 卡片网格 — N 列图标卡片 | ✓ |
-| `renderer/slides/timeline.js` | 时间轴 — 年份节点 + 描述 | ✓ |
-| `renderer/slides/end.js` | 结束页 — 居中 Logo + slogan PNG | ✓ |
-
-**渲染器特性（兜底，仅无设计 skill 时使用）：**
-- 定位：基础兜底模板，不做专业排版；专业排版交给设计 skill
-- 播放壳：全屏/键盘翻页/翻页笔/点击翻页（PageDown/方向键/Space/点击）
-- Logo 自动深底反白切换
-- 背景系统：封面 4 选项，内页限定白/浅灰
-- 字号硬约束 < 16px 拒绝
-- 零外部依赖，输出单一 HTML 文件
-- 不提供：设计装饰、复杂布局变体、悬停动效（由设计 skill 负责）
-
-### VI 应用器（路径 B）— 已移除
-
-路径 B 功能由设计 skill 替代。`vi-apply.js` 已删除；已有 HTML PPT 的视觉改造交给专业设计 skill，其读取 `brand-tokens.json` 统一色值/字体/Logo，布局由设计 skill 决定。
-
-### 公司数据
+### 兜底渲染器
 
 | 文件 | 用途 | 状态 |
 |------|------|:--:|
-| `company-data/facts.json` | 公司名、股票代码、办公地址、品牌理念、23 条发展历程 | ✓ 官网核对完成 |
-| `company-data/products.json` | 三大业务线：全球网络 / 智能通信 / 数字服务 | ✓ |
-| `company-data/profile-zh.md` | 公司简介长文本 | ✓ |
-| `company-data/profile-en.md` | 英文简介 | ✓ 基础版 |
+| `generate.js` | 渲染器入口 | ✓ |
+| `renderer/slides/cover.js` | 封面（Template ASCII + Themed 渐变双模） | ✓ |
+| `renderer/slides/section.js` | 章节过渡页 | ✓ |
+| `renderer/slides/content.js` | 通用内容页 | ✓ |
+| `renderer/slides/cards.js` | 卡片网格 | ✓ |
+| `renderer/slides/timeline.js` | 时间轴 | ✓ |
+| `renderer/slides/end.js` | 结束页（居中 Logo + slogan PNG） | ✓ |
 
 ### 资产
 
@@ -128,149 +113,32 @@
 | `assets/logos/logo-group-color.png` | 集团红心 Logo | ✓ |
 | `assets/logos/logo-group-white.png` | 集团反白 Logo | ✓ |
 | `assets/logos/logo-cloud-color.png` | 云通信蓝 Logo | ✓ |
-| `assets/slogan.png` | 「连接世界 沟通你我」固定字体设计 | ✓ |
+| `assets/slogan.png` | Slogan 图片 | ✓ |
+| `template-cover-1920x1080.png` | Template 封面截图 | ✓ |
 
-### 示例
-
-| 文件 | 用途 | 状态 |
-|------|------|:--:|
-| `examples/sample-pages.json` | 8 页示例 PPT（公司简介场景） | ✓ |
-| `examples/ai-tools-pages.json` | 13 页示例 PPT（AI 工具心得，真实内容测试） | ✓ |
-
-### 文档
+### 分发
 
 | 文件 | 用途 | 状态 |
 |------|------|:--:|
-| `docs/superpowers/specs/2026-07-30-ppt-vi-template-system-design.md` | Phase 1 设计文档 | ✓ |
-| `docs/superpowers/plans/2026-07-30-ppt-vi-template-system-plan.md` | Phase 1 实现计划 | ✓ |
-| `docs/superpowers/specs/2026-07-31-vi-skill-redesign.md` | VI skill 重构设计文档 | ✓ |
-| `docs/superpowers/plans/2026-07-31-vi-skill-refactor.md` | VI skill 重构实现计划 | ✓ |
+| `skill-test-planB.zip` | 完整 skill 包（305KB） | ✓ |
 
 ---
 
 ## 已验证
 
-### 路径 B：已有 HTML 改写 VI ✓
-
-已用 `8-AI工具心得-杜鸣-V8.html`（14 页，真实工作内容）验证完整链路：
-1. VI skill 确认品牌参数 → 输出 brand-tokens.json
-2. frontend-design skill 指导排版（响应式、字体层级、卡片设计）
-3. Logo base64 嵌入、安全区无遮挡、结尾页 VI 规范格式
-4. 色值精确替换（#D0111B → #D0121B）、CSS 变量统一管理
-
-**结论：路径 B 已验证通过。** 已有 HTML PPT 可通过 VI skill + frontend-design 快速统一品牌视觉。
-
-### 路径 A：从零生成 → 待测试
-
-需用真实需求（如"做一份云通信产品介绍PPT"）测试完整流程：LLM 策划内容 → pages.json → 设计 skill 排版。
+| 路径 | 状态 | 备注 |
+|------|:----:|------|
+| 路径 B × Themed | ✓ 通过 | Q3 报告 v2/v3，frontend-design skill 排版 |
+| 路径 A × Themed | 未测 | 需外部设计 skill |
+| 路径 A × Template | 未测 | 需用 generate.js 跑完整流程 |
+| 路径 B × Template | 未测 | 需测试 scene: template 切换 |
 
 ---
 
-## 待继续 / 未完成
+## 待做
 
-- [ ] **执行 VI skill 重构计划** — `docs/superpowers/plans/2026-08-07-vi-skill-align-context.md`，6 个任务
-- [ ] **路径 A 从零生成测试** — 用真实业务场景（如"云通信产品介绍"）端到端测试
-- [x] **Claude Code 设计 skill 调研** — 确认 `frontend-design` 优于 `ui-ux-pro-max`，已填入 design-skill-recommendations.json
-- [x] **Logo 安全区规则** — 已写入 skills/263-vi.md：Logo 周围禁止装饰元素遮挡
-- [x] **产品结构细化** — 从集团介绍讲义提取，3板块×4业务线×N产品能力，写入 CONTEXT.md
-- [x] **领域建模** — CONTEXT.md 已创建，两个限界上下文 + 完整设计树
-
-### 资产和配置待补充
-
-- [ ] **商务蓝衍生色值** — 亮蓝/暗蓝/浅蓝背景目前是推算值，需官方确认
-- [ ] **云通信 Logo 反白稿** — 文件 `视觉参考/logo-云通信-白.png` 已存在，待放入 `assets/logos/`
-
-### 功能扩展
-
-- [ ] **错误处理增强** — 非法 JSON 结构时给出明确的错误信息（而非 Node.js 堆栈）
-
-### 待调研
-
-- [ ] **Web chatbot 适配** — 当前系统依赖 Node.js 命令行，纯 web chatbot（ChatGPT 等）无法调用。需评估：
-  - 方案：将 `generate.js` 逻辑搬到前端页面，chatbot 输出 pages.json → 粘贴到页面 → 浏览器端渲染 → 预览/下载
-  - 工作量：generate.js 核心逻辑改写为前端 JS（处理 base64 图片嵌入） + 一个静态页面
-  - 是否需要？什么时候做？待决定
-
-### Phase 2（待规划）
-
-- [ ] 可视化 pages.json 编辑器
-- [ ] 内页布局变体（左文右图 / 上文下图 / 分栏 / 大数字 + 描述等）
-
-### Phase 3（待规划）
-
-- [ ] .pptx 渲染器
-
----
-
-## 当前项目结构
-
-```
-263viForAgent/
-├── CONTEXT.md                ← 领域模型（两个限界上下文）
-├── generate.js              ← 兜底渲染器入口（仅无设计 skill 时）
-├── brand-tokens.json        ← 品牌视觉规范（色板/字体/Logo/背景）
-├── company-data.json        ← 公司信息（合并 facts + products）
-├── design-skill-recommendations.json ← 平台设计 skill 推荐
-├── skills/
-│   └── 263-vi.md            ← VI skill 文件（品牌数据层入口）
-├── company-data/
-│   ├── facts.json
-│   ├── products.json
-│   ├── profile-zh.md
-│   └── profile-en.md
-├── assets/
-│   ├── logos/
-│   │   ├── logo-group-color.png
-│   │   ├── logo-group-white.png
-│   │   └── logo-cloud-color.png
-│   └── slogan.png
-├── renderer/
-│   └── slides/
-│       ├── cover.js
-│       ├── section.js
-│       ├── content.js
-│       ├── cards.js
-│       ├── timeline.js
-│       └── end.js
-├── examples/
-│   ├── sample-pages.json / .html
-│   └── ai-tools-pages.json / .html
-├── docs/
-│   └── superpowers/
-│       ├── specs/ (设计文档)
-│       └── plans/ (实现计划)
-└── 视觉参考/ (不入 git)
-```
-
-## Git 历史
-
-```
-a6ec19d fix: recommend frontend-design over ui-ux-pro-max for Claude Code
-5261f89 docs: reconcile PROJECT-STATUS — remove stale references to deleted files
-9f0e56e fix: guard missing white logo variant in generate.js
-534f399 docs: update project status to reflect VI skill refactoring
-bfeee91 refactor: remove vi-tokens.json — replaced by brand-tokens.json
-ee49245 refactor: remove deprecated files — replaced by brand data layer + design skill delegation
-025b69c fix: read brand-tokens.json, hardcode slide dimensions in renderers
-04a4ff5 feat: add 263-vi skill (Claude Code VI spec entry point)
-44b70e9 feat: add design-skill-recommendations.json platform skill mapping config
-9f15685 feat: merge company facts and products into single company-data.json
-b973662 feat: add brand-tokens.json (brand visual data, slide dims removed)
---- Phase 1 ---
-7904e06 feat: redesign end slide — centered logo + slogan, no text
-b066118 feat: add slogan image to end slide
-481c1eb chore: remove .claude/ from git tracking
-0e025f1 chore: remove strategy field from company data
-89084b7 feat: update products to three business lines, fix vision, remove values
-e3518d9 feat: update company data from official website
-4e206a8 feat: add background system — cover free choice, inner pages white/light-gray only
-94351b0 fix: switch logo rendering from img+content to div+background-image
-30f04b5 chore: remove temporary preview files
-bf74fea feat: add agent-prompt.md and sample pages.json with verified output
-a0d82d9 feat: add renderer core, player shell, and 6 slide type renderers
-5349553 feat: add logo assets for group and cloud variants
-e10bc3e feat: add schema.json and company data layer
-2b0db08 feat: add vi-tokens.json with dual color schemes and typography
-0bef567 plan: add Phase 1 implementation plan with 14 tasks
-... (design docs)
-```
+- [ ] 路径 A 从零生成完整测试
+- [ ] PPTX 原生输出（非截图方案）
+- [ ] 商务蓝色值官方确认
+- [ ] 合并到 main 分支
+- [ ] 多格式打包（.skill for Claude Code, .zip+instructions.md for ChatGPT, .cursorrules for Cursor 等）
