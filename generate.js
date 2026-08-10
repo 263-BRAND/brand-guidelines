@@ -132,9 +132,9 @@ function buildHtml(opts) {
 '<title>263 PPT - ' + opts.colorScheme + '</title>\n' +
 '<style>\n' +
 '* { margin:0; padding:0; box-sizing:border-box; }\n' +
-'html, body { width:100%; height:100%; overflow:hidden; background:#111; }\n' +
-'body { display:flex; justify-content:center; align-items:center; }\n' +
-'#player { width:1920px; height:1080px; position:relative; overflow:hidden; transform-origin:center center; flex-shrink:0; }\n' +
+'html, body { width:100%; height:100%; margin:0; overflow:hidden; background:#111; }\n' +
+':root { --s: 1; }\n' +
+'#player { width:1920px; height:1080px; position:fixed; top:0; left:50%; transform:translate(-50%,0) scale(var(--s)); overflow:hidden; }\n' +
 '.slide-page { position:absolute !important; top:0; left:0; width:100%; height:100%; opacity:0; transition:opacity 0.35s ease; z-index:0; pointer-events:none; }\n' +
 '.slide-page.active { opacity:1; z-index:2; pointer-events:auto; }\n' +
 ':root {\n' +
@@ -185,13 +185,27 @@ opts.slides + '\n' +
 '      else { document.documentElement.requestFullscreen(); }\n' +
 '    }\n' +
 '  });\n' +
+'  document.addEventListener("dblclick", function(e) {\n' +
+'    e.preventDefault();\n' +
+'    if (document.fullscreenElement) { document.exitFullscreen(); }\n' +
+'    else { document.documentElement.requestFullscreen(); }\n' +
+'  });\n' +
 getAsciiAnimationJS() + '\n' +
 '  function resize() {\n' +
-'    var scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);\n' +
-'    document.getElementById("player").style.transform = "scale(" + scale + ")";\n' +
+'    var s = window.innerWidth / 1920;\n' +
+'    document.documentElement.style.setProperty("--s", s);\n' +
 '  }\n' +
 '  window.addEventListener("resize", resize);\n' +
 '  resize();\n' +
+'  var _autoFS = function() {\n' +
+'    if (!document.fullscreenElement) {\n' +
+'      document.documentElement.requestFullscreen().catch(function() {});\n' +
+'    }\n' +
+'    document.removeEventListener("click", _autoFS);\n' +
+'    document.removeEventListener("keydown", _autoFS);\n' +
+'  };\n' +
+'  document.addEventListener("click", _autoFS);\n' +
+'  document.addEventListener("keydown", _autoFS);\n' +
 '})();\n' +
 '</script>\n' +
 '</body>\n' +
