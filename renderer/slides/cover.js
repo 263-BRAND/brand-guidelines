@@ -1,7 +1,95 @@
 // renderer/slides/cover.js
+// ASCII logo data — extracted from brand heart logo, fixed proportions
+var ASCII_LOGO = [
+  "                                         ▓▓▓▓▓▒",
+  "                                  ▓▓██████████████▓",
+  "                              ██████████████████████▓",
+  "                          ▓███████████████████████████",
+  "                       ▒██████████████████████████████▒",
+  "                     ▓█████████████████████████████████",
+  "                   ████████████████████████████████████",
+  "                 ██████████████████████████████████████",
+  "                ███████████████████████████████████████",
+  "               ▒███████████████████████████████████████",
+  "               ████████████████████████████████████████",
+  "               ████████████████████████████████████████",
+  "               ███████████████████████████████████████▓",
+  "               ▓███▓▓▓▓▓▓▓▓▓▓█▓▓▓██▓▓▓▓▓▓█▓▓▓▓▓▓▓▓▓▓██",
+  "               ▒███          █   █      ██          ██",
+  "               ▒██████████   █   █▓▓▓▓▓▓█████████   █",
+  "                ██          ▓▓          █▓         ▒█",
+  "                ██          █           █▒         ▓▒",
+  "                ▒█  ▒████████   █████   ████████   ▓",
+  "                 ▒         ▓█          ▒▓         ▒",
+  "                 ▓         ██         ▓█▓▒▒      ▓▒",
+  "                 ▓███████████████████████████████▓",
+  "                  ███████████████████████████████",
+  "                  ██████████████████████████████",
+  "                   ████████████████████████████▒",
+  "                   ███████████████████████████▓",
+  "                    █████████████████████████▓",
+  "                    ████████████████████████▓",
+  "                     ██████████████████████▓",
+  "                     ▓████████████████████▓",
+  "                      ███████████████████",
+  "                       █████████████████",
+  "                        ██████████████▓",
+  "                         ████████████",
+  "                          █████████▒",
+  "                           ▒████▒"
+];
+
 function renderSlide(slide, tokens, pages, index, resolvedBg) {
-  const c = tokens.colorSchemes[pages.colorScheme];
-  const W = 1920;
+  var c = tokens.colorSchemes[pages.colorScheme];
+  var isTemplate = pages.scene === 'template' || slide.type === 'cover-template';
+
+  if (isTemplate) {
+    return renderTemplate(slide, tokens, pages, index, c);
+  }
+  return renderThemed(slide, tokens, pages, index, c, resolvedBg);
+}
+
+// === Template cover: light bg, ASCII logo, centered text ===
+function renderTemplate(slide, tokens, pages, index, c) {
+  var titleFontSize = tokens.typography.html.scale.coverTitle.template;
+  var bodyFontSize = tokens.typography.html.scale.body.template;
+
+  var html = '<div class="slide-page" id="s' + index + '" style="background:' + c.lightGray + '; position:relative; overflow:hidden;">\n';
+
+  // ASCII logo
+  var asciiFontSize = 11; // pt — scales to ~0.55vw at 1920px
+  html += '<div style="position:absolute;top:9%;left:50%;transform:translateX(-50%);z-index:5;">\n';
+  html += '<pre style="font-family:\'Courier New\',\'Source Code Pro\',Consolas,monospace;font-size:' + asciiFontSize + 'pt;line-height:0.6;color:' + c.primary + ';white-space:pre;user-select:none;margin:0;">\n';
+  for (var li = 0; li < ASCII_LOGO.length; li++) {
+    html += esc(ASCII_LOGO[li]) + '\n';
+  }
+  html += '</pre>\n</div>\n';
+
+  // Title + meta
+  var contentTop = 9 + 36; // top% + ascii approx height%
+  html += '<div style="position:absolute;top:' + contentTop + '%;left:50%;transform:translateX(-50%);text-align:center;z-index:10;width:80%;">\n';
+  html += '<h1 style="font-size:' + titleFontSize + 'pt;font-weight:bold;color:' + c.dark + ';letter-spacing:3px;margin-bottom:14px;">' + esc(slide.title) + '</h1>\n';
+
+  var parts = [];
+  if (slide.presenter) parts.push('<span>汇报人：' + esc(slide.presenter) + '</span>');
+  if (slide.department) parts.push('<span style="margin-left:24px;">' + esc(slide.department) + '</span>');
+  html += '<div style="font-size:' + bodyFontSize + 'pt;color:' + c.gray + ';display:flex;gap:24px;justify-content:center;">\n';
+  html += parts.join('<span style="color:' + c.primary + ';opacity:0.5;"> · </span>') + '\n';
+  html += '</div>\n';
+  html += '</div>\n';
+
+  // Company name — brand gray at reduced opacity
+  html += '<div style="position:absolute;bottom:5%;left:0;width:100%;text-align:center;font-size:' + tokens.typography.html.scale.caption.template + 'pt;color:' + c.gray + ';opacity:0.45;">\n';
+  html += esc(pages.companyName || '二六三网络通信股份有限公司') + '\n';
+  html += '</div>\n';
+
+  html += '</div>\n';
+  return html;
+}
+
+// === Themed cover: gradient bg, corner logo, left-aligned text ===
+function renderThemed(slide, tokens, pages, index, c, resolvedBg) {
+  var W = 1920;
   var bgKey = slide.background || 'primary-gradient';
   var bgStyle = resolvedBg.cover[bgKey] || resolvedBg.cover['primary-gradient'];
   var isDark = bgKey !== 'white';

@@ -1,0 +1,18 @@
+{
+  "colorScheme": "group-red",
+  "logoSet": "group",
+  "companyName": "二六三网络通信股份有限公司",
+  "slides": [
+    {
+      "type": "cover",
+      "title": "封面设计预览",
+      "subtitle": "与结尾页呼应 · Template 固定版式",
+      "presenter": "演讲人",
+      "department": "部门名称",
+      "date": "2026年8月"
+    },
+    {
+      "type": "end"
+    }
+  ]
+}
