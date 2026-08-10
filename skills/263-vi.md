@@ -81,9 +81,10 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 
 1. 根据用户需求策划大纲和页面结构
 2. 每页按母版填空（封面页固定布局、内容页标准版式）
-3. **全部硬规则锁死**：字号、颜色、Logo 位置均不可变
-4. 设计 skill **不介入**
-5. 无设计 skill 时：用 `node generate.js <pages.json>` 兜底渲染
+3. 结尾页必须是最后一页（slide 数组末尾），封面必须是第一页
+4. **全部硬规则锁死**：字号、颜色、Logo 位置均不可变
+5. 设计 skill **不介入**
+6. 无设计 skill 时：用 `node generate.js <pages.json>` 兜底渲染
 
 ### 母版封面页（Template Cover）
 
@@ -97,6 +98,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 | 汇报人/部门 | 微软雅黑，26pt，品牌 gray，水平居中，红色圆点分隔 | MUST |
 | 公司全称 | 底部居中，22pt，品牌 gray + opacity 0.45 | MUST |
 | 整体布局 | 纯色背景，无纹理，无边框，上下预留安全区 | MUST |
+| 入场动画 | 封面加载时 ASCII 逐行交错滑入（偶数行左侧滑入，奇数行右侧滑入，逐行 30ms 延迟），标题文字 1.2s 后淡入上浮 | MUST |
 
 **ASCII Logo 数据：** 从集团红心 Logo 提取，固定 36 行 monospace 字符，比例已校准（字符正方形 + 等距采样）。HTML 渲染时使用 `font-family: Courier New, monospace; line-height: 0.6; font-size: 11pt`。数据硬编码于渲染器 `renderer/slides/cover.js`。
 
@@ -202,9 +204,11 @@ Template：全部锁死。Themed：以下 MUST 规则不可违反，其余交设
 
 从 `brand-tokens.json` → `hardRules` 读取完整清单。
 
-### 结尾页比例
+### 结尾页
 
-居中 Logo + slogan PNG。尺寸按画布比例计算，不硬编码：
+**顺序要求：结尾页必须是整个 PPT 的最后一页。** 无论 Template 还是 Themed 模式，生成或改写 PPT 时，结尾页必须是 slide 数组的最后一个元素。禁止将结尾页插入到中间位置。
+
+**格式：** 居中 Logo + slogan PNG。尺寸按画布比例计算，不硬编码：
 
 - **Logo：** 高度 = 画布高度 × 30%~36%，宽度自适应（`object-fit: contain`），不强行设固定宽高
 - **Slogan：** 宽度 = 画布宽度 × 45%~55%，高度按原图比例自适应，不自行猜测宽高比
