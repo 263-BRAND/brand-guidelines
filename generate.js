@@ -75,7 +75,6 @@ for (const t of slideTypes) {
 }
 
 // Render each slide
-var hasTemplateCover = pages.scene === 'template';
 const slideHtmlArray = [];
 for (let i = 0; i < pages.slides.length; i++) {
   const slide = pages.slides[i];
@@ -114,7 +113,6 @@ const html = buildHtml({
   logoColorB64: logoColorB64,
   logoWhiteB64: logoWhiteB64,
   sloganB64: sloganB64,
-  hasTemplateCover: hasTemplateCover,
   totalSlides: pages.slides.length
 });
 
@@ -125,7 +123,6 @@ console.log('Generated: ' + outPath + ' (' + pages.slides.length + ' slides)');
 function buildHtml(opts) {
   const c = opts.tokens.colorSchemes[opts.colorScheme];
   const t = opts.tokens.typography;
-  var asciiAnimJS = opts.hasTemplateCover ? '\n' + getAsciiAnimationJS() + '\n' : '';
 
   return '<!DOCTYPE html>\n' +
 '<html lang="zh-CN">\n' +
@@ -187,7 +184,7 @@ opts.slides + '\n' +
 '      else { document.documentElement.requestFullscreen(); }\n' +
 '    }\n' +
 '  });\n' +
-asciiAnimJS +
+getAsciiAnimationJS() + '\n' +
 '})();\n' +
 '</script>\n' +
 '</body>\n' +
@@ -196,22 +193,22 @@ asciiAnimJS +
 
 function getAsciiAnimationJS() {
   return [
-'  // ASCII entrance animation for Template cover',
-'  var coverSlide = document.getElementById("s0");',
-'  if (coverSlide) {',
-'    var lines = coverSlide.querySelectorAll(".ascii-line");',
-'    if (lines.length) {',
-'      for (var i = 0; i < lines.length; i++) {',
-'        setTimeout(function(idx) {',
-'          return function() { lines[idx].style.opacity = "1"; };',
-'        }(i), i * 30);',
-'      }',
+'  // ASCII entrance animation (auto-detects Template cover, no-op otherwise)',
+'  var asciiLines = document.querySelectorAll(".ascii-line");',
+'  if (asciiLines.length) {',
+'    for (var i = 0; i < asciiLines.length; i++) {',
+'      setTimeout(function(idx) {',
+'        return function() {',
+'          asciiLines[idx].style.opacity = "1";',
+'          asciiLines[idx].style.transform = "translateX(0)";',
+'        };',
+'      }(i), i * 30);',
 '    }',
-'    var content = coverSlide.querySelector(".cover-content");',
-'    if (content) {',
+'    var coverContent = document.querySelector(".cover-content");',
+'    if (coverContent) {',
 '      setTimeout(function() {',
-'        content.style.opacity = "1";',
-'      }, lines.length * 30 + 200);',
+'        coverContent.style.opacity = "1";',
+'      }, asciiLines.length * 30 + 200);',
 '    }',
 '  }',
   ].join('\n');
