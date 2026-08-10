@@ -21,7 +21,7 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
 
   var html = '<div class="slide-page" id="s' + index + '" style="background:' + bgColor + '; position:relative;">\n';
 
-  html += '<div style="position:absolute;top:' + l.top + ';right:' + l.right + ';width:' + l.width + ';height:' + l.height + ';">\n';
+  html += '<div style="position:absolute;top:' + l.top + ';right:' + l.right + ';width:' + l.size + ';aspect-ratio:1;height:auto;">\n';
   html += '<div class="logo-color-img" style="width:100%;height:100%;"></div>\n';
   html += '</div>\n';
 
