@@ -41,10 +41,33 @@
       "white": "assets/logos/logo-group-white.png"
     },
     "cloud": {
-      "color": "assets/logos/logo-cloud-color.png"
+      "color": "assets/logos/logo-cloud-color.png",
+      "white": "assets/logos/logo-cloud-white.png"
+    },
+    "businessLines": {
+      "group": { "color": "assets/logos/logo-group-color.png", "white": "assets/logos/logo-group-white.png" },
+      "cloud-communication": { "color": "assets/logos/logo-cloud-color.png", "white": "assets/logos/logo-cloud-white.png" }
     }
   },
   "slogan": "assets/slogan.png",
+  "hardRules": {
+    "logo": {
+      "innerPageSize": "113x113px",
+      "safeZone": "Logo安全区内禁止任何装饰元素、文字、图标、分割线",
+      "shallowBg": "彩稿Logo",
+      "darkBg": "反白Logo",
+      "endingPage": "居中Logo + slogan PNG"
+    },
+    "typography": {
+      "absoluteMinSize": "20pt",
+      "bodyMinSize": "24pt",
+      "fontFamily": "微软雅黑"
+    },
+    "color": {
+      "primary": "#D0121B",
+      "disallowed": "严禁使用非色板颜色"
+    }
+  },
   "layout": {
     "innerPageLogo": {
       "right": "80px",
