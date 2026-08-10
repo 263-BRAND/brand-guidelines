@@ -52,7 +52,7 @@
   "slogan": "assets/slogan.png",
   "hardRules": {
     "logo": {
-      "innerPageSize": "80x80px",
+      "innerPageSize": "4.2% of canvas width, square (aspect-ratio:1)",
       "safeZone": "Logo矩形边界框内禁止任何内容像素进入——包括文字、页码、装饰、图标、分割线、背景图形。无一例外",
       "shallowBg": "彩稿Logo",
       "darkBg": "反白Logo",
@@ -69,11 +69,15 @@
     }
   },
   "layout": {
+    "coverLogo": {
+      "left": "6%",
+      "top": "8%",
+      "size": "6.5%"
+    },
     "innerPageLogo": {
-      "right": "80px",
-      "top": "46px",
-      "width": "80px",
-      "height": "80px"
+      "right": "4.2%",
+      "top": "4.3%",
+      "size": "4.2%"
     }
   },
   "backgrounds": {

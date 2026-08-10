@@ -12,11 +12,14 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
   var logoClass = isDark ? 'logo-white-img' : 'logo-color-img';
   var lineColor = isDark ? c.white : c.primary;
 
-  var html = '<div class="slide-page" id="s' + index + '" style="background:' + bgStyle + '; position:relative;">\n';
-  html += '<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding-left:6%;">\n';
+  var cl = tokens.layout.coverLogo;
+  var coverLogoLeft = cl.left, coverLogoTop = cl.top, coverLogoSize = cl.size;
 
-  html += '<div style="position:absolute;top:8%;left:6%;">\n';
-  html += '<div class="' + logoClass + '" style="width:' + Math.round(W * 0.28) + 'px;height:' + Math.round(1080 * 0.28) + 'px;"></div>\n';
+  var html = '<div class="slide-page" id="s' + index + '" style="background:' + bgStyle + '; position:relative;">\n';
+  html += '<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding-left:' + coverLogoLeft + ';">\n';
+
+  html += '<div style="position:absolute;top:' + coverLogoTop + ';left:' + coverLogoLeft + ';">\n';
+  html += '<div class="' + logoClass + '" style="width:' + coverLogoSize + ';aspect-ratio:1;height:auto;"></div>\n';
   html += '</div>\n';
 
   html += '<h1 style="font-size:' + tokens.typography.scale.coverTitle.template + ';font-weight:bold;color:' + textColor + ';margin-bottom:16px;max-width:80%;">' + esc(slide.title) + '</h1>\n';
