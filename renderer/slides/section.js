@@ -11,16 +11,16 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
 
   var html = '<div class="slide-page" id="s' + index + '" style="background:' + bgColor + '; overflow:hidden;">\n';
 
-  html += '<div style="position:absolute;top:' + l.top + ';right:' + l.right + ';width:' + l.size + ';aspect-ratio:1;height:auto;">\n';
+  html += '<div style="position:absolute;top:' + l.top + ';right:' + l.right + ';width:' + l.width + ';height:' + l.height + ';">\n';
   html += '<div class="' + logoClass + '" style="width:100%;height:100%;"></div>\n';
   html += '</div>\n';
 
   html += '<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;">\n';
-  html += '<div style="font-size:' + tokens.typography.html.scale.coverTitle.template + 'pt;font-weight:bold;color:' + c.primaryLight + ';opacity:0.15;letter-spacing:8px;">' + esc(slide.sectionNumber) + '</div>\n';
-  html += '<h2 style="font-size:' + tokens.typography.html.scale.contentTitle.template + 'pt;font-weight:bold;color:' + textColor + ';margin-top:-24px;">' + esc(slide.title) + '</h2>\n';
+  html += '<div style="font-size:' + tokens.typography.sizes.coverTitle + ';font-weight:bold;color:' + c.primaryLight + ';opacity:0.15;letter-spacing:8px;">' + esc(slide.sectionNumber) + '</div>\n';
+  html += '<h2 style="font-size:' + tokens.typography.sizes.sectionTitle + ';font-weight:bold;color:' + textColor + ';margin-top:-24px;">' + esc(slide.title) + '</h2>\n';
 
   if (slide.subtitle) {
-    html += '<p style="font-size:' + tokens.typography.html.scale.subtitle.template + 'pt;color:' + subColor + ';margin-top:12px;">' + esc(slide.subtitle) + '</p>\n';
+    html += '<p style="font-size:' + tokens.typography.sizes.subtitle + ';color:' + subColor + ';margin-top:12px;">' + esc(slide.subtitle) + '</p>\n';
   }
 
   html += '<div style="width:60px;height:3px;background:' + c.primary + ';margin-top:24px;"></div>\n';

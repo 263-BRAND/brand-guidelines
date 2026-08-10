@@ -30,7 +30,8 @@ html, body { width:100%; height:100%; margin:0; overflow:hidden; background:#111
 <body>
 <div id="player">
 <div class="slide-page" id="s0" style="background:#FFFFFF; position:relative; overflow:hidden;">
-<div style="position:absolute;top:12%;left:50%;transform:translateX(-50%);z-index:5;">
+<canvas id="binaryRain0" style="position:absolute;inset:0;z-index:0;opacity:0.08;"></canvas>
+<div style="position:absolute;top:16%;left:50%;transform:translateX(-50%);z-index:5;">
 <div style="transform:scale(0.576, 0.528);transform-origin:top center;">
 <pre style="font-family:'Courier New','Source Code Pro',Consolas,monospace;font-size:11pt;line-height:0.6;color:#D0121B;white-space:pre;user-select:none;margin:0;transform:scaleX(1.8);">
 <span class="ascii-line" style="display:block;opacity:0;transform:translateX(-60px);transition:opacity 0.6s ease,transform 0.6s ease;">                          ▓▓▓▓▓▒</span>
@@ -73,7 +74,7 @@ html, body { width:100%; height:100%; margin:0; overflow:hidden; background:#111
 </pre>
 </div>
 </div>
-<div class="cover-content" style="position:absolute;top:45%;left:50%;transform:translateX(-50%);text-align:center;z-index:10;width:80%;opacity:0;transition:opacity 0.8s ease;">
+<div class="cover-content" style="position:absolute;top:48%;left:50%;transform:translateX(-50%);text-align:center;z-index:10;width:80%;opacity:0;transition:opacity 0.8s ease;">
 <h1 style="font-size:48px;font-weight:bold;color:#2D3847;letter-spacing:3px;margin-bottom:14px;">AI工具心得</h1>
 <div style="font-size:24px;color:#595959;display:flex;gap:24px;justify-content:center;">
 <span>汇报人：杜鸣</span></div>
@@ -111,7 +112,7 @@ html, body { width:100%; height:100%; margin:0; overflow:hidden; background:#111
 </div>
 </div>
 
-<div class="slide-page" id="s2" style="background:#FFFFFF; position:relative;">
+<div class="slide-page" id="s2" style="background:#FFFFFF; overflow:hidden;">
 <div style="position:absolute;top:46px;right:80px;width:113px;height:113px;">
 <div class="logo-color-img" style="width:100%;height:100%;"></div>
 </div>
@@ -143,7 +144,7 @@ html, body { width:100%; height:100%; margin:0; overflow:hidden; background:#111
 </div>
 </div>
 
-<div class="slide-page" id="s4" style="background:undefined; position:relative;">
+<div class="slide-page" id="s4" style="background:undefined; overflow:hidden;">
 <div style="position:absolute;top:46px;right:80px;width:113px;height:113px;">
 <div class="logo-color-img" style="width:100%;height:100%;"></div>
 </div>
@@ -214,7 +215,7 @@ html, body { width:100%; height:100%; margin:0; overflow:hidden; background:#111
 </div>
 </div>
 
-<div class="slide-page" id="s7" style="background:#FFFFFF; position:relative;">
+<div class="slide-page" id="s7" style="background:#FFFFFF; overflow:hidden;">
 <div style="position:absolute;top:46px;right:80px;width:113px;height:113px;">
 <div class="logo-color-img" style="width:100%;height:100%;"></div>
 </div>
@@ -254,7 +255,7 @@ html, body { width:100%; height:100%; margin:0; overflow:hidden; background:#111
 </div>
 </div>
 
-<div class="slide-page" id="s9" style="background:#FFFFFF; position:relative;">
+<div class="slide-page" id="s9" style="background:#FFFFFF; overflow:hidden;">
 <div style="position:absolute;top:46px;right:80px;width:113px;height:113px;">
 <div class="logo-color-img" style="width:100%;height:100%;"></div>
 </div>
@@ -314,7 +315,7 @@ html, body { width:100%; height:100%; margin:0; overflow:hidden; background:#111
 </div>
 </div>
 
-<div class="slide-page" id="s12" style="background:#FFFFFF; position:relative;">
+<div class="slide-page" id="s12" style="background:#FFFFFF; overflow:hidden;">
 <div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;">
 <div class="logo-color-img" style="width:288px;height:162px;margin-bottom:40px;"></div>
 <div class="slogan-img" style="width:768px;height:80px;"></div>
@@ -392,6 +393,41 @@ html, body { width:100%; height:100%; margin:0; overflow:hidden; background:#111
   };
   document.addEventListener("click", _autoFS);
   document.addEventListener("keydown", _autoFS);
+  // Binary rain (Matrix-style) for cover slides
+  var rainCanvases = document.querySelectorAll("canvas[id^=binaryRain]");
+  for (var rc = 0; rc < rainCanvases.length; rc++) {
+    (function(canvas) {
+      var ctx = canvas.getContext("2d");
+      var parent = canvas.parentElement;
+      canvas.width = 1920;
+      canvas.height = 1080;
+      var chars = "01";
+      var fontSize = 18;
+      var columns = Math.floor(canvas.width / fontSize);
+      var drops = [];
+      for (var d = 0; d < columns; d++) {
+        drops[d] = Math.floor(Math.random() * -canvas.height / fontSize);
+      }
+      var primaryColor = getComputedStyle(document.documentElement).getPropertyValue("--primary").trim() || "#D0121B";
+      function draw() {
+        ctx.fillStyle = "rgba(255,255,255,0.03)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = primaryColor;
+        ctx.font = fontSize + "px Courier New, monospace";
+        for (var c = 0; c < drops.length; c++) {
+          var text = chars[Math.floor(Math.random() * chars.length)];
+          var x = c * fontSize;
+          var y = drops[c] * fontSize;
+          ctx.fillText(text, x, y);
+          if (y > canvas.height && Math.random() > 0.975) {
+            drops[c] = 0;
+          }
+          drops[c]++;
+        }
+      }
+      setInterval(draw, 80);
+    })(rainCanvases[rc]);
+  }
 })();
 </script>
 </body>

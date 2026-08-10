@@ -229,6 +229,41 @@ opts.slides + '\n' +
 '  };\n' +
 '  document.addEventListener("click", _autoFS);\n' +
 '  document.addEventListener("keydown", _autoFS);\n' +
+'  // Binary rain (Matrix-style) for cover slides\n' +
+'  var rainCanvases = document.querySelectorAll("canvas[id^=binaryRain]");\n' +
+'  for (var rc = 0; rc < rainCanvases.length; rc++) {\n' +
+'    (function(canvas) {\n' +
+'      var ctx = canvas.getContext("2d");\n' +
+'      var parent = canvas.parentElement;\n' +
+'      canvas.width = 1920;\n' +
+'      canvas.height = 1080;\n' +
+'      var chars = "01";\n' +
+'      var fontSize = 18;\n' +
+'      var columns = Math.floor(canvas.width / fontSize);\n' +
+'      var drops = [];\n' +
+'      for (var d = 0; d < columns; d++) {\n' +
+'        drops[d] = Math.floor(Math.random() * -canvas.height / fontSize);\n' +
+'      }\n' +
+'      var primaryColor = getComputedStyle(document.documentElement).getPropertyValue("--primary").trim() || "#D0121B";\n' +
+'      function draw() {\n' +
+'        ctx.fillStyle = "rgba(255,255,255,0.03)";\n' +
+'        ctx.fillRect(0, 0, canvas.width, canvas.height);\n' +
+'        ctx.fillStyle = primaryColor;\n' +
+'        ctx.font = fontSize + "px Courier New, monospace";\n' +
+'        for (var c = 0; c < drops.length; c++) {\n' +
+'          var text = chars[Math.floor(Math.random() * chars.length)];\n' +
+'          var x = c * fontSize;\n' +
+'          var y = drops[c] * fontSize;\n' +
+'          ctx.fillText(text, x, y);\n' +
+'          if (y > canvas.height && Math.random() > 0.975) {\n' +
+'            drops[c] = 0;\n' +
+'          }\n' +
+'          drops[c]++;\n' +
+'        }\n' +
+'      }\n' +
+'      setInterval(draw, 80);\n' +
+'    })(rainCanvases[rc]);\n' +
+'  }\n' +
 '})();\n' +
 '</script>\n' +
 '</body>\n' +

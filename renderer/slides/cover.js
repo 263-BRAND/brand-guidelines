@@ -8,6 +8,9 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
 
   var html = '<div class="slide-page" id="s' + index + '" style="background:' + bgStyle + '; position:relative; overflow:hidden;">\n';
 
+  // Binary rain canvas
+  html += '<canvas id="binaryRain' + index + '" style="position:absolute;inset:0;z-index:0;opacity:0.08;"></canvas>\n';
+
   // ASCII art — one span per line, alternating slide-in directions
   var ascii = tokens.coverAscii;
   if (ascii && ascii.art) {
@@ -15,7 +18,7 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
     var asciiColor = ascii.color.replace('{primary}', c.primary);
     var dist = ascii.slideDistance || '60px';
     var lines = ascii.art.split('\n');
-    html += '<div style="position:absolute;top:12%;left:50%;transform:translateX(-50%);z-index:5;">\n';
+    html += '<div style="position:absolute;top:16%;left:50%;transform:translateX(-50%);z-index:5;">\n';
     var scaleX = asciiFont.scaleX || '1';
     var overallScaleX = asciiFont.overallScaleX || '1';
     var overallScaleY = asciiFont.overallScaleY || '1';
@@ -31,10 +34,9 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
   }
 
   // Title block
-  html += '<div class="cover-content" style="position:absolute;top:45%;left:50%;transform:translateX(-50%);text-align:center;z-index:10;width:80%;opacity:0;transition:opacity 0.8s ease;">\n';
+  html += '<div class="cover-content" style="position:absolute;top:48%;left:50%;transform:translateX(-50%);text-align:center;z-index:10;width:80%;opacity:0;transition:opacity 0.8s ease;">\n';
   html += '<h1 style="font-size:' + tokens.typography.sizes.coverTitle + ';font-weight:bold;color:' + c.dark + ';letter-spacing:3px;margin-bottom:14px;">' + esc(slide.title) + '</h1>\n';
 
-  // Subtitle + meta
   if (slide.subtitle || slide.presenter || slide.department) {
     html += '<div style="font-size:' + tokens.typography.sizes.subtitle + ';color:' + c.gray + ';display:flex;gap:24px;justify-content:center;">\n';
     if (slide.presenter) { html += '<span>汇报人：' + esc(slide.presenter) + '</span>'; }
@@ -45,7 +47,7 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
 
   html += '</div>\n';
 
-  // Footer — company name
+  // Footer
   html += '<div style="position:absolute;bottom:5%;left:0;width:100%;text-align:center;font-size:' + tokens.typography.sizes.caption + ';color:' + c.gray + ';opacity:0.45;">\n';
   html += esc(pages.companyName || '二六三网络通信股份有限公司') + '\n';
   html += '</div>\n';
