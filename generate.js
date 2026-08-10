@@ -134,7 +134,7 @@ function buildHtml(opts) {
 '* { margin:0; padding:0; box-sizing:border-box; }\n' +
 'html, body { width:100%; height:100%; overflow:hidden; background:#111; }\n' +
 'body { display:flex; justify-content:center; align-items:center; }\n' +
-'#player { width:1920px; height:1080px; position:relative; overflow:hidden; transform-origin:center center; }\n' +
+'#player { width:1920px; height:1080px; position:relative; overflow:hidden; transform-origin:center center; flex-shrink:0; }\n' +
 '.slide-page { position:absolute !important; top:0; left:0; width:100%; height:100%; opacity:0; transition:opacity 0.35s ease; z-index:0; pointer-events:none; }\n' +
 '.slide-page.active { opacity:1; z-index:2; pointer-events:auto; }\n' +
 ':root {\n' +
