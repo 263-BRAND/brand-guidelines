@@ -113,7 +113,12 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 ### 路径 A × Template（从零生成，内部汇报）
 
 - **封面 + 结尾页**：skill renderer 固定排版
-- **内容页**：使用 `"type": "custom"`，agent 在 `"html"` 字段写完整的 inline HTML。遵循品牌色值（`dark` 标题、`gray` 正文、`primary` 强调）和字号体系（`typography.sizes`），布局由 agent 自由控制
+- **内容页**：使用 `"type": "custom"`，agent 在 `"html"` 字段写完整的 inline HTML
+- **布局硬约束**（agent 必须遵守）：
+  - Logo 安全区：右上角 80×80px 范围（`right:5.2% top:5.3%`）内禁止任何内容
+  - 页面安全区：内容必须约束在 `top:12%` ~ `bottom:18%` 之间（底部留更多空间防止被视口裁切）
+  - 品牌色值：标题 `#2D3847`、正文 `#595959`、强调 `#D0121B`，禁止纯黑
+  - 字号：标题 40pt、副标题 30pt、正文 26pt、标注 22pt（`typography.sizes.*.template`）
 - 生成：`node generate.js <pages.json>`
 
 ### 路径 A × Themed（从零生成，对外展示）
