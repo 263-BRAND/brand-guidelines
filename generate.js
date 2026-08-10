@@ -134,9 +134,9 @@ function buildHtml(opts) {
 '<title>263 PPT - ' + opts.colorScheme + '</title>\n' +
 '<style>\n' +
 '* { margin:0; padding:0; box-sizing:border-box; }\n' +
-'html, body { width:100%; height:100%; overflow:hidden; background:#111; }\n' +
-'body { display:flex; justify-content:center; align-items:center; font-family:' + t.fontFamily + '; }\n' +
-'#player { width:' + W + 'px; height:' + H + 'px; position:relative; overflow:hidden; transform-origin:center center; flex-shrink:0; }\n' +
+'html, body { width:100%; height:100%; margin:0; overflow:hidden; background:#111; font-family:' + t.fontFamily + '; }\n' +
+':root { --s: 1; }\n' +
+'#player { width:' + W + 'px; height:' + H + 'px; position:fixed; top:0; left:50%; transform:translate(-50%,0) scale(var(--s)); overflow:hidden; }\n' +
 '.slide-page { position:absolute !important; top:0; left:0; width:100%; height:100%; opacity:0; pointer-events:none; transition:opacity 0.35s ease; z-index:0; }\n' +
 '.slide-page.active { opacity:1; pointer-events:auto; z-index:2; }\n' +
 ':root {\n' +
@@ -188,6 +188,12 @@ opts.slides + '\n' +
 '    }\n' +
 '  });\n' +
 '  show(0);\n' +
+'  // Double-click to toggle fullscreen\n' +
+'  document.addEventListener("dblclick", function(e) {\n' +
+'    e.preventDefault();\n' +
+'    if (document.fullscreenElement) { document.exitFullscreen(); }\n' +
+'    else { document.documentElement.requestFullscreen(); }\n' +
+'  });\n' +
 '  // ASCII line-by-line staggered entrance\n' +
 '  var asciiLines = document.querySelectorAll(".ascii-line");\n' +
 '  if (asciiLines.length) {\n' +
@@ -208,14 +214,21 @@ opts.slides + '\n' +
 '    }\n' +
 '  }\n' +
 '  function resize() {\n' +
-'    var pw = ' + W + ', ph = ' + H + ';\n' +
-'    var scaleX = window.innerWidth / pw;\n' +
-'    var scaleY = window.innerHeight / ph;\n' +
-'    var scale = Math.min(scaleX, scaleY);\n' +
-'    document.getElementById("player").style.transform = "scale(" + scale + ")";\n' +
+'    var s = window.innerWidth / ' + W + ';\n' +
+'    document.documentElement.style.setProperty("--s", s);\n' +
 '  }\n' +
 '  window.addEventListener("resize", resize);\n' +
 '  resize();\n' +
+'  // Auto-enter fullscreen on first interaction (click or keypress)\n' +
+'  var _autoFS = function() {\n' +
+'    if (!document.fullscreenElement) {\n' +
+'      document.documentElement.requestFullscreen().catch(function() {});\n' +
+'    }\n' +
+'    document.removeEventListener("click", _autoFS);\n' +
+'    document.removeEventListener("keydown", _autoFS);\n' +
+'  };\n' +
+'  document.addEventListener("click", _autoFS);\n' +
+'  document.addEventListener("keydown", _autoFS);\n' +
 '})();\n' +
 '</script>\n' +
 '</body>\n' +

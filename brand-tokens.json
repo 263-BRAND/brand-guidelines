@@ -48,6 +48,7 @@
       "scaleX": "1.8",
       "overallScaleX": "0.576",
       "overallScaleY": "0.528",
+      "offsetX": "0",
       "exemption": "ASCII 字符画属于装饰图形，不受 minSize 16px 限制"
     }
   },
@@ -62,6 +63,12 @@
   },
   "slogan": "assets/slogan.png",
   "layout": {
+    "safeArea": {
+      "top": "8%",
+      "bottom": "8%",
+      "left": "5%",
+      "right": "5%"
+    },
     "innerPageLogo": {
       "right": "80px",
       "top": "46px",
