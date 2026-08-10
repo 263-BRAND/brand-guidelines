@@ -1,6 +1,39 @@
 # 263 VI PPT 模板系统 — 项目进度
 
-**更新：2026-08-07**
+**更新：2026-08-10**
+
+---
+
+## 2026-08-10 进展：bug 修复 + 品牌规则收紧 + ASCII 封面
+
+### 修复
+
+- **flex 压缩 bug**：`generate.js` — `#player` 缺 `flex-shrink:0`，视口 < 1920px 时 flex + JS scale 造成双重压缩。修复后播放器宽度正常。
+- **正文色 bug**：`content.js` 正文用 `c.dark`（标题色），改为 `c.gray`。
+
+### 品牌规则更新
+
+| 规则 | 旧 | 新 |
+|------|----|----|
+| 背景系统 | 封面4选项 / 内页2选项 | 全部白色 |
+| 正文颜色 | 无明确规则 | 标题=dark、正文=gray、强调=primary，禁止纯黑 |
+| ASCII 字符画 | 无 | 存入 brand-tokens.json，禁止 AI 自生成 |
+
+### ASCII 封面 Logo
+
+- 263 心形 Logo 的 ASCII 字符画存入 `brand-tokens.json` → `coverAscii.art`
+- 每行独立 `<span>` + JS `setTimeout` 逐行交错动画（奇数行左滑入、偶数行右滑入）
+- 参数可调：`scaleX`(比例) + `overallScaleX/Y`(整体大小)，调至与真实 Logo 视觉一致
+- 字号豁免：ASCII 装饰图形不受 16px 底线约束（`typography.asciiArt.exemption`）
+
+### 文件清理
+
+- 删除冗余 `skills/263-vi.md`，唯一真相源：`.claude/skills/263-vi/SKILL.md`
+- 删除旧 VI skill 安装（`.claude/skills/263-vi/` 已移除，当前无安装）
+
+### Code review 教训
+
+- 渲染器 review 不能只读代码，必须浏览器实测：窗口缩放、翻页遍历、背景模式切换
 
 ---
 

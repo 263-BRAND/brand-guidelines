@@ -24,17 +24,44 @@
 
 业务线使用自己的产品 Logo 时，其他品牌规则不变。
 
+### 正文颜色 (Text Colors)
+
+三层体系，严格对应：
+
+| 层级 | 色值 | 用途 |
+|------|------|------|
+| 标题色 | `dark` (#2D3847) | 页面标题、卡片标题、章节标题 |
+| 正文色 | `gray` (#595959) | 段落文本、描述、辅助信息 |
+| 强调色 | `primary` | 链接、标签、重点标记、分割线 |
+
+禁止使用纯黑 `#000000` 作为文本色。
+
 ### 字体层级 (Typography Scale)
 
 以 75 寸电视 @ 5m 会议场景为基准，兼顾笔记本屏幕。正文字体：微软雅黑。
 
 | 层级 | 字号 | 刚性 |
 |---|---|---|
-| 封面标题 | 56–72pt | Template 固定 / Themed 区间 |
-| 内容页标题 | 36–44pt | Template 固定 / Themed 区间 |
-| 副标题 | 28–32pt | Template 固定 / Themed 区间 |
-| 正文 | 24–28pt（底线） | MUST |
-| 图表标签/注脚 | ≥ 20pt（极限） | MUST |
+| 封面标题 | 48px | Template 固定 / Themed 区间 |
+| 内容页标题 | 32–36px | Template 固定 / Themed 区间 |
+| 副标题 | 24px | Template 固定 / Themed 区间 |
+| 正文 | 20px（底线） | MUST |
+| 图表标签/注脚 | ≥ 16px（极限） | MUST |
+
+ASCII 字符画（封面 Logo 图）属于装饰图形，不受 16px 底线约束。
+
+### 背景系统
+
+所有页面统一白色底色，不提供背景选项。封面和内页均为 `#FFFFFF`。
+
+### ASCII 字符画（封面 Logo）
+
+263 心形 Logo 的 ASCII 字符画存入 `brand-tokens.json` → `coverAscii.art`。严禁 AI 自行生成或修改，必须从 token 原样读取。渲染规则：
+
+- `<pre>` + `white-space:pre` + `font-family:monospace` 确保跨平台对齐
+- 每行独立 `<span class="ascii-line">`，奇数行左滑入、偶数行右滑入
+- JS `setTimeout(i × 30ms)` 逐行交错触发，0.6s 过渡，全部完成后标题淡入
+- 参数：`font-size:11pt`、`line-height:0.6`、`scaleX:1.8`、`overallScaleX:0.576`、`overallScaleY:0.528`
 
 ### Logo 规则
 
@@ -45,6 +72,7 @@
 | 浅色底使用彩稿 Logo | MUST |
 | 深色底使用反白 Logo | MUST |
 | 结尾页：居中 Logo + slogan PNG | MUST |
+| 封面不使用 PNG Logo，ASCII 字符画替代 | MUST |
 
 ### 硬规则 (Hard Rules)
 
