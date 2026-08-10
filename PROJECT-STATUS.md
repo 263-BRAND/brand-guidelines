@@ -4,7 +4,27 @@
 
 ---
 
-## 2026-08-10 进展：Template 封面定稿 + 渲染器双模
+## 最新（2026-08-10 下午）
+
+### Bugfix：vw→pt 单位修复
+
+Code review 发现 Template 封面渲染器使用了 `vw` 单位，违反跨格式直出规则（必须 `pt`）。已修复：
+- `cover.js` 回退 `pt` 单位，与 Themed 渲染器一致
+- `generate.js` 恢复 CSS `transform: scale()` 缩放方案，pt 值在任意屏幕尺寸正确渲染
+
+### 本轮提交（共 5 个）
+
+```
+5e3626a fix: revert to pt units in cover renderer, restore transform scaling
+42ee178 fix: responsive player — replace fixed 1920x1080 with vw/vh, vw-based fonts
+67de60a feat: add Template cover with ASCII heart logo, update VI skill spec
+05afd0d docs: add Template cover spec to CONTEXT.md
+2eac103 docs: update CONTEXT.md, PROJECT-STATUS.md, add skill.md entry point
+```
+
+---
+
+## 2026-08-10 上午：Template 封面定稿 + 渲染器双模
 
 ### Template 封面设计完成
 
