@@ -136,7 +136,7 @@ function buildHtml(opts) {
 '* { margin:0; padding:0; box-sizing:border-box; }\n' +
 'html, body { width:100%; height:100%; margin:0; overflow:hidden; background:#FFF; font-family:' + t.fontFamily + '; }\n' +
 ':root { --s: 1; }\n' +
-'#player { width:' + W + 'px; height:' + H + 'px; position:fixed; top:0; left:50%; transform:translate(-50%,0) scale(var(--s)); overflow:hidden; }\n' +
+'#player { width:' + W + 'px; height:' + H + 'px; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(var(--s)); overflow:hidden; }\n' +
 '.slide-page { position:absolute !important; top:0; left:0; width:100%; height:100%; opacity:0; pointer-events:none; transition:opacity 0.35s ease; z-index:0; }\n' +
 '.slide-page.active { opacity:1; pointer-events:auto; z-index:2; }\n' +
 ':root {\n' +

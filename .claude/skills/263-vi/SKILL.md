@@ -216,9 +216,9 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 ### 响应式缩放
 
 - 按视口等比缩放（`scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080)`）
-- 取宽高缩放比的较小值，保证 1920×1080 画布始终完整可见，无底部裁切
-- CSS 变量 `--s` 控制，transform 字符串不变
-- 播放器 `position:fixed; top:0`，缩放后留有 margin（底色与播放器融合）
+- 取宽高缩放比的较小值，保证 1920×1080 画布始终完整可见
+- CSS 变量 `--s` 控制缩放
+- 播放器垂直居中：`position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(var(--s))`
 - F11 → 浏览器原生全屏
 
 ### 字体
