@@ -215,7 +215,7 @@ opts.slides + '\n' +
 '      canvas.width = 1920;\n' +
 '      canvas.height = 1080;\n' +
 '      var chars = "01";\n' +
-'      var fontSize = 18;\n' +
+'      var fontSize = 28;\n' +
 '      var columns = Math.floor(canvas.width / fontSize);\n' +
 '      var drops = [];\n' +
 '      for (var d = 0; d < columns; d++) {\n' +
@@ -223,7 +223,7 @@ opts.slides + '\n' +
 '      }\n' +
 '      var primaryColor = getComputedStyle(document.documentElement).getPropertyValue("--primary").trim() || "#D0121B";\n' +
 '      function draw() {\n' +
-'        ctx.fillStyle = "rgba(255,255,255,0.03)";\n' +
+'        ctx.fillStyle = "rgba(255,255,255,0.05)";\n' +
 '        ctx.fillRect(0, 0, canvas.width, canvas.height);\n' +
 '        ctx.fillStyle = primaryColor;\n' +
 '        ctx.font = fontSize + "px Courier New, monospace";\n' +

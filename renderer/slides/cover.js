@@ -15,7 +15,7 @@ function renderTemplate(slide, tokens, pages, index, c) {
   var html = '<div class="slide-page" id="s' + index + '" style="background:' + bgStyle + '; position:relative; overflow:hidden;">\n';
 
   // Binary rain canvas
-  html += '<canvas id="binaryRain' + index + '" style="position:absolute;inset:0;z-index:0;opacity:0.08;"></canvas>\n';
+  html += '<canvas id="binaryRain' + index + '" style="position:absolute;inset:0;z-index:0;opacity:0.18;"></canvas>\n';
 
   // ASCII art — from brand-tokens
   var ascii = tokens.coverAscii;
