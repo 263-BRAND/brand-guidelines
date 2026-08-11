@@ -32,7 +32,7 @@ function renderTemplate(slide, tokens, pages, index, c) {
     html += '<pre style="font-family:' + asciiFont.fontFamily + ';font-size:' + asciiFont.fontSize + ';line-height:' + asciiFont.lineHeight + ';color:' + asciiColor + ';white-space:pre;user-select:none;margin:0;transform:scaleX(' + scaleX + ');">\n';
     for (var i = 0; i < lines.length; i++) {
       var dir = (i % 2 === 0) ? '-' + dist : dist;
-      html += '<span class="ascii-line" style="display:block;opacity:0;transform:translateX(' + dir + ');transition:opacity 0.6s ease,transform 0.6s ease;">' + lines[i].substring(15) + '</span>\n';
+      html += '<span class="ascii-line" data-dir="' + dir + '" style="display:block;opacity:0;transform:translateX(' + dir + ');transition:opacity 0.6s ease,transform 0.6s ease;">' + lines[i].substring(15) + '</span>\n';
     }
     html += '</pre>\n';
     html += '</div>\n';

@@ -162,12 +162,36 @@ opts.slides + '\n' +
 '<script>\n' +
 '(function() {\n' +
 '  var slides = document.querySelectorAll(".slide-page");\n' +
-'  var current = 0;\n' +
 '  var total = ' + pages.slides.length + ';\n' +
+'  var stagger = ' + ((tokens.coverAscii && tokens.coverAscii.stagger) || 30) + ';\n' +
+'  var current = 0;\n' +
+'  // Restore saved slide on refresh\n' +
+'  try { var s = sessionStorage.getItem("263-slide"); if (s !== null) current = parseInt(s, 10) % total; } catch(e) {}\n' +
+'  function save() { try { sessionStorage.setItem("263-slide", current); } catch(e) {} }\n' +
+'  // ASCII replay — resets lines to initial offset and staggers them back in\n' +
+'  function replayAscii() {\n' +
+'    var lines = document.querySelectorAll(".slide-page.active .ascii-line");\n' +
+'    if (!lines.length) return;\n' +
+'    for (var i = 0; i < lines.length; i++) {\n' +
+'      lines[i].style.opacity = "0";\n' +
+'      lines[i].style.transform = "translateX(" + (lines[i].dataset.dir || "-60px") + ")";\n' +
+'    }\n' +
+'    var cc = document.querySelector(".slide-page.active .cover-content");\n' +
+'    if (cc) cc.style.opacity = "0";\n' +
+'    for (var j = 0; j < lines.length; j++) {\n' +
+'      setTimeout(function(idx) {\n' +
+'        return function() { lines[idx].style.opacity = "1"; lines[idx].style.transform = "translateX(0)"; };\n' +
+'      }(j), j * stagger);\n' +
+'    }\n' +
+'    if (cc) { setTimeout(function() { cc.style.opacity = "1"; }, lines.length * stagger + 200); }\n' +
+'  }\n' +
 '  function show(idx) {\n' +
+'    if (current === ((idx % total) + total) % total) return;\n' +
 '    slides[current].classList.remove("active");\n' +
 '    current = ((idx % total) + total) % total;\n' +
 '    slides[current].classList.add("active");\n' +
+'    save();\n' +
+'    if (current === 0) setTimeout(replayAscii, 50);\n' +
 '  }\n' +
 '  document.getElementById("player").addEventListener("click", function(e) {\n' +
 '    show(current + 1);\n' +
@@ -181,26 +205,8 @@ opts.slides + '\n' +
 '    } else if (key === "Home") { e.preventDefault(); show(0); }\n' +
 '    else if (key === "End") { e.preventDefault(); show(total - 1); }\n' +
 '  });\n' +
-'  show(0);\n' +
-'  // ASCII line-by-line staggered entrance\n' +
-'  var asciiLines = document.querySelectorAll(".ascii-line");\n' +
-'  if (asciiLines.length) {\n' +
-'    var stagger = ' + ((tokens.coverAscii && tokens.coverAscii.stagger) || 30) + ';\n' +
-'    for (var i = 0; i < asciiLines.length; i++) {\n' +
-'      setTimeout(function(idx) {\n' +
-'        return function() {\n' +
-'          asciiLines[idx].style.opacity = "1";\n' +
-'          asciiLines[idx].style.transform = "translateX(0)";\n' +
-'        };\n' +
-'      }(i), i * stagger);\n' +
-'    }\n' +
-'    var coverContent = document.querySelector(".cover-content");\n' +
-'    if (coverContent) {\n' +
-'      setTimeout(function() {\n' +
-'        coverContent.style.opacity = "1";\n' +
-'      }, asciiLines.length * stagger + 200);\n' +
-'    }\n' +
-'  }\n' +
+'  slides[current].classList.add("active");\n' +
+'  if (current === 0) setTimeout(replayAscii, 100);\n' +
 '  function resize() {\n' +
 '    var s = Math.min(window.innerWidth / ' + W + ', window.innerHeight / ' + H + ');\n' +
 '    document.documentElement.style.setProperty("--s", s);\n' +
