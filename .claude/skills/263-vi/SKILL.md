@@ -100,13 +100,16 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 | 整体布局 | 纯色背景，无纹理，无边框，上下预留安全区 | MUST |
 | 入场动画 | 封面加载时 ASCII 逐行交错滑入（偶数行左侧滑入，奇数行右侧滑入，逐行 30ms 延迟），标题文字 1.2s 后淡入上浮 | MUST |
 
-**ASCII Logo 数据：** 封面页固定使用 `brand-tokens.json` → `coverAscii.art` 中存储的 ASCII 字符画。**严禁 AI 自行生成或修改 ASCII 图**，必须从 brand-tokens.json 原样读取并嵌入。HTML 渲染时使用 `font-family: Courier New, monospace; line-height: 0.6; font-size: 11pt`。渲染规则：
+**ASCII Logo 数据：** 封面页固定使用 `brand-tokens.json` → `coverAscii.art` 中存储的 ASCII 字符画。**严禁 AI 自行生成或修改 ASCII 图**，必须从 brand-tokens.json 原样读取并嵌入。渲染规则：
 - 使用 `<pre>` 标签 + `white-space: pre` + `font-family: monospace` 确保跨平台对齐
+- 字体和变形参数从 `brand-tokens.json` → `typography.asciiArt` 读取：
+  - `fontFamily` / `fontSize` / `lineHeight` 用于 `<pre>` 的 CSS
+  - `scaleX` 用于 `<pre>` 的 `transform: scaleX(...)`，水平拉伸字符以还原视觉比例
+  - `overallScaleX` / `overallScaleY` 用于外层 wrapper 的 `transform: scale(..., ...)` + `transform-origin: top center`，整体缩放至合适尺寸
 - 每行独立 `<span class="ascii-line">`，偶数行左滑入、奇数行右滑入
 - JS `setTimeout(i × 30ms)` 逐行交错触发，全部完成后标题淡入
 - 每行去掉 15 个共同前导空格（`.substring(15)`），消除结构性右偏
-- 位置：`top:16%`，水平居中
-- 参数见 `brand-tokens.json` → `typography.asciiArt`
+- 位置：`top:16%`，水平居中（`left:50%; transform:translateX(-50%)`）
 - **刷新重播：** 动效绑定 `.slide-page.active`，页面刷新自动重播
 
 **封面无右上角/左上角独立 Logo。** ASCII 图案即是封面的品牌标识，不额外放置 PNG Logo。此规则仅适用于 Template 封面，内页和结尾页的 Logo 规则不变。
@@ -293,13 +296,23 @@ VI skill 不负责解析文件。外部 Agent 自行调用 MCP 或其他工具�
 
 如果用户提供的文件格式不在原生支持列表中，告知用户："这个文件格式需要先提取内容。我会尽力处理，但可能需要你确认提取结果是否准确。"
 
-## HTML 输出规范（无设计 skill 时）
+## HTML 输出规范
 
-当使用兜底渲染器时，按以下规范输出：
-- 零外部依赖，单一 HTML 文件，浏览器直接打开
-- 播放壳：全屏/键盘翻页/点击翻页
-- 内页 Logo 固定右上角（画布宽度 4.2%，见 `layout.innerPageLogo.size`）
-- 深底自动反白
+零外部依赖，单一 HTML 文件，浏览器直接打开。播放壳：全屏/键盘翻页/点击翻页。
+
+### Logo 嵌入
+
+Logo 文件（`assets/logos/`）必须以 base64 data URI 嵌入 CSS，禁止使用外部文件路径：
+
+```css
+.logo-color-img { background: url(data:image/png;base64,...) no-repeat center/contain; }
+.logo-white-img { background: url(data:image/png;base64,...) no-repeat center/contain; }
+```
+
+- 内页 Logo：右上角固定，位置和尺寸从 `brand-tokens.json` → `layout.innerPageLogo` 读取（`right` / `top` / `size`）
+- 封面 Logo（Themed）：左上角，从 `layout.coverLogo` 读取
+- 浅色底用 `.logo-color-img`，深色底用 `.logo-white-img`
+- 结尾页：居中 Logo（`layout.innerPageLogo.size`）+ slogan.png（宽度 45%~55% 画布宽），垂直居中排列
 - 字号不低于 20pt
 
 ## 数据图表规范
