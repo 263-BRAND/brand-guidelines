@@ -40,15 +40,17 @@
 
 以 75 寸电视 @ 5m 会议场景为基准，兼顾笔记本屏幕。正文字体：微软雅黑。
 
-| 层级 | 字号 | 刚性 |
-|---|---|---|
-| 封面标题 | 48px | Template 固定 / Themed 区间 |
-| 内容页标题 | 32–36px | Template 固定 / Themed 区间 |
-| 副标题 | 24px | Template 固定 / Themed 区间 |
-| 正文 | 20px（底线） | MUST |
-| 图表标签/注脚 | ≥ 16px（极限） | MUST |
+| 层级 | HTML (pt) | PPTX (pt) | 刚性 |
+|---|---|---|---|
+| 封面标题 | 64 | 64 | Template MUST / Themed 区间 |
+| 内容页标题 | 40 | 24 | Template MUST / Themed 区间 |
+| 副标题 | 30 | 20 | Template MUST / Themed 区间 |
+| 正文 | 26 | 18 | MUST |
+| 图表标签/注脚 | 22 | 14 | MUST |
 
-ASCII 字符画（封面 Logo 图）属于装饰图形，不受 16px 底线约束。
+**跨格式直出：** HTML 加 `pt` 后缀，PPTX 写数字（原生单位即 pt），禁止 pt↔px 换算。
+
+ASCII 字符画（封面 Logo 图）属于装饰图形，不受字号底线约束。
 
 ### 背景系统
 
@@ -67,12 +69,13 @@ ASCII 字符画（封面 Logo 图）属于装饰图形，不受 16px 底线约�
 
 | 规则 | 刚性 |
 |---|---|
-| 内页 Logo 尺寸：113×113px | MUST |
-| Logo 安全区内禁止装饰元素 | MUST |
+| 内页 Logo 尺寸：画布宽度 4.2%（`layout.innerPageLogo.size`） | MUST |
+| 封面 Logo（Themed）：画布宽度 6.5%（`layout.coverLogo`），左上角 | MUST |
+| 封面 Logo（Template）：不使用 PNG，以 ASCII 字符画替代 | MUST |
+| Logo 安全区内禁止任何装饰元素、文字、页码 | MUST |
 | 浅色底使用彩稿 Logo | MUST |
 | 深色底使用反白 Logo | MUST |
-| 结尾页：居中 Logo + slogan PNG | MUST |
-| 封面不使用 PNG Logo，ASCII 字符画替代 | MUST |
+| 结尾页：居中 Logo + slogan PNG（不可用文字代替） | MUST |
 
 ### 硬规则 (Hard Rules)
 
@@ -166,6 +169,16 @@ VI skill 不负责解析文件。外部 Agent 自行调用 MCP 或工具摘取�
 |---|---|---|
 | 原生支持 | HTML、JSON | 路径 B 完整能力 |
 | 尽力而为 | .pptx、.docx、.pdf、图片 | Agent 尽力提取 + VI 化，不保证完美 |
+
+### 数据图表规范
+
+图表生成受品牌色板 + 字号阈值 + 安全区三重约束。详见 SKILL.md → 数据图表规范。
+
+- **色板：** 仅 4 品牌色可用，禁止自造衍生色值。不够靠线型（实线/虚线/点线）和标记形状区分
+- **安全区：** 图表所有组成部分（图形、坐标轴、刻度、标注、图例）完整约束在 top:12% ~ bottom:18%
+- **字号阈值：** 常规 ≤8 数据点 / 密集 >8 数据点，CSS 和 SVG 各自有阈值表
+- **折线图：** 单 SVG + 固定 `viewBox="0 0 740 520"`，禁止 CSS/SVG 混用
+- **饼图/环形图：** `conic-gradient` + 白色硬停止分割线，最多 4 扇区
 
 ---
 
