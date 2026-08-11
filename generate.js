@@ -105,11 +105,25 @@ const logoColorB64 = logoBase64(logos.color);
 const logoWhiteB64 = logos.white ? logoBase64(logos.white) : '';
 const sloganB64 = tokens.slogan ? logoBase64(tokens.slogan) : '';
 
+// Build page title: 标题 - 姓名 - MMDD
+var pageTitle = '263 PPT';
+var cs = pages.slides[0];
+if (cs && cs.type === 'cover' && cs.title) {
+  var parts = [cs.title];
+  if (cs.presenter) parts.push(cs.presenter);
+  if (cs.date) {
+    var d = cs.date.replace(/[-/.]/g, '');
+    if (d.length >= 4) parts.push(d.slice(-4));
+  }
+  pageTitle = parts.join(' - ');
+}
+
 // Build output
 const html = buildHtml({
   slides: slideHtmlArray.join('\n'),
   tokens: tokens,
   colorScheme: pages.colorScheme,
+  pageTitle: pageTitle,
   logoColorB64: logoColorB64,
   logoWhiteB64: logoWhiteB64,
   sloganB64: sloganB64
@@ -131,7 +145,7 @@ function buildHtml(opts) {
 '<head>\n' +
 '<meta charset="UTF-8">\n' +
 '<meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
-'<title>263 PPT - ' + opts.colorScheme + '</title>\n' +
+'<title>' + opts.pageTitle + '</title>\n' +
 '<style>\n' +
 '* { margin:0; padding:0; box-sizing:border-box; }\n' +
 'html, body { width:100%; height:100%; margin:0; overflow:hidden; background:#FFF; font-family:' + t.fontFamily + '; }\n' +
