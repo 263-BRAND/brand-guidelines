@@ -174,3 +174,4 @@ VI skill 不负责解析文件。外部 Agent 自行调用 MCP 或工具摘取�
 - 商务蓝色值 — 官方确认
 - 硬规则后续补充（如标题字号精确值、禁用色、Logo 最小边距）
 - 云通信 Logo 反白稿
+- v2 视口原生方案 — 100vw×100vh + flexbox 替代固定画布+scale。2026-08-11 先以方案A过渡：`Math.min(width/1920, height/1080)` 解决底部裁切。方案B的视口原生改造（generate.js CSS壳 + cover/end/custom 三个renderer的px→vw/vh迁移）待方案A验证稳定后执行。

@@ -94,9 +94,10 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 
 ### 响应式缩放
 
-- 按视口宽度等比缩放（`scale = window.innerWidth / 1920`）
+- 按视口等比缩放（`scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080)`）
+- 取宽高缩放比的较小值，保证 1920×1080 画布始终完整可见，无底部裁切
 - CSS 变量 `--s` 控制，transform 字符串不变
-- 播放器 `position:fixed; top:0`，无左右黑边，高度溢出底部裁剪
+- 播放器 `position:fixed; top:0`，缩放后留有 margin（底色与播放器融合）
 - F11 → 浏览器原生全屏
 
 ## 工作流程
@@ -116,7 +117,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 - **内容页**：使用 `"type": "custom"`，agent 在 `"html"` 字段写完整的 inline HTML
 - **布局硬约束**（agent 必须遵守）：
   - Logo 安全区：右上角 80×80px 范围（`right:5.2% top:5.3%`）内禁止任何内容
-  - 页面安全区：内容必须约束在 `top:12%` ~ `bottom:25%` 之间（按宽缩放导致底部约22%被视口裁切）
+  - 页面安全区：内容必须约束在 `top:12%` ~ `bottom:18%` 之间（留出 footer 和 Logo 空间）
   - 品牌色值：标题 `#2D3847`、正文 `#595959`、强调 `#D0121B`，禁止纯黑
   - 字号：标题 40pt、副标题 30pt、正文 26pt、标注 22pt（`typography.sizes.*.template`）
 - 生成：`node generate.js <pages.json>`

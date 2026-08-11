@@ -204,7 +204,7 @@ opts.slides + '\n' +
 '    }\n' +
 '  }\n' +
 '  function resize() {\n' +
-'    var s = window.innerWidth / ' + W + ';\n' +
+'    var s = Math.min(window.innerWidth / ' + W + ', window.innerHeight / ' + H + ');\n' +
 '    document.documentElement.style.setProperty("--s", s);\n' +
 '  }\n' +
 '  window.addEventListener("resize", resize);\n' +

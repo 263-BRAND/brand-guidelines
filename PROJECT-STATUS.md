@@ -1,10 +1,25 @@
 # 263 VI PPT 模板系统 — 项目进度
 
-**更新：2026-08-11**
+**更新：2026-08-11 (18:00)**
 
 ---
 
-## 2026-08-11 进展：合并恢复 + 内容页架构调整
+## 2026-08-11 进展（下午）：方案 A 缩放修复
+
+### 底部裁切修复
+- generate.js 缩放公式从 `width/1920` 改为 `Math.min(width/1920, height/1080)`
+- 取宽高缩放比的较小值，保证 1920×1080 画布始终完整可见
+- 零副作用：renderer 不动、pt 字号体系不动、75寸电视效果不变
+
+### 方案 B 待执行
+- v2 视口原生方案（100vw×100vh + flexbox 替代固定画布 + scale）
+- 涉及：generate.js CSS 壳 + cover/end/custom 三个 renderer px→vw/vh 迁移
+- 不碰品牌数据层（brand-tokens.json / company-data.json），与 PPTX 输出管线解耦
+- 待方案 A 验证稳定后执行
+
+---
+
+## 2026-08-11 进展（上午）：合并恢复 + 内容页架构调整
 
 ### 合并丢失逻辑恢复
 - 恢复 **Template/Themed 双模式**（cover.js 分派 `pages.scene`）
