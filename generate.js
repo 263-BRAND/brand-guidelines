@@ -170,9 +170,7 @@ opts.slides + '\n' +
 '    slides[current].classList.add("active");\n' +
 '  }\n' +
 '  document.getElementById("player").addEventListener("click", function(e) {\n' +
-'    var rect = e.currentTarget.getBoundingClientRect();\n' +
-'    if (e.clientX < rect.left + rect.width / 2) { show(current - 1); }\n' +
-'    else { show(current + 1); }\n' +
+'    show(current + 1);\n' +
 '  });\n' +
 '  document.addEventListener("keydown", function(e) {\n' +
 '    var key = e.key || e.code;\n' +
