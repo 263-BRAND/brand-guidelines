@@ -20,7 +20,6 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 |------|------|----------|
 | `brand-tokens.json` | 色板、字体层级、Logo、硬规则 | 任何视觉输出 |
 | `company-data.json` | 公司信息、产品、里程碑、资质 | 需要公司/产品信息时 |
-| `CONTEXT.md` | 领域模型（术语定义、产品详情） | 不确定术语含义时 |
 
 ## 生成模式判断
 
@@ -75,6 +74,32 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 | **Template** | 按母版填空 | 对齐母版规范 |
 | **Themed** | 品牌数据 + 设计 skill 创作 | 品牌约束内重新设计 |
 
+### pages.json 结构
+
+生成 HTML 时，内容必须组织为 `pages.json`，然后执行 `node generate.js <pages.json>`。
+
+**顶层字段：**
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `colorScheme` | string | `"group-red"`（默认）或 `"business-blue"` |
+| `logoSet` | string | `"group"`（默认）或 `"cloud"` |
+| `scene` | string | `"template"`（内部汇报封面）或省略（对外展示封面） |
+| `companyName` | string | 公司全称，用于页脚 |
+| `slides` | array | 页面数组，封面第一、结尾最后 |
+
+**slide 类型及字段：**
+
+| type | 必填字段 | 可选字段 | 说明 |
+|------|------|------|------|
+| `cover` | `title` | `subtitle`, `presenter`, `department`, `date`, `background` | 封面页 |
+| `section` | `sectionNumber`, `title` | `subtitle`, `background` | 章节过渡页 |
+| `content` | `title`, `blocks[]` | `sectionLabel`, `background` | 文本内容页，blocks 每项含 `heading` + `body` |
+| `cards` | `title`, `items[]` | `sectionLabel`, `columns`(默认3), `background` | 卡片网格，items 每项含 `title` + `description`，可选 `icon` |
+| `timeline` | `title`, `events[]` | `sectionLabel`, `background` | 时间轴，events 每项含 `year` + `title`，可选 `description` |
+| `custom` | `html` | `background` | 自定义 HTML，agent 写完整 inline CSS |
+| `end` | — | `background` | 结尾页（居中 Logo + slogan） |
+
 ### 路径 A × Template：从零按母版生成
 
 用户描述需求，没有现成文件 → 你按固定母版从零生成
@@ -93,7 +118,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 | 属性 | 值 | 刚性 |
 |------|-----|:--:|
 | 背景 | `#F2F2F2`（品牌 lightGray） | MUST |
-| Logo 呈现 | ASCII 字符画（monospace），红色品牌主色，页面水平居中，距顶约 9% | MUST |
+| Logo 呈现 | ASCII 字符画（monospace），红色品牌主色，页面水平居中，距顶 16% | MUST |
 | 标题 | 微软雅黑 Bold，64pt，深色品牌 dark，水平居中 | MUST |
 | 汇报人/部门 | 微软雅黑，26pt，品牌 gray，水平居中，红色圆点分隔 | MUST |
 | 公司全称 | 底部居中，22pt，品牌 gray + opacity 0.45 | MUST |
