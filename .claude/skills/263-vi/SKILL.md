@@ -208,7 +208,9 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 
 ### 布局
 
-- 安全区：`brand-tokens.json` → `layout.safeArea`（上下 8%、左右 5%）
+- 内页内容可用范围：`top:12% ~ bottom:18%`（为右上 Logo 和底部 footer 留出空间）
+- **内容垂直居中：** 内容视觉重心围绕页面 50% 垂直中心对称分布，不得整体偏上或偏下
+- 左右留白：≥ 5%
 - 封面标题位置：`top:48%`，水平居中
 
 ### 响应式缩放
@@ -334,6 +336,7 @@ Logo 文件（`assets/logos/`）必须以 base64 data URI 嵌入 CSS，禁止使
 .logo-white-img { background: url(data:image/png;base64,...) no-repeat center/contain; }
 ```
 
+- 内页内容可用范围：`top:12% ~ bottom:18%`，内容视觉重心围绕页面 50% 垂直中心对称分布
 - 内页 Logo：右上角固定，位置和尺寸从 `brand-tokens.json` → `layout.innerPageLogo` 读取（`right` / `top` / `size`）
 - 封面 Logo（Themed）：左上角，从 `layout.coverLogo` 读取
 - 浅色底用 `.logo-color-img`，深色底用 `.logo-white-img`
