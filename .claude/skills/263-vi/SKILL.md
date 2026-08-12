@@ -163,7 +163,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 | 副标题 + 汇报人 + 部门 | 水平居中，`top:62%`（标题下方，留一行间距），合并为一个文字框，红色圆点（·）分隔 | 26pt | 品牌 gray | 居中 |
 | 公司全称 | 水平居中，`top:82%`（与 HTML 一致） | 22pt | 品牌 gray | 居中 |
 
-3. 文字框必须加半透明白色底色（`rgba(255,255,255,0.85)` 或 PPTX 等效），确保在 ASCII 字符画纹理上的可读性
+3. PPTX 文字框必须设置透明背景（`FillVisible=false` 或等效），**禁止填充任何颜色**——底图被遮挡会露出色块
 4. 位置为 MUST，禁止 Agent 自行调整——ASCII 图案在背景图中位置固定，文字偏移会导致重叠
 
 **使用时**：在 `pages.json` 中设置 `"scene": "template"`，渲染器自动切换到 ASCII 封面。不设置或设置为其他值时使用 Themed 封面（红底渐变 + 左上角 Logo）。
@@ -257,7 +257,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 
 | 层级 | HTML 值（`sizes.*.template`） | PPTX 值（硬编码） | 刚性 |
 |------|------------------------|------------------------|------|
-| 封面标题 | 64 | 64 | Template MUST / Themed 区间 |
+| 封面标题 | 64 | 43 | Template MUST / Themed 区间 |
 | 内容页标题 | 40 | 24 | 同上 |
 | 副标题 | 30 | 20 | 同上 |
 | 正文 | 26 | 18 | MUST |
@@ -499,4 +499,5 @@ Logo 和 slogan 图片**必须**以 base64 data URI 嵌入 CSS `background-image
 - 禁止同时固定 Logo 图片容器的宽和高为不同值（如 `width:288px; height:162px`）—— 结尾页 Logo 容器必须宽=高（HTML & PPTX 通用）
 - 禁止使用 `<img>` 标签引用品牌图片素材（仅 HTML）—— 必须使用 CSS `background-image` + base64 data URI
 - 禁止 PPTX 中使用外部路径链接图片 —— 必须将图片二进制内嵌到 .pptx 文件中
+- 禁止 PPTX 封面文字框填充颜色（`FillVisible=false`）—— 必须透明背景，避免遮挡封面底图
 - 禁止省略图片素材 —— 每个内页必须有右上角 Logo，结尾页必须有居中 Logo + slogan
