@@ -110,7 +110,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 | `content` | `title`, `blocks[]` | `sectionLabel`, `background` | 文本内容页，blocks 每项含 `heading` + `body` |
 | `cards` | `title`, `items[]` | `sectionLabel`, `columns`(默认3), `background` | 卡片网格，items 每项含 `title` + `description`，可选 `icon` |
 | `timeline` | `title`, `events[]` | `sectionLabel`, `background` | 时间轴，events 每项含 `year` + `title`，可选 `description` |
-| `custom` | `html` | `background` | 自定义 HTML，agent 写完整 inline CSS |
+| `custom` | `html` | `background` | 自定义 HTML（仅 HTML；PPTX 中改用 `content` 或 `cards` 替代） |
 | `end` | — | `background` | 结尾页（居中 Logo + slogan） |
 
 ### 路径 A × Template：从零按母版生成
@@ -136,7 +136,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 | 汇报人/部门 | 微软雅黑，26pt，品牌 gray，水平居中，红色圆点分隔 | MUST |
 | 公司全称 | 底部居中，22pt，品牌 gray + opacity 0.45 | MUST |
 | 整体布局 | 纯色背景，无纹理，无边框，上下预留安全区 | MUST |
-| 入场动画 | 封面加载时 ASCII 逐行交错滑入（偶数行左侧滑入，奇数行右侧滑入，逐行 30ms 延迟），标题文字 1.2s 后淡入上浮 | MUST |
+| 入场动画（仅 HTML） | 封面加载时 ASCII 逐行交错滑入（偶数行左侧滑入，奇数行右侧滑入，逐行 30ms 延迟），标题文字 1.2s 后淡入上浮 | MUST |
 
 **ASCII Logo 数据：** 封面页固定使用 `brand-tokens.json` → `coverAscii.art` 中存储的 ASCII 字符画。**严禁 AI 自行生成或修改 ASCII 图**，必须从 brand-tokens.json 原样读取并嵌入。渲染规则：
 - 使用 `<pre>` 标签 + `white-space: pre` + `font-family: monospace` 确保跨平台对齐
@@ -152,9 +152,23 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 
 **封面无右上角/左上角独立 Logo。** ASCII 图案即是封面的品牌标识，不额外放置 PNG Logo。此规则仅适用于 Template 封面，内页和结尾页的 Logo 规则不变。
 
+**PPTX Template 封面回退：** ASCII 字符画和二进制雨在 PPTX 中无法渲染，改用预渲染静态背景图 + 固定位置文字叠加：
+
+1. 背景图：`brand-tokens.json` → `templateCoverBgPptx.path`（`assets/template-cover-bg.png`），设为全幻灯片背景，等比缩放至 960×540pt
+2. 文字框位置（背景图上叠加，强制固定，不可偏移）：
+
+| 文字 | 位置 | 字号 | 颜色 | 对齐 |
+|------|------|------|------|:--:|
+| 标题 | 水平居中，`top:48%`（与 HTML 一致） | 64pt Bold | 品牌 dark | 居中 |
+| 副标题 + 汇报人 + 部门 | 水平居中，`top:62%`（标题下方，留一行间距），合并为一个文字框，红色圆点（·）分隔 | 26pt | 品牌 gray | 居中 |
+| 公司全称 | 水平居中，`top:82%`（与 HTML 一致） | 22pt | 品牌 gray | 居中 |
+
+3. 文字框必须加半透明白色底色（`rgba(255,255,255,0.85)` 或 PPTX 等效），确保在 ASCII 字符画纹理上的可读性
+4. 位置为 MUST，禁止 Agent 自行调整——ASCII 图案在背景图中位置固定，文字偏移会导致重叠
+
 **使用时**：在 `pages.json` 中设置 `"scene": "template"`，渲染器自动切换到 ASCII 封面。不设置或设置为其他值时使用 Themed 封面（红底渐变 + 左上角 Logo）。
 
-### 封面二进制雨（Geek 装饰）
+### 封面二进制雨（仅 HTML，Geek 装饰）
 
 - canvas 全屏 `01` 字符下落的 Matrix 风格动画
 - 品牌主色字符，8% 极低透明度，不干扰正文
@@ -221,12 +235,15 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 
 ### 布局
 
+**HTML 画布：** 1920×1080（px），响应式缩放至视口。
+**PPTX 幻灯片：** 960×540（pt），PowerPoint 16:9 宽屏默认尺寸。所有百分比规则按此基准换算 pt 值。
+
 - 内页内容可用范围：`top:12% ~ bottom:18%`（为右上 Logo 和底部 footer 留出空间）
 - **内容垂直居中：** 内容视觉重心围绕页面 50% 垂直中心对称分布，不得整体偏上或偏下
 - 左右留白：≥ 5%
 - 封面标题位置：`top:48%`，水平居中
 
-### 响应式缩放
+### 响应式缩放（仅 HTML）
 
 - 按视口等比缩放（`scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080)`）
 - 取宽高缩放比的较小值，保证 1920×1080 画布始终完整可见
@@ -238,7 +255,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 
 **正文字体：微软雅黑。** 字号值在不同输出格式下取不同数据源，数值即 pt（PPTX/PDF/印刷原生单位），不硬编码：
 
-| 层级 | HTML `typography.html` | PPTX `typography.pptx` | 刚性 |
+| 层级 | HTML 值（`sizes.*.template`） | PPTX 值（硬编码） | 刚性 |
 |------|------------------------|------------------------|------|
 | 封面标题 | 64 | 64 | Template MUST / Themed 区间 |
 | 内容页标题 | 40 | 24 | 同上 |
@@ -246,7 +263,9 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 | 正文 | 26 | 18 | MUST |
 | 图表标签/注脚 | 22 | 14 | MUST |
 
-**Template：全部使用固定值。Themed：设计 skill 在区间内自由决定。** 数据源：`brand-tokens.json` → `typography.html.scale` / `typography.pptx.scale`。
+**Template：全部使用固定值。Themed：设计 skill 在区间内自由决定。** 数据源：`brand-tokens.json` → `typography.sizes`（Template 用 `*.template`，Themed 用 `*.themed.min/max` 区间）。PPTX 字号值从上表"PPTX 值"列取值，不在 JSON 中重复存储。
+
+**字体回退链：** 微软雅黑 → Noto Sans SC → Source Han Sans SC → sans-serif。如果运行环境无微软雅黑（Mac/Linux/纯 Web），使用 **Noto Sans SC**（开源无版权，SIL Open Font License，Google/Adobe 联合出品，中文排版质量对标微软雅黑）。CSS font-family 完整栈从 `brand-tokens.json` → `typography.fontFamily` 读取。
 
 **跨格式直出规则：** HTML/CSS 输出在数字后加 `pt` 后缀（如 `font-size: 64pt`），PPTX 直接写入数字（PPTX fontSize 原生单位即 pt）。**禁止任何 pt↔px 乘除换算。** 值从 JSON 读取为 number，单位由输出端明确补上。
 
@@ -293,29 +312,29 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 
 **各场景正确写法：**
 
-内页右上角 Logo（边长 = 画布宽度 × 4.2%）：
+内页右上角 Logo（HTML: 80px = 1920×4.2%；PPTX: 40pt = 960×4.2%）：
 ```
 HTML ✅ width:80px; height:80px;  (background-size:contain)
-PPTX ✅ Width=80pt, Height=80pt, LockAspectRatio=true
+PPTX ✅ Width=40pt, Height=40pt, LockAspectRatio=true
 ```
 
-封面左上角 Logo / Themed（边长 = 画布宽度 × 6.5% = 125px）：
+封面左上角 Logo / Themed（HTML: 125px = 1920×6.5%；PPTX: 62pt = 960×6.5%）：
 ```
 HTML ✅ width:125px; height:125px;  (background-size:contain)
-PPTX ✅ Width=125pt, Height=125pt, LockAspectRatio=true
+PPTX ✅ Width=62pt, Height=62pt, LockAspectRatio=true
 ```
 > 注意：封面 Logo 禁止使用百分比（`6.5%` 在 1920×1080 上宽高解析为 125×70，破坏正方形）。必须用 px/pt 固定值。
 
-结尾页居中 Logo（边长 = 画布高度 × 33%）：
+结尾页居中 Logo（HTML: 356px = 1080×33%；PPTX: 178pt = 540×33%）：
 ```
 HTML ✅ width:356px; height:356px;  (background-size:contain)
-PPTX ✅ Width=356pt, Height=356pt, LockAspectRatio=true
+PPTX ✅ Width=178pt, Height=178pt, LockAspectRatio=true
 ```
 
-结尾页 Slogan（只固定宽度）：
+结尾页 Slogan（HTML: 960px = 1920×50%；PPTX: 480pt = 960×50%）：
 ```
 HTML ✅ width:960px; height:auto;  (background-size:contain)
-PPTX ✅ Width=960pt, LockAspectRatio=true, 不设 Height
+PPTX ✅ Width=480pt, LockAspectRatio=true, 不设 Height
 ```
 
 **禁止做法（任何格式）：**
@@ -324,18 +343,24 @@ PPTX ✅ Width=960pt, LockAspectRatio=true, 不设 Height
 - ❌ 不对 PPTX 图片设置 `LockAspectRatio` → 拖拽即变形
 - ❌ 容器非正方形（宽≠高）+ Logo 图片 → Logo 在错误比例框内
 
-**生成前自检：**
+**PPTX 图片嵌入：**
+- 必须内嵌图片二进制到 .pptx 文件中，禁止使用外部路径链接
+- LockAspectRatio 的正确设置顺序：① 插入图片 → ② 设置 `LockAspectRatio=true` → ③ 设置 Width（或 Height）单维度值。必须先锁比例再设尺寸，顺序反了会变形
+- 所有 Logo 文件路径从 `brand-tokens.json` → `logos` 读取；slogan 从 `brand-tokens.json` → `slogan` 读取
+
+**生成前自检（HTML & PPTX）：**
 - [ ] 所有 Logo 容器为正方形（宽=高）
 - [ ] 所有 Slogan 只固定宽度，高度按原图比例自适应
 - [ ] 没有任何品牌图片使用裁切/拉伸模式
 - [ ] 结尾页 Logo + slogan 格式正确
 - [ ] 内页右上角 Logo 格式正确
+- [ ] PPTX: 所有图片已内嵌（非外部链接）；LockAspectRatio 设置顺序正确
 
 ### 品牌上下文（Logo 按业务线切换）
 
 默认使用集团 Logo。当用户指定业务线（如云通信）时，切换到该业务线的 Logo，其他品牌规则不变。
 
-从 `brand-tokens.json` → `logos.businessLines` 查 Logo 路径。
+在 `pages.json` 中设置 `"logoSet": "cloud"` 切换到云通信 Logo，省略或 `"group"` 为集团 Logo。Logo 文件路径从 `brand-tokens.json` → `logos.group` / `logos.cloud` 读取。
 
 ### 硬规则
 
@@ -392,11 +417,11 @@ VI skill 不负责解析文件。外部 Agent 自行调用 MCP 或其他工具�
 
 如果用户提供的文件格式不在原生支持列表中，告知用户："这个文件格式需要先提取内容。我会尽力处理，但可能需要你确认提取结果是否准确。"
 
-## HTML 输出规范
+## HTML 输出规范（仅 HTML）
 
 零外部依赖，单一 HTML 文件，浏览器直接打开。播放壳：全屏/键盘翻页/点击翻页。
 
-### Logo 嵌入
+### Logo 嵌入（仅 HTML，PPTX 图片规范见"图片素材缩放规则"章节）
 
 Logo 和 slogan 图片**必须**以 base64 data URI 嵌入 CSS `background-image`，**禁止**使用以下方式：
 
@@ -421,7 +446,9 @@ Logo 和 slogan 图片**必须**以 base64 data URI 嵌入 CSS `background-image
 
 ## 数据图表规范
 
-### 通用约束
+> HTML 实现参考（CSS/SVG）。PPTX 使用原生图表对象，品牌约束（色板、字号、安全区）同等适用，但实现语法由 PPTX 库决定。
+
+### 通用约束（HTML / PPTX 通用）
 
 1. **色值** — 只能用品牌色板内的颜色，禁止自造衍生色值。色板不够靠线型/图案区分。集团红：`#D0121B`(primary)、`#AC000A`(primaryDark)、`#FE343F`(primaryLight)、`#FF777F`(accent)
 2. **安全区** — 图表所有组成部分（图形、坐标轴、刻度、标注、图例）须完整约束在 `top:12% ~ bottom:18%` 内，不得侵犯右上 Logo 安全区
@@ -429,7 +456,7 @@ Logo 和 slogan 图片**必须**以 base64 data URI 嵌入 CSS `background-image
 4. **结构底色** — 表头底、斑马纹只能用 `#F2F2F2`（lightGray）或品牌主色极低透明度，不用自造浅色
 5. **网格线/轴线** — 可用中性灰，不属品牌色违规
 
-### 字号阈值
+### 字号阈值（HTML CSS/SVG 参考，PPTX 对应使用上表 PPTX 列字号）
 
 **常规：≤8 个数据点。密集：>8 个数据点。**
 
@@ -443,12 +470,12 @@ Logo 和 slogan 图片**必须**以 base64 data URI 嵌入 CSS `background-image
 
 > SVG 字号基于固定 `viewBox="0 0 740 520"`。
 
-### 按图表类型
+### 按图表类型（HTML 实现语法，PPTX 用原生图表复现相同约束）
 
-**柱状图** — CSS 实现。渐变两端色值均须来自品牌色板。
-**数据表格** — 数值列右对齐。表头底 + 品牌主色底线。峰值行高亮 + 数值加粗。
-**折线图** — 单 SVG + 固定 viewBox，禁止 CSS/SVG 混用。最新数据点实心圆高亮。
-**饼图/环形图** — conic-gradient + 白色硬停止分割线。用图例标注，禁止直接标注在扇区上。最多 4 个扇区（对应 4 个品牌色），超过则合并小扇区为"其他"。
+**柱状图** — HTML: CSS 渐变，两端色值均须来自品牌色板。PPTX: 原生柱状图，系列色仅用品牌色板。
+**数据表格** — HTML: 数值列右对齐，表头底 + 品牌主色底线，峰值行高亮。PPTX: 原生表格，同上格式规则。
+**折线图** — HTML: 单 SVG + 固定 viewBox，禁止 CSS/SVG 混用。PPTX: 原生折线图，最新数据点高亮。
+**饼图/环形图** — HTML: conic-gradient + 白色硬停止分割线，最多 4 扇区。PPTX: 原生饼图/环形图，同色板约束，最多 4 扇区，图例标注。
 
 ---
 
@@ -468,7 +495,8 @@ Logo 和 slogan 图片**必须**以 base64 data URI 嵌入 CSS `background-image
 - 禁止向用户解释 VI 规范、母版机制、渲染流程等内部实现细节
 - 禁止跳过透明声明（每次生成必须告知用户当前模式）
 - 禁止自行生成或修改 ASCII 字符画 — 必须从 brand-tokens.json 原样读取
-- 禁止裁切、拉伸、压扁任何品牌图片素材（Logo、slogan）—— 必须使用 `background-size: contain` 或 `object-fit: contain`
-- 禁止同时固定 Logo 图片容器的宽和高为不同值（如 `width:288px; height:162px`）—— 结尾页 Logo 容器必须宽=高
-- 禁止使用 `<img>` 标签引用品牌图片素材 —— 必须使用 CSS `background-image` + base64 data URI
-- 禁止省略图片素材 —— 每个内页必须有右上角 Logo，结尾页必须有居中 Logo + slogan.png
+- 禁止裁切、拉伸、压扁任何品牌图片素材（Logo、slogan）—— HTML: `background-size: contain` 或 `object-fit: contain`；PPTX: `LockAspectRatio=true` + 仅设单一维度
+- 禁止同时固定 Logo 图片容器的宽和高为不同值（如 `width:288px; height:162px`）—— 结尾页 Logo 容器必须宽=高（HTML & PPTX 通用）
+- 禁止使用 `<img>` 标签引用品牌图片素材（仅 HTML）—— 必须使用 CSS `background-image` + base64 data URI
+- 禁止 PPTX 中使用外部路径链接图片 —— 必须将图片二进制内嵌到 .pptx 文件中
+- 禁止省略图片素材 —— 每个内页必须有右上角 Logo，结尾页必须有居中 Logo + slogan
