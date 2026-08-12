@@ -78,14 +78,15 @@ function renderThemed(slide, tokens, pages, index, c, resolvedBg) {
   var lineColor = isDark ? c.white : c.primary;
 
   var cl = tokens.layout.coverLogo;
-  var coverLogoLeft = cl.left, coverLogoTop = cl.top, coverLogoSize = cl.size;
+  var coverLogoLeft = cl.left, coverLogoTop = cl.top;
+  var coverLogoPx = Math.round(1920 * 0.065);  // 6.5% of canvas width in px, square
 
   var html = '<div class="slide-page" id="s' + index + '" style="background:' + bgStyle + '; position:relative;">\n';
   html += '<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding-left:' + coverLogoLeft + ';">\n';
 
-  // PNG Logo — top-left
-  html += '<div style="position:absolute;top:' + coverLogoTop + ';left:' + coverLogoLeft + ';">\n';
-  html += '<div class="' + logoClass + '" style="width:' + coverLogoSize + ';aspect-ratio:1;height:auto;"></div>\n';
+  // PNG Logo — top-left (outer div holds position+dims, inner fills with contain)
+  html += '<div style="position:absolute;top:' + coverLogoTop + ';left:' + coverLogoLeft + ';width:' + coverLogoPx + 'px;height:' + coverLogoPx + 'px;">\n';
+  html += '<div class="' + logoClass + '" style="width:100%;height:100%;"></div>\n';
   html += '</div>\n';
 
   html += '<h1 style="font-size:' + tokens.typography.sizes.coverTitle.template + ';font-weight:bold;color:' + textColor + ';margin-bottom:16px;max-width:80%;">' + esc(slide.title) + '</h1>\n';

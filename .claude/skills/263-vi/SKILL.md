@@ -23,7 +23,16 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 
 ## 生成模式判断
 
-从用户自然语言推断 Template 还是 Themed，**不穷举关键词，按特征推理**：
+**硬锚词（命中即锁定，不可覆盖）：**
+
+| 锚词 | 锁定模式 | 原因 |
+|------|:--:|------|
+| 汇报、述职、总结、周报、月报、季报、年报 | **Template** | 组织内部同步，无例外 |
+| 介绍、展示、宣传、发布会、对外、客户 | **Themed** | 组织外部说服，无例外 |
+
+硬锚词优先于一切其他推断。用户说"帮我做个Q3工作汇报"→ 锚中"汇报"→ 直接锁定 Template，跳过推理。
+
+**无锚词时按特征推理：**
 
 | 维度 | Template（母版型） | Themed（主题型） |
 |------|-------------------|------------------|
@@ -38,34 +47,38 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 
 二选一，不要犹豫。即使用户说"帮我做个PPT"没有额外信息，也选最可能的并声明。
 
-## 生成前确认
+## 生成前确认（硬门禁）
 
-在判断完模式和上下文后，**用对话框让用户逐个确认以下选项**，不要跳过：
+**以下 4 个问题必须逐个弹出确认。如果你发现自己正在生成内容但还没问完这 4 个问题，立即停下来，回到确认步骤。**
 
 1. **展示场景：** 内部汇报还是对外展示？
 2. **配色方案：** 集团红还是商务蓝？（默认集团红。集团红对应集团 Logo，商务蓝对应云通信 Logo）
-3. **视觉风格：** 我可以做简洁标准版式，也可以调用专业设计能力来美化排版。你倾向哪种？
+3. **视觉风格：** 简洁标准版式，还是调用专业设计能力美化排版？
 4. **输出格式：** 网页文件（HTML）还是 PPT 文件（PPTX）？
 
-用户确认前不做透明声明，确认后按结果校准模式与品牌上下文。未确认的选项须追问，不得假设默认值。
+**规则：**
+- 4 个问题全部确认前，禁止进入后续任何步骤（大纲收集、封面信息提取、数据图表收集、pages.json 生成、透明声明）
+- 禁止假设默认值跳过提问。用户未明确回答的选项必须追问
+- 确认结果必须写入 pages.json：问题 1「内部汇报」→ `"scene": "template"`；「对外展示」→ 省略 `scene`。问题 2「集团红」→ `"colorScheme": "group-red"`；「商务蓝」→ `"business-blue"`
 
 ## 工作流
 
 ### 前置步骤（四条路径共用）
 
-1. **判断模式** → Template 还是 Themed（见上方判断逻辑）
-2. **确定品牌上下文** → 配色方案（默认集团红）+ Logo 归属（默认集团 Logo，按业务线切换）
-3. **收集内容大纲** → 向用户索要提纲或要点。话术：`"如果你已经做好提纲，请发给我。或者把大概的内容要点列给我，我来帮你整理成提纲。确认后开始生成。"` 用户确认大纲后再进入下一步
-4. **收集数据图表** → 大纲确认后，询问用户是否有具体数据。话术：`"提纲确认了。如果有具体的数据、图表或关键数字需要展示，可以一并发给我，我会嵌入到对应页面中。"` 用户没数据则跳过
-5. **收集封面信息** → 从用户描述中提取，并向用户确认。不得未经确认直接填入：
+1. **判断模式** → Template 还是 Themed（见上方判断逻辑，硬锚词优先）
+2. **硬门禁确认** → 向用户逐个弹出 4 个确认问题（见上方"生成前确认"章节）。全部确认后才能继续。禁止跳过，禁止假设默认值
+3. **确定品牌上下文** → 按确认结果：配色方案 + Logo 归属（默认集团 Logo，按业务线切换）
+4. **收集内容大纲** → 向用户索要提纲或要点。话术：`"如果你已经做好提纲，请发给我。或者把大概的内容要点列给我，我来帮你整理成提纲。确认后开始生成。"` 用户确认大纲后再进入下一步
+5. **收集数据图表** → 大纲确认后，询问用户是否有具体数据。话术：`"提纲确认了。如果有具体的数据、图表或关键数字需要展示，可以一并发给我，我会嵌入到对应页面中。"` 用户没数据则跳过
+6. **收集封面信息** → 从用户描述中提取，并向用户确认。不得未经确认直接填入：
    - 副标题：提取后询问"副标题用「xxx」可以吗？"如用户说没有则留空
    - 汇报人：提取后询问。如用户未提及则主动问"需要标注汇报人吗？"
    - 部门：提取后询问。如用户未提及则主动问"需要标注部门吗？"
    - 日期：提取后询问。如用户未提及则主动问"需要标注日期吗？"
-6. **输出透明声明** → 生成内容前，用一句话告知用户当前模式（这是生成结果的第一句话，不是对话阶段的确认问题，与第 1 步不重复）：
+7. **输出透明声明** → 生成内容前，用一句话告知用户当前模式（这是生成结果的第一句话，不是对话阶段的确认问题，与第 2 步不重复）：
    - Template：`"我将按**内部汇报**的设计方式制作。如果你是用于对外展示，请告诉我，我会切换设计风格。"`
    - Themed：`"我将按**对外展示**的设计方式制作。如果你是用于内部工作汇报，请告诉我，我会切换设计风格。"`
-7. **读取品牌数据** → `brand-tokens.json`（必须）+ `company-data.json`（按需）
+8. **读取品牌数据** → `brand-tokens.json`（必须）+ `company-data.json`（按需）
 
 ### 路径选择
 
@@ -247,6 +260,8 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 | 结尾页：原内容全部丢弃，替换为居中 Logo + slogan PNG 图片（不可用文字代替） | MUST |
 | 封面 Logo（Themed）：左上角，画布宽度 6.5%（`layout.coverLogo`），安全区同内页规则 | MUST |
 | 封面 Logo（Template）：不使用 PNG Logo，以 ASCII 字符画替代（见"母版封面页"章节） | MUST |
+| Logo 图片必须使用 `background-size: contain`（CSS background-image）或 `object-fit: contain`（`<img>` 标签），禁止裁切、禁止拉伸、禁止压扁 | MUST |
+| Logo 图片容器禁止同时固定宽高两个维度为不匹配原图比例的值；只能固定单一维度，另一维度 auto 或等比推算 | MUST |
 
 **Logo 安全区 = Logo 图片的矩形边界框。** 安全区外边界即 Logo 边缘，不需要额外 margin。坐标从 `brand-tokens.json` → `layout` 读取。
 
@@ -263,6 +278,58 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 - 安全区范围：X: left ~ left+size, Y: top ~ top+size
 - 封面常见违规：装饰圆/半透明图形侵入左上角、标题文字 `padding-left` 不足导致进入安全区
 - **生成封面时强制检查：** 所有装饰元素（背景圆、渐变块、几何图形）的左上边界必须 ≥ left+size，标题文字的 `left` 或 `padding-left` 必须 ≥ left+size
+
+### 图片素材缩放规则（硬门禁）
+
+**所有品牌图片素材（Logo PNG、slogan PNG）只允许等比缩放，绝对禁止裁切或变形。HTML 和 PPTX 同等适用。此规则优先级最高，覆盖一切排版决策。**
+
+| # | 规则 | HTML 实现 | PPTX 实现 |
+|---|------|-----------|-----------|
+| 1 | 只允许等比缩放 | `background-size: contain` 或 `object-fit: contain` | `LockAspectRatio=true` |
+| 2 | 只能固定单一维度 | `width`+`height:auto`，或宽=高正方形 | 仅设 Width 或仅设 Height |
+| 3 | 禁止同时设两个不同宽高值 | 禁止 `width:300;height:100` | 禁止 Width≠Height 且不锁比例 |
+| 4 | 禁止裁切模式 | 禁止 `cover`、`overflow:hidden` | 禁止 Crop、禁止裁剪 |
+| 5 | Logo 容器始终正方形 | 宽=高，`contain` 内部适配 | Width=Height，`LockAspectRatio=true` |
+
+**各场景正确写法：**
+
+内页右上角 Logo（边长 = 画布宽度 × 4.2%）：
+```
+HTML ✅ width:80px; height:80px;  (background-size:contain)
+PPTX ✅ Width=80pt, Height=80pt, LockAspectRatio=true
+```
+
+封面左上角 Logo / Themed（边长 = 画布宽度 × 6.5% = 125px）：
+```
+HTML ✅ width:125px; height:125px;  (background-size:contain)
+PPTX ✅ Width=125pt, Height=125pt, LockAspectRatio=true
+```
+> 注意：封面 Logo 禁止使用百分比（`6.5%` 在 1920×1080 上宽高解析为 125×70，破坏正方形）。必须用 px/pt 固定值。
+
+结尾页居中 Logo（边长 = 画布高度 × 33%）：
+```
+HTML ✅ width:356px; height:356px;  (background-size:contain)
+PPTX ✅ Width=356pt, Height=356pt, LockAspectRatio=true
+```
+
+结尾页 Slogan（只固定宽度）：
+```
+HTML ✅ width:960px; height:auto;  (background-size:contain)
+PPTX ✅ Width=960pt, LockAspectRatio=true, 不设 Height
+```
+
+**禁止做法（任何格式）：**
+- ❌ 同时设定不同的宽高值（如 300×100）→ 图片被压扁/拉伸
+- ❌ 裁切模式（`cover` / Crop）→ 图片边缘被切掉
+- ❌ 不对 PPTX 图片设置 `LockAspectRatio` → 拖拽即变形
+- ❌ 容器非正方形（宽≠高）+ Logo 图片 → Logo 在错误比例框内
+
+**生成前自检：**
+- [ ] 所有 Logo 容器为正方形（宽=高）
+- [ ] 所有 Slogan 只固定宽度，高度按原图比例自适应
+- [ ] 没有任何品牌图片使用裁切/拉伸模式
+- [ ] 结尾页 Logo + slogan 格式正确
+- [ ] 内页右上角 Logo 格式正确
 
 ### 品牌上下文（Logo 按业务线切换）
 
@@ -282,11 +349,13 @@ Template：全部锁死。Themed：以下 MUST 规则不可违反，其余交设
 
 **格式：** 居中 Logo + slogan PNG。尺寸按画布比例计算，不硬编码：
 
-- **Logo：** 高度 = 画布高度 × 30%~36%，宽度自适应（`object-fit: contain`），不强行设固定宽高
-- **Slogan：** 宽度 = 画布宽度 × 45%~55%，高度按原图比例自适应，不自行猜测宽高比
+- **Logo：** 高度 = 画布高度 × 30%~36%，宽度按原图等比自适应。容器设为正方形（宽=高），CSS `background-size: contain` 保证图片不裁切不变形
+- **Slogan：** 宽度 = 画布宽度 × 45%~55%，高度按原图比例自适应，**禁止硬编码固定高度**。使用 `background-size: contain` 或 `object-fit: contain`
 - **间距：** Logo 与 slogan 之间留白 = 画布高度 × 6%~8%
 
-以 1280×720 画布为例：Logo 约 220–260px 高，slogan 约 580–700px 宽，间距约 45–55px。
+以 1920×1080 画布为例：Logo 约 356px 正方形，slogan 约 960px 宽，间距约 76px。
+
+**绝对禁止：** 同时固定 Logo 的宽和高为不相同的值（如 `width:288px;height:162px`）——这会创建一个非正方形容器，导致 Logo 在其中被挤压或留白过大。Logo 容器必须宽=高。
 
 ## 与设计 skill 协作
 
@@ -329,11 +398,18 @@ VI skill 不负责解析文件。外部 Agent 自行调用 MCP 或其他工具�
 
 ### Logo 嵌入
 
-Logo 文件（`assets/logos/`）必须以 base64 data URI 嵌入 CSS，禁止使用外部文件路径：
+Logo 和 slogan 图片**必须**以 base64 data URI 嵌入 CSS `background-image`，**禁止**使用以下方式：
+
+- **禁止** `<img src="...">` 标签引用 Logo 或 slogan
+- **禁止** 外部文件路径（`url(assets/logos/...)` 或 `url(../assets/...)`）
+- **禁止** 省略图片素材——结尾页必须有 slogan.png，内页必须有 Logo
+
+正确格式：
 
 ```css
 .logo-color-img { background: url(data:image/png;base64,...) no-repeat center/contain; }
 .logo-white-img { background: url(data:image/png;base64,...) no-repeat center/contain; }
+.slogan-img    { background: url(data:image/png;base64,...) no-repeat center/contain; }
 ```
 
 - 内页内容可用范围：`top:12% ~ bottom:18%`，内容视觉重心围绕页面 50% 垂直中心对称分布
@@ -392,3 +468,7 @@ Logo 文件（`assets/logos/`）必须以 base64 data URI 嵌入 CSS，禁止使
 - 禁止向用户解释 VI 规范、母版机制、渲染流程等内部实现细节
 - 禁止跳过透明声明（每次生成必须告知用户当前模式）
 - 禁止自行生成或修改 ASCII 字符画 — 必须从 brand-tokens.json 原样读取
+- 禁止裁切、拉伸、压扁任何品牌图片素材（Logo、slogan）—— 必须使用 `background-size: contain` 或 `object-fit: contain`
+- 禁止同时固定 Logo 图片容器的宽和高为不同值（如 `width:288px; height:162px`）—— 结尾页 Logo 容器必须宽=高
+- 禁止使用 `<img>` 标签引用品牌图片素材 —— 必须使用 CSS `background-image` + base64 data URI
+- 禁止省略图片素材 —— 每个内页必须有右上角 Logo，结尾页必须有居中 Logo + slogan.png

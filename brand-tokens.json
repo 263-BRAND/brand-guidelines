@@ -93,7 +93,10 @@
       "safeZone": "Logo矩形边界框内禁止任何内容像素进入",
       "shallowBg": "彩稿Logo",
       "darkBg": "反白Logo",
-      "endingPage": "居中Logo + slogan PNG"
+      "endingPage": "居中Logo + slogan PNG",
+      "noCrop": "Logo 和 slogan 图片禁止裁切、拉伸、压扁 — 必须使用 background-size:contain 或 object-fit:contain",
+      "noDistort": "Logo 容器禁止同时固定宽高为不同值 — 结尾页 Logo 容器必须宽=高（正方形），内页 Logo 容器同为正方形",
+      "embedRequired": "所有品牌图片必须以 base64 data URI 嵌入 CSS background-image，禁止使用 <img> 标签或外部文件路径"
     },
     "typography": {
       "html": { "absoluteMinSize": "20pt", "bodyMinSize": "24pt" },
