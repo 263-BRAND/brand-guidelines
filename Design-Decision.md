@@ -42,7 +42,7 @@
 
 | 层级 | HTML (pt) | PPTX (pt) | 刚性 |
 |---|---|---|---|
-| 封面标题 | 64 | 64 | Template MUST / Themed 区间 |
+| 封面标题 | 64 | 43 | Template MUST / Themed 区间 |
 | 内容页标题 | 40 | 24 | Template MUST / Themed 区间 |
 | 副标题 | 30 | 20 | Template MUST / Themed 区间 |
 | 正文 | 26 | 18 | MUST |
@@ -50,7 +50,22 @@
 
 **跨格式直出：** HTML 加 `pt` 后缀，PPTX 写数字（原生单位即 pt），禁止 pt↔px 换算。
 
+> PPTX 封面标题 43pt（非 64pt）：CSS pt 在 1920×1080 和 PowerPoint pt 在 960×540 解析不同——同数值视觉占比偏差大（HTML 7.9% vs PPTX 11.9%）。43pt 对齐 HTML 64pt 比例。
+
 ASCII 字符画（封面 Logo 图）属于装饰图形，不受字号底线约束。
+
+### 字体回退链
+
+`微软雅黑, Microsoft YaHei, Noto Sans SC, Source Han Sans SC, sans-serif`。Noto Sans SC（思源黑体，SIL OFL）为跨平台开源回退，Mac/Linux/纯 Web 环境下替代微软雅黑。
+
+### 画布尺寸
+
+| 格式 | 尺寸 | 单位 |
+|------|------|------|
+| HTML | 1920×1080 | px |
+| PPTX | 960×540 | pt（PowerPoint 16:9 宽屏默认） |
+
+所有百分比规则按各自画布基准换算。PPTX 尺寸值从 `brand-tokens.json` → `layout.pptx` 读取。
 
 ### 背景系统
 
@@ -76,6 +91,10 @@ ASCII 字符画（封面 Logo 图）属于装饰图形，不受字号底线约�
 | 浅色底使用彩稿 Logo | MUST |
 | 深色底使用反白 Logo | MUST |
 | 结尾页：居中 Logo + slogan PNG（不可用文字代替） | MUST |
+| 图片等比缩放：HTML `background-size:contain` / PPTX `LockAspectRatio=true` | MUST |
+| Logo 容器必须正方形（宽=高），Slogan 只固定宽度 | MUST |
+| PPTX 图片嵌入：内嵌二进制，禁外部链接，LockAspectRatio 顺序：插入→锁比例→设单维度 | MUST |
+| PPTX 封面文字框必须透明背景（`FillVisible=false`） | MUST |
 
 ### 硬规则 (Hard Rules)
 
@@ -128,6 +147,7 @@ Template 路径全部锁定。Themed 路径在硬规则约束内由设计 skill 
 |---|---|
 | **Template（母版型）** | 受众在组织内部；目的是汇报/同步/述职；设计上要求统一规范而非个性表达 |
 | **Themed（主题型）** | 受众在组织外部；目的是说服/展示/介绍；设计上允许在品牌框架内发挥个性 |
+| **Formal（严谨型）** | 待实现。内部汇报兜底风格：纯白/浅灰底 + 左上彩稿 Logo + 居中排版 + 红色细线装饰。HTML/PPTX 100% 一致 |
 
 Agent 按特征推理，不硬匹配关键词。用户自然语言纠正即可切换模式。
 
@@ -185,6 +205,7 @@ VI skill 不负责解析文件。外部 Agent 自行调用 MCP 或工具摘取�
 ## 待定事项
 
 - 商务蓝色值 — 官方确认
-- 硬规则后续补充（如标题字号精确值、禁用色、Logo 最小边距）
 - 云通信 Logo 反白稿
-- v2 视口原生方案 — 100vw×100vh + flexbox 替代固定画布+scale。2026-08-11 先以方案A过渡：`Math.min(width/1920, height/1080)` 解决底部裁切。方案B的视口原生改造（generate.js CSS壳 + cover/end/custom 三个renderer的px→vw/vh迁移）待方案A验证稳定后执行。
+- Formal（严谨型）封面 — 正式实现到 cover.js + SKILL.md
+- 位图底图方案 — 豆包生成封面位图 → HTML/PPTX 共用底图 + 动态文字叠加，100% 视觉一致
+- v2 视口原生方案 — 100vw×100vh + flexbox 替代固定画布+scale。2026-08-11 先以方案A过渡。方案B的视口原生改造待方案A验证稳定后执行。
