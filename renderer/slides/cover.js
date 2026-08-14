@@ -4,6 +4,9 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
   var isTemplate = pages.scene === 'template' || slide.type === 'cover-template';
 
   if (isTemplate) {
+    if (slide.background === 'red-template') {
+      return renderRedTemplate(slide, tokens, pages, index, c);
+    }
     return renderTemplate(slide, tokens, pages, index, c);
   }
   return renderThemed(slide, tokens, pages, index, c, resolvedBg);
@@ -57,6 +60,42 @@ function renderTemplate(slide, tokens, pages, index, c) {
 
   // Footer
   html += '<div style="position:absolute;top:82%;left:0;width:100%;text-align:center;font-size:' + tokens.typography.sizes.caption.template + ';color:' + c.gray + ';opacity:0.45;">\n';
+  html += esc(pages.companyName || '二六三网络通信股份有限公司') + '\n';
+  html += '</div>\n';
+
+  html += '</div>\n';
+  return html;
+}
+
+// === Red-template cover: internal reporting — bitmap bg, left-aligned text ===
+function renderRedTemplate(slide, tokens, pages, index, c) {
+  var html = '<div class="slide-page" id="s' + index + '" style="position:relative; overflow:hidden;">\n';
+
+  // full-bleed bitmap background (base64 via .red-template-bg in generate.js)
+  html += '<div class="red-template-bg" style="position:absolute;top:0;left:0;width:100%;height:100%;"></div>\n';
+
+  // text block — left-aligned, confined to white zone (left ~50%, top ~72%)
+  html += '<div style="position:absolute;top:0;left:7%;width:42%;height:72%;display:flex;flex-direction:column;justify-content:center;z-index:2;">\n';
+  html += '<h1 style="font-size:' + tokens.typography.sizes.coverTitle.template + ';font-weight:bold;color:' + c.dark + ';letter-spacing:2px;margin:0 0 20px 0;line-height:1.3;">' + esc(slide.title) + '</h1>\n';
+
+  if (slide.subtitle || slide.presenter || slide.department || slide.date) {
+    var meta = [];
+    if (slide.subtitle) { meta.push(esc(slide.subtitle)); }
+    if (slide.presenter) { meta.push('汇报人：' + esc(slide.presenter)); }
+    if (slide.department) { meta.push(esc(slide.department)); }
+    if (slide.date) { meta.push(esc(slide.date)); }
+    html += '<div style="font-size:' + tokens.typography.sizes.subtitle.template + ';color:' + c.gray + ';line-height:1.6;">\n';
+    for (var m = 0; m < meta.length; m++) {
+      if (m > 0) { html += '<span style="color:' + c.primary + ';opacity:0.5;margin:0 12px;">·</span>'; }
+      html += '<span>' + meta[m] + '</span>';
+    }
+    html += '</div>\n';
+  }
+
+  html += '</div>\n';
+
+  // company name — bottom-left, on light-pink band
+  html += '<div style="position:absolute;bottom:6%;left:7%;font-size:' + tokens.typography.sizes.caption.template + ';color:' + c.gray + ';z-index:2;">\n';
   html += esc(pages.companyName || '二六三网络通信股份有限公司') + '\n';
   html += '</div>\n';
 

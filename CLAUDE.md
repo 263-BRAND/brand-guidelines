@@ -34,6 +34,7 @@ node generate.js <pages.json>   # 生成 <pages>.html（自包含幻灯片，零
 | 模式 | 触发 | HTML | PPTX |
 |------|------|------|------|
 | Geek（内部汇报） | 硬锚词：汇报/述职/总结/周报/月报/季报/年报 | ASCII 字符画 + 二进制雨 | 静态截图底图（`template-cover-bg.png`）+ 文字叠加 |
+| Geek 红色位图（内部汇报） | `scene:template` + `cover.background:red-template` | 红色设计位图底图（`cover-red-template.png`）+ 左对齐文字 | 同左，100% 一致 |
 | Themed（对外展示） | 硬锚词：介绍/展示/宣传/发布会/对外/客户 | 红底渐变 + 左上 PNG Logo | 同左，PPTX 原生实现 |
 | Formal（严谨兜底） | 待实现 | 位图底图 + 文字叠加 | 同左，100% 一致 |
 
@@ -64,7 +65,7 @@ Agent 与渲染器之间的中间格式。顶层字段：`colorScheme`、`logoSe
 
 ## 关键约定
 
-- **硬门禁**：生成前必须逐项确认 4 个问题（场景、配色、视觉风格、输出格式）。禁止跳过，禁止假设默认值。
+- **硬门禁**：生成前必须逐项确认 4 个问题（场景、配色、视觉风格、输出格式），内部汇报时追加第 5 题「封面风格」（个性化→ASCII / 严谨→red-template）。禁止跳过，禁止假设默认值。
 - **Logo 安全区**：零容忍——任何 UI 元素的任何像素都不得进入 Logo 边界框。
 - **ASCII 字符画**：封面 ASCII Logo 存储在 `brand-tokens.json` → `coverAscii.art`。Agent 必须原样读取，禁止自行生成或修改。
 - **禁止纯黑**：`#000000` 不得作为文字颜色。标题 = `dark` (#2D3847)，正文 = `gray` (#595959)。

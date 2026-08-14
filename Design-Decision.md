@@ -207,5 +207,5 @@ VI skill 不负责解析文件。外部 Agent 自行调用 MCP 或工具摘取�
 - 商务蓝色值 — 官方确认
 - 云通信 Logo 反白稿
 - Formal（严谨型）封面 — 正式实现到 cover.js + SKILL.md
-- 位图底图方案 — 豆包生成封面位图 → HTML/PPTX 共用底图 + 动态文字叠加，100% 视觉一致
+- 位图底图方案 — 豆包生成封面位图 → HTML/PPTX 共用底图 + 动态文字叠加，100% 视觉一致。**已落地为内部汇报红色封面（red-template）**：`scene:template` + `cover.background:red-template`，`assets/cover-red-template.png` 全屏底图 + 左对齐文字
 - v2 视口原生方案 — 100vw×100vh + flexbox 替代固定画布+scale。2026-08-11 先以方案A过渡。方案B的视口原生改造待方案A验证稳定后执行。

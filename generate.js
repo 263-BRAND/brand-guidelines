@@ -57,8 +57,8 @@ for (var k = 0; k < pages.slides.length; k++) {
   var slide = pages.slides[k];
   var t = slide.type;
   if (t === 'cover') {
-    if (slide.background && !resolvedBg.cover[slide.background]) {
-      console.error('Slide ' + k + ' (' + t + '): invalid background "' + slide.background + '". Must be one of: ' + Object.keys(resolvedBg.cover).join(', '));
+    if (slide.background && slide.background !== 'red-template' && !resolvedBg.cover[slide.background]) {
+      console.error('Slide ' + k + ' (' + t + '): invalid background "' + slide.background + '". Must be one of: ' + Object.keys(resolvedBg.cover).join(', ') + ', red-template');
       process.exit(1);
     }
   } else if (slide.background && !resolvedBg.inner[slide.background]) {
@@ -104,6 +104,7 @@ const logos = tokens.logos[logoSet] || tokens.logos.group;
 const logoColorB64 = logoBase64(logos.color);
 const logoWhiteB64 = logos.white ? logoBase64(logos.white) : '';
 const sloganB64 = tokens.slogan ? logoBase64(tokens.slogan) : '';
+const redTemplateBgB64 = (tokens.redTemplateCover && tokens.redTemplateCover.path) ? logoBase64(tokens.redTemplateCover.path) : '';
 
 // Build page title: 标题 - 姓名 - MMDD
 var pageTitle = '263 PPT';
@@ -126,7 +127,8 @@ const html = buildHtml({
   pageTitle: pageTitle,
   logoColorB64: logoColorB64,
   logoWhiteB64: logoWhiteB64,
-  sloganB64: sloganB64
+  sloganB64: sloganB64,
+  redTemplateBgB64: redTemplateBgB64
 });
 
 const outPath = pagesPath.replace(/\.json$/, '.html');
@@ -148,7 +150,7 @@ function buildHtml(opts) {
 '<title>' + opts.pageTitle + '</title>\n' +
 '<style>\n' +
 '* { margin:0; padding:0; box-sizing:border-box; }\n' +
-'html, body { width:100%; height:100%; margin:0; overflow:hidden; background:#FFF; font-family:' + t.fontFamily + '; }\n' +
+'html, body { width:100%; height:100%; margin:0; overflow:hidden; background:#FFFFFF; font-family:' + t.fontFamily + '; }\n' +
 ':root { --s: 1; }\n' +
 '#player { width:' + W + 'px; height:' + H + 'px; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(var(--s)); overflow:hidden; }\n' +
 '.slide-page { position:absolute !important; top:0; left:0; width:100%; height:100%; opacity:0; pointer-events:none; transition:opacity 0.35s ease; z-index:0; }\n' +
@@ -167,6 +169,7 @@ function buildHtml(opts) {
 '.logo-color-img { background: url(' + opts.logoColorB64 + ') no-repeat center/contain; }\n' +
 '.logo-white-img { background: url(' + opts.logoWhiteB64 + ') no-repeat center/contain; }\n' +
 '.slogan-img { background: url(' + opts.sloganB64 + ') no-repeat center/contain; }\n' +
+'.red-template-bg { background: url(' + opts.redTemplateBgB64 + ') no-repeat center/contain; }\n' +
 '</style>\n' +
 '</head>\n' +
 '<body>\n' +
