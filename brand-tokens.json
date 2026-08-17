@@ -1,5 +1,5 @@
 {
-  "version": "2.2",
+  "version": "2.3",
   "colorSchemes": {
     "group-red": {
       "primary": "#D0121B",
@@ -120,6 +120,36 @@
     "color": {
       "primary": "#D0121B",
       "disallowed": "严禁使用非色板颜色"
+    }
+  },
+  "chartPalette": {
+    "version": "1",
+    "note": "图表配色规范 v2。7 档红系色阶 + 非重点静默色。重点突出规则优先于色阶方向规则。全部色值来自品牌可接受色（人类肉眼验证），禁止自造。",
+    "group-red": {
+      "series": [
+        { "slot": 1, "hex": "#F8B5B8", "name": "浅粉白", "usage": "色阶最浅端，方向规则起点备选" },
+        { "slot": 2, "hex": "#F4868B", "name": "浅红" },
+        { "slot": 3, "hex": "#F0575E", "name": "中红" },
+        { "slot": 4, "hex": "#EC2831", "name": "亮红" },
+        { "slot": 5, "hex": "#D0121B", "name": "品牌红（主色）" },
+        { "slot": 6, "hex": "#A10D14", "name": "深红" },
+        { "slot": 7, "hex": "#72090E", "name": "深褐红", "usage": "色阶最深端，方向规则起点备选" }
+      ],
+      "muted": [
+        { "hex": "#FF777F", "name": "浅粉", "usage": "非重点数据（重点模式）" },
+        { "hex": "#BFBFBF", "name": "淡灰", "usage": "非重点数据（重点模式）" }
+      ],
+      "maxSectors": 7,
+      "rules": {
+        "highlight": "有 1~2 个重点数据时：重点 = 品牌红 #D0121B，其余 = 浅粉 #FF777F 或 淡灰 #BFBFBF（按风格二选一）。agent 从用户需求自动判断哪些是重点，不额外询问。",
+        "direction": "无重点时：按用户自定义顺序铺色阶，第一行/列取色阶一端（最浅 #F8B5B8 或最深 #72090E），方向必须二选一且全图一致。颜色表方向，不表大小。",
+        "priority": "highlight（重点突出）优先于 direction（色阶方向）。",
+        "encoding": "折线图 = 色阶 + 线型 + 标记；柱状图 = 色阶 + 数值标签；饼/环图 = 白色硬分割线 + 扇区标签，扇区数 ≤ 7。"
+      }
+    },
+    "business-blue": {
+      "status": "pending",
+      "note": "商务蓝色值待官方确认后按同法定义（蓝系色阶 + 非重点静默色）。当前禁止启用。"
     }
   },
   "templateCoverBgPptx": {
