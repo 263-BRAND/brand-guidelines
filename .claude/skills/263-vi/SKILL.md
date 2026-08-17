@@ -131,6 +131,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 |------|------|------|------|
 | `cover` | `title` | `subtitle`, `presenter`, `department`, `date`, `background` | 封面页 |
 | `section` | `sectionNumber`, `title` | `subtitle`, `background` | 章节过渡页 |
+| `toc` | `title`, `items[]` | `sectionLabel`, `background` | 目录页，items 每项含 `index` + `text` |
 | `content` | `title`, `blocks[]` | `sectionLabel`, `background` | 文本内容页，blocks 每项含 `heading` + `body` |
 | `cards` | `title`, `items[]` | `sectionLabel`, `columns`(默认3), `background` | 卡片网格，items 每项含 `title` + `description`，可选 `icon` |
 | `timeline` | `title`, `events[]` | `sectionLabel`, `background` | 时间轴，events 每项含 `year` + `title`，可选 `description` |
@@ -326,6 +327,13 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 | 正文 | 1.8 | 1.2倍 (120%) |
 | 卡片 | 1.8 | 1.2倍 (120%) |
 | 时间轴 | 1.8 | 1.2倍 (120%) |
+| 章节页大号数字 | 2.0 | 1.2倍 (120%) |
+| 章节页标题 | 1.3 | 单倍 (100%) |
+| 章节页副标题 | 1.8 | 1.2倍 (120%) |
+| 目录页标题 | 1.3 | 单倍 (100%) |
+| 目录条目 | 1.8 | 1.2倍 (120%) |
+
+> 章节页标题/副标题与目录页标题分别复用 title/heading/title 行距值；目录条目用独立 `tocItem` key；章节页大号数字用独立 `sectionNumber` key。两套规范值禁止互套。
 
 HTML 渲染器从 token 读取行距；PPTX agent 按倍距设置行距（标题单倍、其余 1.2倍）。
 

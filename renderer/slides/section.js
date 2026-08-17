@@ -2,6 +2,7 @@
 function renderSlide(slide, tokens, pages, index, resolvedBg) {
   const c = tokens.colorSchemes[pages.colorScheme];
   const l = tokens.layout.innerPageLogo;
+  const lh = tokens.typography.lineHeight.html;
   var bgKey = slide.background || 'white';
   var bgColor = resolvedBg.inner[bgKey] || resolvedBg.inner.white;
 
@@ -12,11 +13,11 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
   html += '</div>\n';
 
   html += '<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;">\n';
-  html += '<div style="font-size:' + tokens.typography.sizes.coverTitle.template + ';font-weight:bold;color:' + c.primaryLight + ';opacity:0.15;letter-spacing:8px;">' + esc(slide.sectionNumber) + '</div>\n';
-  html += '<h2 style="font-size:' + tokens.typography.sizes.sectionTitle.template + ';font-weight:bold;color:' + c.dark + ';margin-top:-24px;">' + esc(slide.title) + '</h2>\n';
+  html += '<div style="font-size:' + tokens.typography.sizes.coverTitle.template + ';font-weight:bold;color:' + c.primaryLight + ';opacity:0.15;letter-spacing:8px;line-height:' + lh.sectionNumber + ';">' + esc(slide.sectionNumber) + '</div>\n';
+  html += '<h2 style="font-size:' + tokens.typography.sizes.sectionTitle.template + ';font-weight:bold;color:' + c.dark + ';margin-top:-24px;line-height:' + lh.title + ';">' + esc(slide.title) + '</h2>\n';
 
   if (slide.subtitle) {
-    html += '<p style="font-size:' + tokens.typography.sizes.subtitle.template + ';color:' + c.gray + ';margin-top:12px;">' + esc(slide.subtitle) + '</p>\n';
+    html += '<p style="font-size:' + tokens.typography.sizes.subtitle.template + ';color:' + c.gray + ';margin-top:12px;line-height:' + lh.heading + ';">' + esc(slide.subtitle) + '</p>\n';
   }
 
   html += '<div style="width:60px;height:3px;background:' + c.primary + ';margin-top:24px;"></div>\n';

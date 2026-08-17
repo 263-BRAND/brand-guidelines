@@ -55,13 +55,13 @@ zip 从**根目录**按 17 文件清单构建（SKILL.md + assets/*.png + render
 | `brand-tokens.json` | 配色方案、字体层级、Logo 路径、ASCII 字符画、硬规则 |
 | `company-data.json` | 公司事实、产品组合（3 板块 × 4 业务线） |
 | `generate.js` | HTML 渲染器 + 播放壳（1920×1080 画布，响应式缩放） |
-| `renderer/slides/*.js` | 按 slide 类型的渲染器：cover、section、content、cards、timeline、custom、end |
+| `renderer/slides/*.js` | 按 slide 类型的渲染器：cover、section、toc、content、cards、timeline、custom、end |
 | `Design-Decision.md` | 设计决策，两个限界上下文（品牌规范 + Agent 管线） |
 | `开发日志.md` | 开发日志——已完成、待处理 |
 
 ### pages.json 结构
 
-Agent 与渲染器之间的中间格式。顶层字段：`colorScheme`、`logoSet`、`scene`（Template 封面用）、`companyName`、`slides[]`。七种 slide 类型：`cover`、`section`、`content`、`cards`、`timeline`、`custom`、`end`。结尾页必须在数组末尾。
+Agent 与渲染器之间的中间格式。顶层字段：`colorScheme`、`logoSet`、`scene`（Template 封面用）、`companyName`、`slides[]`。八种 slide 类型：`cover`、`section`、`toc`、`content`、`cards`、`timeline`、`custom`、`end`。结尾页必须在数组末尾。
 
 ## 关键约定
 
@@ -71,7 +71,7 @@ Agent 与渲染器之间的中间格式。顶层字段：`colorScheme`、`logoSe
 - **禁止纯黑**：`#000000` 不得作为文字颜色。标题 = `dark` (#2D3847)，正文 = `gray` (#595959)。
 - **结尾页**：始终是最后一页，居中 Logo + slogan PNG。原文件的结尾/感谢页必须替换，不得保留。
 - **字体**：全局微软雅黑。字号 HTML 用 `pt` 后缀，PPTX 写裸数字。禁止 pt↔px 换算。
-- **行距**：HTML 与 PPTX 两套规范（`typography.lineHeight`）。HTML 用 CSS line-height（主标题 1.3、其余 1.8），PPTX 用倍距（标题单倍、其余 1.2倍）。禁止互套。
+- **行距**：HTML 与 PPTX 两套规范（`typography.lineHeight`）。HTML 用 CSS line-height（主标题 1.3、其余 1.8、章节页大号数字 2.0），PPTX 用倍距（标题单倍、其余 1.2倍）。覆盖章节页/目录页（含 toc 类型）。禁止互套。
 - **对话术语**：禁止对用户使用内部术语（Template/Themed/母版/硬规则）及内部文件名（red-template、cover-red-template.png、template-cover-bg.png 等）。模式/封面术语始终说「内部汇报」「对外展示」「个性化风格」「严谨商务风格」（集团 Logo、HTML/PPTX 等正常用词不受此限）。交互措辞三铁律：① 确认问题逐字原样用固定话术；② 禁止向用户播报判断依据（命中/锚词/锁定等推理词不出现）；③ 完整「内部说法 → 用户话术」替换对照见 SKILL.md「生成前确认 → 用户对话措辞规范 → 对话黑名单」。
 - **Code review**：渲染器/UI 变更必须在浏览器实测——窗口缩放、翻页遍历、背景模式切换。只读代码不行。
 - **图片缩放**：Logo/slogan 只允许等比缩放（HTML: `background-size:contain`；PPTX: `LockAspectRatio=true`）。Logo 容器必须正方形（宽=高）。Slogan 只固定宽度。禁止裁切/拉伸/同时固定不同宽高值。
