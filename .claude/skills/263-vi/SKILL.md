@@ -479,7 +479,7 @@ Logo 和 slogan 图片**必须**以 base64 data URI 嵌入 CSS `background-image
 
 ### 系列上色规则（chartPalette）
 
-从 `brand-tokens.json` → `chartPalette` → 对应 colorScheme 读取。集团红色板已启用（7 档色阶 + 非重点静默色），商务蓝色板待官方确认，当前禁止启用。
+从 `brand-tokens.json` → `chartPalette` 读取，按当前 colorScheme 选择 `chartPalette` 下的对应子块（集团红 → `chartPalette.group-red`，商务蓝 → `chartPalette.business-blue`）。集团红色板已启用（7 档色阶 + 非重点静默色），商务蓝色板待官方确认，当前禁止启用。
 
 **两种上色模式，按优先级二选一，禁止混用：**
 
