@@ -57,8 +57,8 @@ for (var k = 0; k < pages.slides.length; k++) {
   var slide = pages.slides[k];
   var t = slide.type;
   if (t === 'cover') {
-    if (slide.background && !resolvedBg.cover[slide.background]) {
-      console.error('Slide ' + k + ' (' + t + '): invalid background "' + slide.background + '". Must be one of: ' + Object.keys(resolvedBg.cover).join(', '));
+    if (slide.background && slide.background !== 'red-template' && !resolvedBg.cover[slide.background]) {
+      console.error('Slide ' + k + ' (' + t + '): invalid background "' + slide.background + '". Must be one of: ' + Object.keys(resolvedBg.cover).join(', ') + ', red-template');
       process.exit(1);
     }
   } else if (slide.background && !resolvedBg.inner[slide.background]) {
@@ -68,7 +68,7 @@ for (var k = 0; k < pages.slides.length; k++) {
 }
 
 // Load slide renderers
-const slideTypes = ['cover', 'section', 'content', 'cards', 'timeline', 'end'];
+const slideTypes = ['cover', 'section', 'content', 'cards', 'timeline', 'end', 'custom'];
 const renderers = {};
 for (const t of slideTypes) {
   renderers[t] = require('./renderer/slides/' + t + '.js');
@@ -104,15 +104,31 @@ const logos = tokens.logos[logoSet] || tokens.logos.group;
 const logoColorB64 = logoBase64(logos.color);
 const logoWhiteB64 = logos.white ? logoBase64(logos.white) : '';
 const sloganB64 = tokens.slogan ? logoBase64(tokens.slogan) : '';
+const redTemplateBgB64 = (tokens.redTemplateCover && tokens.redTemplateCover.path) ? logoBase64(tokens.redTemplateCover.path) : '';
+
+// Build page title: 标题 - 姓名 - MMDD
+var pageTitle = '263 PPT';
+var cs = pages.slides[0];
+if (cs && cs.type === 'cover' && cs.title) {
+  var parts = [cs.title];
+  if (cs.presenter) parts.push(cs.presenter);
+  if (cs.date) {
+    var d = cs.date.replace(/[-/.]/g, '');
+    if (d.length >= 4) parts.push(d.slice(-4));
+  }
+  pageTitle = parts.join(' - ');
+}
 
 // Build output
 const html = buildHtml({
   slides: slideHtmlArray.join('\n'),
   tokens: tokens,
   colorScheme: pages.colorScheme,
+  pageTitle: pageTitle,
   logoColorB64: logoColorB64,
   logoWhiteB64: logoWhiteB64,
-  sloganB64: sloganB64
+  sloganB64: sloganB64,
+  redTemplateBgB64: redTemplateBgB64
 });
 
 const outPath = pagesPath.replace(/\.json$/, '.html');
@@ -131,12 +147,12 @@ function buildHtml(opts) {
 '<head>\n' +
 '<meta charset="UTF-8">\n' +
 '<meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
-'<title>263 PPT - ' + opts.colorScheme + '</title>\n' +
+'<title>' + opts.pageTitle + '</title>\n' +
 '<style>\n' +
 '* { margin:0; padding:0; box-sizing:border-box; }\n' +
-'html, body { width:100%; height:100%; margin:0; overflow:hidden; background:#111; font-family:' + t.fontFamily + '; }\n' +
+'html, body { width:100%; height:100%; margin:0; overflow:hidden; background:#FFFFFF; font-family:' + t.fontFamily + '; }\n' +
 ':root { --s: 1; }\n' +
-'#player { width:' + W + 'px; height:' + H + 'px; position:fixed; top:0; left:50%; transform:translate(-50%,0) scale(var(--s)); overflow:hidden; }\n' +
+'#player { width:' + W + 'px; height:' + H + 'px; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(var(--s)); overflow:hidden; }\n' +
 '.slide-page { position:absolute !important; top:0; left:0; width:100%; height:100%; opacity:0; pointer-events:none; transition:opacity 0.35s ease; z-index:0; }\n' +
 '.slide-page.active { opacity:1; pointer-events:auto; z-index:2; }\n' +
 ':root {\n' +
@@ -153,6 +169,7 @@ function buildHtml(opts) {
 '.logo-color-img { background: url(' + opts.logoColorB64 + ') no-repeat center/contain; }\n' +
 '.logo-white-img { background: url(' + opts.logoWhiteB64 + ') no-repeat center/contain; }\n' +
 '.slogan-img { background: url(' + opts.sloganB64 + ') no-repeat center/contain; }\n' +
+'.red-template-bg { background: url(' + opts.redTemplateBgB64 + ') no-repeat center/contain; }\n' +
 '</style>\n' +
 '</head>\n' +
 '<body>\n' +
@@ -162,17 +179,39 @@ opts.slides + '\n' +
 '<script>\n' +
 '(function() {\n' +
 '  var slides = document.querySelectorAll(".slide-page");\n' +
-'  var current = 0;\n' +
 '  var total = ' + pages.slides.length + ';\n' +
+'  var stagger = ' + ((tokens.coverAscii && tokens.coverAscii.stagger) || 30) + ';\n' +
+'  var current = 0;\n' +
+'  // Restore saved slide on refresh\n' +
+'  try { var s = sessionStorage.getItem("263-slide"); if (s !== null) current = parseInt(s, 10) % total; } catch(e) {}\n' +
+'  function save() { try { sessionStorage.setItem("263-slide", current); } catch(e) {} }\n' +
+'  // ASCII replay — resets lines to initial offset and staggers them back in\n' +
+'  function replayAscii() {\n' +
+'    var lines = document.querySelectorAll(".slide-page.active .ascii-line");\n' +
+'    if (!lines.length) return;\n' +
+'    for (var i = 0; i < lines.length; i++) {\n' +
+'      lines[i].style.opacity = "0";\n' +
+'      lines[i].style.transform = "translateX(" + (lines[i].dataset.dir || "-60px") + ")";\n' +
+'    }\n' +
+'    var cc = document.querySelector(".slide-page.active .cover-content");\n' +
+'    if (cc) cc.style.opacity = "0";\n' +
+'    for (var j = 0; j < lines.length; j++) {\n' +
+'      setTimeout(function(idx) {\n' +
+'        return function() { lines[idx].style.opacity = "1"; lines[idx].style.transform = "translateX(0)"; };\n' +
+'      }(j), j * stagger);\n' +
+'    }\n' +
+'    if (cc) { setTimeout(function() { cc.style.opacity = "1"; }, lines.length * stagger + 200); }\n' +
+'  }\n' +
 '  function show(idx) {\n' +
+'    if (current === ((idx % total) + total) % total) return;\n' +
 '    slides[current].classList.remove("active");\n' +
 '    current = ((idx % total) + total) % total;\n' +
 '    slides[current].classList.add("active");\n' +
+'    save();\n' +
+'    if (current === 0) setTimeout(replayAscii, 50);\n' +
 '  }\n' +
 '  document.getElementById("player").addEventListener("click", function(e) {\n' +
-'    var rect = e.currentTarget.getBoundingClientRect();\n' +
-'    if (e.clientX < rect.left + rect.width / 2) { show(current - 1); }\n' +
-'    else { show(current + 1); }\n' +
+'    show(current + 1);\n' +
 '  });\n' +
 '  document.addEventListener("keydown", function(e) {\n' +
 '    var key = e.key || e.code;\n' +
@@ -182,63 +221,24 @@ opts.slides + '\n' +
 '      e.preventDefault(); show(current - 1);\n' +
 '    } else if (key === "Home") { e.preventDefault(); show(0); }\n' +
 '    else if (key === "End") { e.preventDefault(); show(total - 1); }\n' +
-'    else if (key === "f" || key === "F") {\n' +
-'      if (document.fullscreenElement) { document.exitFullscreen(); }\n' +
-'      else { document.documentElement.requestFullscreen(); }\n' +
-'    }\n' +
 '  });\n' +
-'  show(0);\n' +
-'  // Double-click to toggle fullscreen\n' +
-'  document.addEventListener("dblclick", function(e) {\n' +
-'    e.preventDefault();\n' +
-'    if (document.fullscreenElement) { document.exitFullscreen(); }\n' +
-'    else { document.documentElement.requestFullscreen(); }\n' +
-'  });\n' +
-'  // ASCII line-by-line staggered entrance\n' +
-'  var asciiLines = document.querySelectorAll(".ascii-line");\n' +
-'  if (asciiLines.length) {\n' +
-'    var stagger = ' + ((tokens.coverAscii && tokens.coverAscii.stagger) || 30) + ';\n' +
-'    for (var i = 0; i < asciiLines.length; i++) {\n' +
-'      setTimeout(function(idx) {\n' +
-'        return function() {\n' +
-'          asciiLines[idx].style.opacity = "1";\n' +
-'          asciiLines[idx].style.transform = "translateX(0)";\n' +
-'        };\n' +
-'      }(i), i * stagger);\n' +
-'    }\n' +
-'    var coverContent = document.querySelector(".cover-content");\n' +
-'    if (coverContent) {\n' +
-'      setTimeout(function() {\n' +
-'        coverContent.style.opacity = "1";\n' +
-'      }, asciiLines.length * stagger + 200);\n' +
-'    }\n' +
-'  }\n' +
+'  slides[current].classList.add("active");\n' +
+'  if (current === 0) setTimeout(replayAscii, 100);\n' +
 '  function resize() {\n' +
-'    var s = window.innerWidth / ' + W + ';\n' +
+'    var s = Math.min(window.innerWidth / ' + W + ', window.innerHeight / ' + H + ');\n' +
 '    document.documentElement.style.setProperty("--s", s);\n' +
 '  }\n' +
 '  window.addEventListener("resize", resize);\n' +
 '  resize();\n' +
-'  // Auto-enter fullscreen on first interaction (click or keypress)\n' +
-'  var _autoFS = function() {\n' +
-'    if (!document.fullscreenElement) {\n' +
-'      document.documentElement.requestFullscreen().catch(function() {});\n' +
-'    }\n' +
-'    document.removeEventListener("click", _autoFS);\n' +
-'    document.removeEventListener("keydown", _autoFS);\n' +
-'  };\n' +
-'  document.addEventListener("click", _autoFS);\n' +
-'  document.addEventListener("keydown", _autoFS);\n' +
 '  // Binary rain (Matrix-style) for cover slides\n' +
 '  var rainCanvases = document.querySelectorAll("canvas[id^=binaryRain]");\n' +
 '  for (var rc = 0; rc < rainCanvases.length; rc++) {\n' +
 '    (function(canvas) {\n' +
 '      var ctx = canvas.getContext("2d");\n' +
-'      var parent = canvas.parentElement;\n' +
 '      canvas.width = 1920;\n' +
 '      canvas.height = 1080;\n' +
 '      var chars = "01";\n' +
-'      var fontSize = 18;\n' +
+'      var fontSize = 28;\n' +
 '      var columns = Math.floor(canvas.width / fontSize);\n' +
 '      var drops = [];\n' +
 '      for (var d = 0; d < columns; d++) {\n' +
@@ -246,7 +246,7 @@ opts.slides + '\n' +
 '      }\n' +
 '      var primaryColor = getComputedStyle(document.documentElement).getPropertyValue("--primary").trim() || "#D0121B";\n' +
 '      function draw() {\n' +
-'        ctx.fillStyle = "rgba(255,255,255,0.03)";\n' +
+'        ctx.fillStyle = "rgba(255,255,255,0.05)";\n' +
 '        ctx.fillRect(0, 0, canvas.width, canvas.height);\n' +
 '        ctx.fillStyle = primaryColor;\n' +
 '        ctx.font = fontSize + "px Courier New, monospace";\n' +
