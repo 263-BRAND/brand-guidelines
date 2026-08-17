@@ -45,7 +45,7 @@ node generate.js <pages.json>   # 生成 <pages>.html（自包含幻灯片，零
 
 ### Skill zip 打包
 
-`visual_skill/` 是部署包。zip 必须自包含——SKILL.md 引用的每个文件都必须打包。缺文件会导致外部 AI 工具报错。
+zip 从**根目录**按 17 文件清单构建（SKILL.md + assets/*.png + renderer/slides/*.js + brand-tokens.json + company-data.json + generate.js），存入 `测试记录/263-vi-skill-MMDD.zip`。zip 必须自包含——SKILL.md 引用的每个文件都必须打包。缺文件会导致外部 AI 工具报错。
 
 ### 核心文件
 
