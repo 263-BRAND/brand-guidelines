@@ -11,8 +11,8 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
   for (var i = 0; i < blocks.length; i++) {
     var b = blocks[i];
     blocksHtml += '<div style="margin-bottom:20px;">\n';
-    blocksHtml += '<h3 style="font-size:' + tokens.typography.sizes.subtitle.template + ';color:' + c.primaryLight + ';margin-bottom:6px;font-weight:bold;">' + esc(b.heading) + '</h3>\n';
-    blocksHtml += '<p style="font-size:' + tokens.typography.sizes.body.template + ';color:' + c.gray + ';line-height:1.6;">' + esc(b.body) + '</p>\n';
+    blocksHtml += '<h3 style="font-size:' + tokens.typography.sizes.subtitle.template + ';color:' + c.primaryLight + ';margin-bottom:6px;font-weight:bold;line-height:' + tokens.typography.lineHeight.html.heading + ';">' + esc(b.heading) + '</h3>\n';
+    blocksHtml += '<p style="font-size:' + tokens.typography.sizes.body.template + ';color:' + c.gray + ';line-height:' + tokens.typography.lineHeight.html.body + ';">' + esc(b.body) + '</p>\n';
     blocksHtml += '</div>\n';
   }
 
@@ -22,11 +22,11 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
   html += '<div class="logo-color-img" style="width:100%;height:100%;"></div>\n';
   html += '</div>\n';
 
-  html += '<div style="position:absolute;top:18%;left:6%;right:6%;">\n';
+  html += '<div style="position:absolute;top:12%;left:6%;right:6%;">\n';
   if (slide.sectionLabel) {
     html += '<div style="font-size:' + tokens.typography.sizes.caption.template + ';color:' + c.primary + ';letter-spacing:2px;margin-bottom:4px;">' + esc(slide.sectionLabel) + '</div>\n';
   }
-  html += '<h2 style="font-size:' + tokens.typography.sizes.pageTitle.template + ';font-weight:bold;color:' + textColor + ';">' + esc(slide.title) + '</h2>\n';
+  html += '<h2 style="font-size:' + tokens.typography.sizes.pageTitle.template + ';font-weight:bold;color:' + textColor + ';line-height:' + tokens.typography.lineHeight.html.title + ';">' + esc(slide.title) + '</h2>\n';
   html += '</div>\n';
 
   html += '<div style="position:absolute;top:28%;left:6%;right:6%;bottom:12%;">\n';

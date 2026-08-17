@@ -16,7 +16,7 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
     eventsHtml += '<div style="width:12px;height:12px;background:' + c.primary + ';border-radius:50%;flex-shrink:0;margin-top:6px;z-index:1;"></div>\n';
     eventsHtml += '<div style="flex:1;padding-left:20px;">\n';
     eventsHtml += '<h3 style="font-size:' + tokens.typography.sizes.subtitle.template + ';color:' + c.dark + ';font-weight:bold;margin-bottom:4px;">' + esc(evt.title) + '</h3>\n';
-    if (evt.description) { eventsHtml += '<p style="font-size:' + tokens.typography.sizes.body.template + ';color:' + c.gray + ';line-height:1.6;">' + esc(evt.description) + '</p>\n'; }
+    if (evt.description) { eventsHtml += '<p style="font-size:' + tokens.typography.sizes.body.template + ';color:' + c.gray + ';line-height:' + tokens.typography.lineHeight.html.timeline + ';">' + esc(evt.description) + '</p>\n'; }
     eventsHtml += '</div>\n</div>\n';
   }
 
@@ -30,7 +30,7 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
   if (slide.sectionLabel) {
     html += '<div style="font-size:' + tokens.typography.sizes.caption.template + ';color:' + c.primary + ';letter-spacing:2px;margin-bottom:4px;">' + esc(slide.sectionLabel) + '</div>\n';
   }
-  html += '<h2 style="font-size:' + tokens.typography.sizes.pageTitle.template + ';font-weight:bold;color:' + c.dark + ';">' + esc(slide.title) + '</h2>\n';
+  html += '<h2 style="font-size:' + tokens.typography.sizes.pageTitle.template + ';font-weight:bold;color:' + c.dark + ';line-height:' + tokens.typography.lineHeight.html.title + ';">' + esc(slide.title) + '</h2>\n';
   html += '</div>\n';
 
   html += '<div style="position:absolute;top:26%;left:15%;right:10%;bottom:8%;overflow-y:auto;">\n';
