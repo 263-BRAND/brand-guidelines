@@ -151,7 +151,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 - 位置：`top:16%`，水平居中（`left:50%; transform:translateX(-50%)`）
 - **刷新重播：** 动效绑定 `.slide-page.active`，页面刷新自动重播
 
-**封面无右上角/左上角独立 Logo。** ASCII 图案即是封面的品牌标识，不额外放置 PNG Logo。此规则仅适用于 Template 封面，内页和结尾页的 Logo 规则不变。
+**封面无右上角/左上角独立 Logo。** ASCII 图案即是封面的品牌标识，不额外放置 PNG Logo。此规则仅适用于 ASCII 默认封面（个性化）；**严谨封面 red-template 例外——左上角放置集团彩稿 PNG Logo**（见「内部汇报红色封面」章节）。内页和结尾页的 Logo 规则不变。
 
 **PPTX Template 封面回退：** ASCII 字符画和二进制雨在 PPTX 中无法渲染，改用预渲染静态背景图 + 固定位置文字叠加：
 
@@ -178,15 +178,19 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 | 属性 | 值 | 刚性 |
 |------|-----|:--:|
 | 背景 | `brand-tokens.json` → `redTemplateCover.path`（`assets/cover-red-template.png`，1920×1080 位图），HTML 以 base64 全屏背景，PPTX 以全幻灯片背景 | MUST |
-| 文字区 | 白色留白区（图片左半），`left:7%` / `width:42%` / `top:0~72%`，左对齐、垂直居中 | MUST |
-| 标题 | 微软雅黑 Bold，64pt，品牌 dark，左对齐 | MUST |
-| 副标题/汇报人/部门/日期 | 微软雅黑，30pt，品牌 gray，左对齐，红色圆点（·）分隔 | MUST |
+| 独立 Logo | **左上角集团红心 Logo**（= 集团彩稿 `logos.group.color`，与内页一致），位置固定：`left:6%` / `top:8%` / 125px 正方形（HTML；PPTX 62pt 正方形，坐标 `left:57.6pt` / `top:43.2pt` = 6%×960 / 8%×540），HTML/PPTX 一致 | MUST |
+| 文字区 | 白色留白区（图片左半），`left:7%` / `max-width:50%`，**整体垂直居中**：`startY = (SH − totalH) / 2`（HTML 以 `height:100%` + flex 居中实现，内容中心 = 画布垂直中心 540px；PPTX 显式计算 startY），左对齐 | MUST |
+| 标题 | 微软雅黑 Bold，64pt，品牌 dark，左对齐；**≤20 字符/行，禁止折行**；超限 Agent 建议用户改短或自行分为两行（以 `\n` 分行）；`line-height:1.3`；宽度随内容自适应（`white-space:nowrap`），上限 50% | MUST |
+| 副标题 | 微软雅黑，30pt，品牌 gray，左对齐，**独立一行**（不与汇报人/部门/日期同行），**不加粗** | MUST |
+| 汇报人/部门/日期 | 微软雅黑，**26pt（小于副标题）**，品牌 gray，左对齐，红色圆点（·）分隔，独立一行 | MUST |
 | 公司全称 | 底部 `bottom:6%` / `left:7%`，22pt，品牌 gray（浅粉底带上） | MUST |
-| 独立 Logo | 不放置 PNG Logo——图片内的红色图形即品牌标识 | MUST |
+| 文字重叠 | **禁止**——任何文字元素不得重叠；**间距分层**：标题→副标题 16px（紧凑），副标题→汇报信息 32px（成组拉开） | MUST |
 
 **图片缩放规则**：红色封面底图按全幻灯片等比缩放（HTML `background-size:contain`，PPTX 等比缩放至 960×540pt）。图片本身 16:9，与画布同比例，不裁切不变形。**禁止拉伸、裁切、压扁。**
 
-**PPTX 实现**：红色封面底图设为全幻灯片背景，文字框叠加（标题/副标题/汇报人/公司全称），位置同上表。文字框必须透明背景（`FillVisible=false`），禁止填充颜色。
+**标题宽度说明**：文字区宽度从 42% 放宽为 `max-width:50%`——标题不折行，宽度随内容自适应，可向右扩展到放得下为止，但不超过 50%（20 字符 @64pt 约 44%，仍在白区安全范围内，不压右侧红区）。
+
+**PPTX 实现**：红色封面底图设为全幻灯片背景，文字框叠加。字号按 PPTX 列：标题 43pt Bold、副标题 20pt、汇报信息 18pt、公司全称 14pt。集团彩稿 Logo 内嵌二进制，位置 `left:57.6pt` / `top:43.2pt`，`LockAspectRatio=true` + 单维度 62pt 正方形。文字块垂直居中：`startY = (540 − totalH) / 2`。文字框必须透明背景（`FillVisible=false`），禁止填充颜色。
 
 ### 封面二进制雨（仅 HTML，Geek 装饰）
 
@@ -299,7 +303,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 | 浅色底 → 彩稿 Logo / 深色底 → 反白 Logo | MUST |
 | 结尾页：原内容全部丢弃，替换为居中 Logo + slogan PNG 图片（不可用文字代替） | MUST |
 | 封面 Logo（Themed）：左上角，画布宽度 6.5%（`layout.coverLogo`），安全区同内页规则 | MUST |
-| 封面 Logo（Template）：不使用 PNG Logo，以 ASCII 字符画替代（见"母版封面页"章节） | MUST |
+| 封面 Logo（Template·ASCII 默认）：不使用 PNG Logo，以 ASCII 字符画替代（见"母版封面页"章节）；**严谨封面 red-template 例外：左上角集团彩稿 PNG Logo**（见「内部汇报红色封面」章节） | MUST |
 | Logo 图片必须使用 `background-size: contain`（CSS background-image）或 `object-fit: contain`（`<img>` 标签），禁止裁切、禁止拉伸、禁止压扁 | MUST |
 | Logo 图片容器禁止同时固定宽高两个维度为不匹配原图比例的值；只能固定单一维度，另一维度 auto 或等比推算 | MUST |
 

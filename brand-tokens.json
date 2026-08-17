@@ -99,7 +99,7 @@
   },
   "redTemplateCover": {
     "path": "assets/cover-red-template.png",
-    "note": "内部汇报第二种封面：红色设计位图底图（1920×1080）。HTML 以 base64 全屏背景 + 文字叠加；PPTX 以全幻灯片背景 + 文字框叠加，100% 视觉一致。触发：scene=template + cover.background=red-template（硬门禁第 5 题「严谨」）。默认仍为 ASCII 字符画封面。文字布局见 SKILL.md 与 renderer/slides/cover.js。"
+    "note": "内部汇报第二种封面：红色设计位图底图（1920×1080）+ 左上角集团红心 Logo（= 集团彩稿 `logos.group.color`，与内页一致；位置固定 left:6%/top:8%/125px 正方形）。HTML 以 base64 全屏背景 + 文字叠加；PPTX 以全幻灯片背景 + 文字框叠加，100% 视觉一致。触发：scene=template + cover.background=red-template（硬门禁第 5 题「严谨」）。默认仍为 ASCII 字符画封面。文字布局见 SKILL.md 与 renderer/slides/cover.js。"
   },
   "hardRules": {
     "logo": {
