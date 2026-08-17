@@ -58,6 +58,17 @@ ASCII 字符画（封面 Logo 图）属于装饰图形，不受字号底线约�
 
 `微软雅黑, Microsoft YaHei, Noto Sans SC, Source Han Sans SC, sans-serif`。Noto Sans SC（思源黑体，SIL OFL）为跨平台开源回退，Mac/Linux/纯 Web 环境下替代微软雅黑。
 
+#### 行距规范决策记录（2026-08-17）
+
+**背景：** Trae 实测发现内容页行距偏小——渲染器硬编码 `line-height:1.6`，且 Template 硬规则三项（字号/颜色/Logo 位置）不含行距，1.6 是渲染器作者随手值。
+
+**决策：**
+- 行距改为**品牌定值**，写入 `brand-tokens.json` → `typography.lineHeight`（HTML/PPTX 两套，禁止互套）
+- **HTML**（CSS line-height 乘数）：主标题 1.3、小标题/正文/卡片/时间轴 1.8。标题 1.3 非 2.0——2.0 让单行标题盒高 2×字号、文字垂直居中后下探撞进固定 top:28% 内容区，造成标题/小标题重叠
+- **PPTX**（倍距，用户习惯）：标题单倍(100%)、其余 1.2倍(120%)。PPTX 与 HTML 测量单位不同：PPTX 1.2倍 ≈ HTML ~1.6，不可直接复刻数值
+- 渲染器从 token 读取行距，消除硬编码魔法数字
+- 三页标题位置统一 `top:12%`（content 原 18% 与 cards/timeline 12% 不一致）
+
 ### 画布尺寸
 
 | 格式 | 尺寸 | 单位 |

@@ -296,7 +296,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 
 **跨格式直出规则：** HTML/CSS 输出在数字后加 `pt` 后缀（如 `font-size: 64pt`），PPTX 直接写入数字（PPTX fontSize 原生单位即 pt）。**禁止任何 pt↔px 乘除换算。** 值从 JSON 读取为 number，单位由输出端明确补上。
 
-**行距（HTML/PPTX 两套规范，禁止互套）：** 从 `brand-tokens.json` → `typography.lineHeight` 读取。HTML 用 CSS line-height 乘数（行盒 = 字号 × 值），PPTX 用倍距（基于字体自身行高）。**PPTX 1.2倍 ≈ HTML line-height ~1.6**，不可直接复刻数值。
+**行距（HTML/PPTX 两套规范，禁止互套）：** 从 `brand-tokens.json` → `typography.lineHeight` 读取。HTML 用 CSS line-height 乘数（行盒 = 字号 × 值），PPTX 用倍距（基于字体自身行高）。**PPTX 1.2倍 ≈ HTML line-height ~1.6（一般换算）**，不可直接复刻数值——HTML 正文取 1.8 是屏幕阅读的宽松值，PPTX 取 1.2倍是 PPTX 习惯，两套规范各自取值。
 
 | 元素 | HTML（CSS line-height） | PPTX（倍距） |
 |------|:--:|:--:|

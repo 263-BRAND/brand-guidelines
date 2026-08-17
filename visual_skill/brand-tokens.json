@@ -48,7 +48,7 @@
     },
     "lineHeight": {
       "html": { "title": 1.3, "heading": 1.8, "body": 1.8, "card": 1.8, "timeline": 1.8, "note": "CSS line-height 乘数（行盒 = 字号 × 值）。HTML 与 PPTX 是两套规范，禁止互套。" },
-      "pptx": { "title": 1.0, "heading": 1.2, "body": 1.2, "card": 1.2, "timeline": 1.2, "note": "PPTX 倍距：标题单倍(100%)，其余 1.2倍(120%)，基于字体自身行高。PPTX 1.2倍 ≈ HTML line-height ~1.6。" }
+      "pptx": { "title": 1.0, "heading": 1.2, "body": 1.2, "card": 1.2, "timeline": 1.2, "note": "PPTX 倍距：标题单倍(100%)，其余 1.2倍(120%)，基于字体自身行高。PPTX 1.2倍 ≈ HTML line-height ~1.6（一般换算）；HTML 正文按规范取 1.8 为屏幕阅读宽松值，两套规范各自取值，不互套。" }
     }
   },
   "logos": {

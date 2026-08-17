@@ -15,7 +15,7 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
     eventsHtml += '</div>\n';
     eventsHtml += '<div style="width:12px;height:12px;background:' + c.primary + ';border-radius:50%;flex-shrink:0;margin-top:6px;z-index:1;"></div>\n';
     eventsHtml += '<div style="flex:1;padding-left:20px;">\n';
-    eventsHtml += '<h3 style="font-size:' + tokens.typography.sizes.subtitle.template + ';color:' + c.dark + ';font-weight:bold;margin-bottom:4px;">' + esc(evt.title) + '</h3>\n';
+    eventsHtml += '<h3 style="font-size:' + tokens.typography.sizes.subtitle.template + ';color:' + c.dark + ';font-weight:bold;margin-bottom:4px;line-height:' + tokens.typography.lineHeight.html.heading + ';">' + esc(evt.title) + '</h3>\n';
     if (evt.description) { eventsHtml += '<p style="font-size:' + tokens.typography.sizes.body.template + ';color:' + c.gray + ';line-height:' + tokens.typography.lineHeight.html.timeline + ';">' + esc(evt.description) + '</p>\n'; }
     eventsHtml += '</div>\n</div>\n';
   }

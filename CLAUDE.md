@@ -71,6 +71,7 @@ Agent 与渲染器之间的中间格式。顶层字段：`colorScheme`、`logoSe
 - **禁止纯黑**：`#000000` 不得作为文字颜色。标题 = `dark` (#2D3847)，正文 = `gray` (#595959)。
 - **结尾页**：始终是最后一页，居中 Logo + slogan PNG。原文件的结尾/感谢页必须替换，不得保留。
 - **字体**：全局微软雅黑。字号 HTML 用 `pt` 后缀，PPTX 写裸数字。禁止 pt↔px 换算。
+- **行距**：HTML 与 PPTX 两套规范（`typography.lineHeight`）。HTML 用 CSS line-height（主标题 1.3、其余 1.8），PPTX 用倍距（标题单倍、其余 1.2倍）。禁止互套。
 - **对话术语**：禁止对用户使用内部术语（Template/Themed/母版/硬规则）及内部文件名（red-template、cover-red-template.png、template-cover-bg.png 等）。模式/封面术语始终说「内部汇报」「对外展示」「个性化风格」「严谨商务风格」（集团 Logo、HTML/PPTX 等正常用词不受此限）。
 - **Code review**：渲染器/UI 变更必须在浏览器实测——窗口缩放、翻页遍历、背景模式切换。只读代码不行。
 - **图片缩放**：Logo/slogan 只允许等比缩放（HTML: `background-size:contain`；PPTX: `LockAspectRatio=true`）。Logo 容器必须正方形（宽=高）。Slogan 只固定宽度。禁止裁切/拉伸/同时固定不同宽高值。
