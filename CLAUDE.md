@@ -78,7 +78,7 @@ Agent 与渲染器之间的中间格式。顶层字段：`colorScheme`、`logoSe
 - **PPTX 图片嵌入**：必须内嵌二进制，禁外部路径。LockAspectRatio 顺序：插入→锁比例→设单维度尺寸。封面文字框必须透明背景（`FillVisible=false`）。
 - **PPTX 字号**：封面标题 43pt，其余见 SKILL.md 字体表。CSS pt 在 HTML 和 PowerPoint pt 解析不同——同数值不代表同比例，禁止直接复刻。
 - **字体栈**：`微软雅黑, Microsoft YaHei, Noto Sans SC, Source Han Sans SC, sans-serif`。Noto Sans SC 为跨平台开源回退（SIL OFL）。
-- **Skill zip**：`测试记录/263-vi-skill-MMDD.zip`，19 文件（含 `cover-red-template.png`、`template-cover-bg.png`、`pptx-python-guide.md`）。`brand-tokens.json` v2.4（含 chartPalette 图表色板 + slogan 原生尺寸/宽高比）。
+- **Skill zip**：`测试记录/263-vi-skill-MMDD.zip`，19 文件（含 `cover-red-template.png`、`template-cover-bg.png`、`pptx-python-guide.md`）。`brand-tokens.json` v2.5（含 chartPalette 图表色板——唯一 7 档红尺度 + 语义色红涨绿跌 + 两灰唯一命名 + slogan 原生尺寸/宽高比）。
 
 ## 参考资料
 
