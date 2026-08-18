@@ -105,7 +105,7 @@ ASCII 字符画（封面 Logo 图）属于装饰图形，不受字号底线约�
 
 | 规则 | 刚性 |
 |---|---|
-| 内页 Logo 尺寸：画布宽度 4.2%（`layout.innerPageLogo.size`） | MUST |
+| 内页 Logo 尺寸：画布宽度 4.2%（`layout.innerPageLogo.width/height` 正方形） | MUST |
 | 封面 Logo（Themed）：画布宽度 6.5%（`layout.coverLogo`），左上角 | MUST |
 | 封面 Logo（Template）：不使用 PNG，以 ASCII 字符画替代 | MUST |
 | Logo 安全区内禁止任何装饰元素、文字、页码 | MUST |
@@ -248,6 +248,23 @@ VI skill 不负责解析文件。外部 Agent 自行调用 MCP 或工具摘取�
 - **文字块垂直居中**：`startY = (SH − totalH) / 2`。验证：白区实际延伸至 y≈920（85% 高度），最坏情况（2 行标题+副标题+meta≈350px）居中后底部 ~715px 仍安全在白区
 - **间距分层防重叠**：标题→副标题 16px，副标题→汇报信息 32px；任何文字元素禁止重叠
 - 公司全称 `bottom:6%` 不动（文字信息块不含底部）
+
+---
+
+#### 内页 Logo 安全区 X/Y 双轴决策记录（2026-08-18）
+
+**背景：** slidep 实测发现内页右上角 Logo 盖住右侧红色卡片/图形。agent 计算正确，根因是 spec 数值自相矛盾：
+- 内容区 `top:12%`（129.6px）在 Logo 底边（`top:5.3%` + `width:80px` = 137.2px）之上 → Y 已相交
+- SKILL 原「内容区最大右边界 91.6%」按 `right:4.2%` 旧值算，token 实际 `right:5.2%` → 真实边界 90.6%；91.6% 本身侵入 Logo 框 19px
+- 渲染器 `right:6%`（94%）侵入 65px
+- 连带：SKILL 多处引用不存在的 `layout.innerPageLogo.size` 键（token 实际键名 `width`/`height`）——契约键名漂移
+
+**决策：**
+- **安全区 = Logo 矩形边界框，X/Y 双轴都算**：X 范围 `[画布宽 − right − width, 画布宽 − right]`，Y 范围 `[top, top + height]`。元素只有 X 与 Y 同时相交才越界
+- **内容区右边界**：按 token 实算（`right:5.2%` + `width:80px` → 90.6%），禁止硬编码 91.6% 等派生值
+- **顶部元素强制约束**：顶部高于 Logo 底边的元素（标题等，Y 已相交），右边界强制 ≤ 画布宽 − right − width；内容主体区（如 `top:28%`）垂直已低于 Logo 底边，不受此约束
+- **渲染器从 token 读**：content/cards/timeline/toc 标题块 `right:6%` → `right:calc(l.right + l.width)`，右边界精确对齐 Logo 左边界（1740.2px），缩放等比
+- **键名对齐**：全部 `layout.innerPageLogo.size` → `width/height`（数据层唯一真相源）
 
 ---
 
