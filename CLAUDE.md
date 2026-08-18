@@ -69,8 +69,10 @@ Agent 与渲染器之间的中间格式。顶层字段：`colorScheme`、`logoSe
 - **Logo 安全区**：零容忍——任何 UI 元素的任何像素都不得进入 Logo 边界框。安全区 = Logo 矩形框，**X/Y 双轴都算**（X: 画布宽 − right − width ~ 画布宽 − right，Y: top ~ top + height）。**顶部高于 Logo 底边的元素（如 top:12% 标题）右边界强制 ≤ 画布宽 − right − width（≈90.6%）**；内容主体区（top:28%）垂直已低于 Logo 底边不受限。数值按 token 实算，禁止硬编码派生值；键名用 `layout.innerPageLogo.width/height`（token 无 `size` 键）。
 - **ASCII 字符画**：封面 ASCII Logo 存储在 `brand-tokens.json` → `coverAscii.art`。Agent 必须原样读取，禁止自行生成或修改。
 - **禁止纯黑**：`#000000` 不得作为文字颜色。标题 = `dark` (#2D3847)，正文 = `gray` (#595959)。
+- **语义色**：深绿 `#3E8E4E` 仅限图表涨跌数据（红涨绿跌）；禁止用于非图表设计（A/B 对比、标注、强调、装饰）。非图表两项对比用品牌红 vs 中灰/深蓝灰，不引入绿。
 - **结尾页**：始终是最后一页，居中 Logo + slogan PNG。原文件的结尾/感谢页必须替换，不得保留。
-- **字体**：全局微软雅黑。字号 HTML 用 `pt` 后缀，PPTX 写裸数字。禁止 pt↔px 换算。
+- **字体**：全局微软雅黑。字号 HTML 用 `pt` 后缀，PPTX 写裸数字。禁止 pt↔px 换算。字号从 `typography.sizes.*.template` 读取（封面 64/内容页 40/副标题 30/正文 26/图表 22），生成前自检核对字号与行距（HTML 正文 ≥ 24pt、极限 ≥ 20pt）。
+- **渲染回退**：HTML 渲染依赖 node（`node generate.js <pages.json>`）。环境无 node 时禁止降级约束——按「Node.js 可用性分支」回退：手动生成自包含 HTML（色板/安全区/字号/行距/图片全约束应用）或交外部渲染。
 - **行距**：HTML 与 PPTX 两套规范（`typography.lineHeight`）。HTML 用 CSS line-height（主标题 1.3、其余 1.8、章节页大号数字 2.0），PPTX 用倍距（标题单倍、其余 1.2倍）。覆盖章节页/目录页（含 toc 类型）。禁止互套。
 - **对话术语**：禁止对用户使用内部术语（Template/Themed/母版/硬规则）及内部文件名（red-template、cover-red-template.png、template-cover-bg.png 等）。模式/封面术语始终说「工作汇报」「对外展示」「个性化风格」「严谨商务风格」（集团 Logo、HTML/PPTX 等正常用词不受此限）。PPT 生成路径对用户说「专业PPT制作技能或设计类技能」「用Python代码生成」（Python/HTML 属正常技术词，可对用户说）。**对用户说的话只能逐字来自 SKILL.md「生成前确认 → 用户话术」编号话术（唯一输出源）**；交互措辞三铁律：① 确认问题逐字原样用固定话术；② 禁止向用户播报判断依据（命中/锚词/锁定等推理词不出现）；③ 完整「内部说法 → 用户话术」替换对照见 SKILL.md「生成前确认 → 内部思考词汇」。
 - **Code review**：渲染器/UI 变更必须在浏览器实测——窗口缩放、翻页遍历、背景模式切换。只读代码不行。
