@@ -33,8 +33,8 @@ node generate.js <pages.json>   # 生成 <pages>.html（自包含幻灯片，零
 
 | 模式 | 触发 | HTML | PPTX |
 |------|------|------|------|
-| Geek（内部汇报） | 硬锚词：汇报/述职/总结/周报/月报/季报/年报 | ASCII 字符画 + 二进制雨 | 静态截图底图（`template-cover-bg.png`）+ 文字叠加 |
-| Geek 红色位图（内部汇报） | `scene:template` + `cover.background:red-template` | 红色设计位图底图（`cover-red-template.png`）+ 左对齐文字 | 同左，100% 一致 |
+| Geek（工作汇报） | 硬锚词：汇报/述职/总结/周报/月报/季报/年报 | ASCII 字符画 + 二进制雨 | 静态截图底图（`template-cover-bg.png`）+ 文字叠加 |
+| Geek 红色位图（工作汇报） | `scene:template` + `cover.background:red-template` | 红色设计位图底图（`cover-red-template.png`）+ 左对齐文字 | 同左，100% 一致 |
 | Themed（对外展示） | 硬锚词：介绍/展示/宣传/发布会/对外/客户 | 红底渐变 + 左上 PNG Logo | 同左，PPTX 原生实现 |
 | Formal（严谨兜底） | 待实现 | 位图底图 + 文字叠加 | 同左，100% 一致 |
 
@@ -65,14 +65,14 @@ Agent 与渲染器之间的中间格式。顶层字段：`colorScheme`、`logoSe
 
 ## 关键约定
 
-- **硬门禁**：生成前必须逐项确认，按场景分支（内部汇报 → 场景/配色/输出格式/封面风格；对外展示 → 场景/配色/视觉风格/输出格式）。Agent 先判断场景但判断后也必须逐一询问用户确认，禁止跳过、禁止假设默认值。用户话术用固定平实词，禁止暴露内部文件名。**封面风格推荐与输出格式联动**：选 PPT 文件才推荐严谨商务风格；选网页文件禁止推荐。
+- **硬门禁**：生成前必须逐项确认，按场景分支（工作汇报 → 场景/配色/输出格式/封面风格；对外展示 → 场景/配色/视觉风格/输出格式）。Agent 先判断场景但判断后也必须逐一询问用户确认，禁止跳过、禁止假设默认值。用户话术用固定平实词，禁止暴露内部文件名。**封面风格推荐与输出格式联动**：选 PPT 文件才推荐严谨商务风格；选网页文件禁止推荐。
 - **Logo 安全区**：零容忍——任何 UI 元素的任何像素都不得进入 Logo 边界框。
 - **ASCII 字符画**：封面 ASCII Logo 存储在 `brand-tokens.json` → `coverAscii.art`。Agent 必须原样读取，禁止自行生成或修改。
 - **禁止纯黑**：`#000000` 不得作为文字颜色。标题 = `dark` (#2D3847)，正文 = `gray` (#595959)。
 - **结尾页**：始终是最后一页，居中 Logo + slogan PNG。原文件的结尾/感谢页必须替换，不得保留。
 - **字体**：全局微软雅黑。字号 HTML 用 `pt` 后缀，PPTX 写裸数字。禁止 pt↔px 换算。
 - **行距**：HTML 与 PPTX 两套规范（`typography.lineHeight`）。HTML 用 CSS line-height（主标题 1.3、其余 1.8、章节页大号数字 2.0），PPTX 用倍距（标题单倍、其余 1.2倍）。覆盖章节页/目录页（含 toc 类型）。禁止互套。
-- **对话术语**：禁止对用户使用内部术语（Template/Themed/母版/硬规则）及内部文件名（red-template、cover-red-template.png、template-cover-bg.png 等）。模式/封面术语始终说「内部汇报」「对外展示」「个性化风格」「严谨商务风格」（集团 Logo、HTML/PPTX 等正常用词不受此限）。交互措辞三铁律：① 确认问题逐字原样用固定话术；② 禁止向用户播报判断依据（命中/锚词/锁定等推理词不出现）；③ 完整「内部说法 → 用户话术」替换对照见 SKILL.md「生成前确认 → 用户对话措辞规范 → 对话黑名单」。
+- **对话术语**：禁止对用户使用内部术语（Template/Themed/母版/硬规则）及内部文件名（red-template、cover-red-template.png、template-cover-bg.png 等）。模式/封面术语始终说「工作汇报」「对外展示」「个性化风格」「严谨商务风格」（集团 Logo、HTML/PPTX 等正常用词不受此限）。**对用户说的话只能逐字来自 SKILL.md「生成前确认 → 用户话术」编号话术（唯一输出源）**；交互措辞三铁律：① 确认问题逐字原样用固定话术；② 禁止向用户播报判断依据（命中/锚词/锁定等推理词不出现）；③ 完整「内部说法 → 用户话术」替换对照见 SKILL.md「生成前确认 → 内部思考词汇」。
 - **Code review**：渲染器/UI 变更必须在浏览器实测——窗口缩放、翻页遍历、背景模式切换。只读代码不行。
 - **图片缩放**：Logo/slogan 只允许等比缩放（HTML: `background-size:contain`；PPTX: `LockAspectRatio=true`）。Logo 容器必须正方形（宽=高）。Slogan 只固定宽度。禁止裁切/拉伸/同时固定不同宽高值。
 - **PPTX 图片嵌入**：必须内嵌二进制，禁外部路径。LockAspectRatio 顺序：插入→锁比例→设单维度尺寸。封面文字框必须透明背景（`FillVisible=false`）。
