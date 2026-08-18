@@ -7,5 +7,9 @@ node_modules/
 # 临时文件
 screenshots/
 
+# 测试产物（PPTX 生成脚本、测试记录）
+generate_pptx.py
+测试记录/
+
 # Claude 本地设置
 .claude/
