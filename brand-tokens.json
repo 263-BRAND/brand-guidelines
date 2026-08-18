@@ -1,16 +1,22 @@
 {
-  "version": "2.4",
+  "version": "2.5",
   "colorSchemes": {
     "group-red": {
       "primary": "#D0121B",
-      "primaryLight": "#FE343F",
-      "primaryDark": "#AC000A",
+      "primaryLight": "#F0575E",
+      "primaryDark": "#72090E",
       "accent": "#FF777F",
       "dark": "#2D3847",
       "gray": "#595959",
       "lightGray": "#F2F2F2",
       "white": "#FFFFFF",
-      "black": "#000000"
+      "black": "#000000",
+      "semantic": {
+        "positive": "#D0121B",
+        "negative": "#3E8E4E",
+        "neutral": "#BFBFBF",
+        "note": "涨跌语义色（中国惯例：红涨绿跌）。positive 复用品牌红；negative 深绿 #3E8E4E（vs 品牌红 ΔE2000=65.0，白字 4.05:1 正文可读）；neutral 复用图表非重点中灰。"
+      }
     },
     "business-blue": {
       "primary": "#1677FF",
@@ -133,8 +139,8 @@
     }
   },
   "chartPalette": {
-    "version": "1",
-    "note": "图表配色规范（重点突出 + 色阶方向）。7 档红系色阶 + 非重点静默色。全部色值来自品牌可接受色（人类肉眼验证），禁止自造。上色规则见 SKILL.md「数据图表规范 → 系列上色规则」，此处仅存色值数据。",
+    "version": "2",
+    "note": "图表配色规范（重点突出 + 色阶方向）。7 档红系色阶是唯一品牌红尺度（colorSchemes.primary/primaryLight/primaryDark 均为其档位指针）+ 非重点中灰 + 远距红组。ΔE2000 实测：7 档全部相邻对 7.5~11.5 <15 → 色阶只表方向不表身份；远距红组两两 ≥25。上色规则见 SKILL.md「数据图表规范 → 系列上色规则」，此处仅存色值数据。",
     "group-red": {
       "series": [
         { "slot": 1, "hex": "#F8B5B8", "name": "浅粉白", "usage": "色阶最浅端，方向规则起点备选" },
@@ -146,8 +152,13 @@
         { "slot": 7, "hex": "#72090E", "name": "深褐红", "usage": "色阶最深端，方向规则起点备选" }
       ],
       "muted": [
-        { "hex": "#FF777F", "name": "浅粉", "usage": "非重点数据（重点模式）" },
-        { "hex": "#BFBFBF", "name": "淡灰", "usage": "非重点数据（重点模式）" }
+        { "hex": "#BFBFBF", "name": "中灰", "usage": "非重点数据（重点模式），配深字" }
+      ],
+      "distinctReds": [
+        { "slot": 1, "hex": "#F8B5B8", "name": "浅粉白" },
+        { "slot": 4, "hex": "#EC2831", "name": "亮红" },
+        { "slot": 7, "hex": "#72090E", "name": "深褐红" },
+        { "note": "远距红组：两两 ΔE2000 = 29.5 / 25.4 / 57.6（均 ≥25）。需 2~3 个可区分红色系列时取此组；禁止取相邻档（ΔE <15）。" }
       ],
       "maxSectors": 7
     },

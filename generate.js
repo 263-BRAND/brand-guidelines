@@ -120,12 +120,14 @@ if (cs && cs.type === 'cover' && cs.title) {
   pageTitle = parts.join(' - ');
 }
 
-// Build output
+// Build output — fileId: 唯一文件身份，用于 sessionStorage 键命名空间（避免 file:// 页面共享存储导致跨文件位置泄漏）
+const fileId = path.basename(pagesPath, '.json');
 const html = buildHtml({
   slides: slideHtmlArray.join('\n'),
   tokens: tokens,
   colorScheme: pages.colorScheme,
   pageTitle: pageTitle,
+  fileId: fileId,
   logoColorB64: logoColorB64,
   logoWhiteB64: logoWhiteB64,
   sloganB64: sloganB64,
@@ -183,9 +185,10 @@ opts.slides + '\n' +
 '  var total = ' + pages.slides.length + ';\n' +
 '  var stagger = ' + ((tokens.coverAscii && tokens.coverAscii.stagger) || 30) + ';\n' +
 '  var current = 0;\n' +
-'  // Restore saved slide on refresh\n' +
-'  try { var s = sessionStorage.getItem("263-slide"); if (s !== null) current = parseInt(s, 10) % total; } catch(e) {}\n' +
-'  function save() { try { sessionStorage.setItem("263-slide", current); } catch(e) {} }\n' +
+'  // Restore saved slide on refresh — 键按文件身份命名空间（file:// 页面共享 sessionStorage，裸键会跨文件泄漏）\n' +
+'  var storageKey = "263-slide-" + "' + opts.fileId + '";\n' +
+'  try { var s = sessionStorage.getItem(storageKey); if (s !== null) current = parseInt(s, 10) % total; } catch(e) {}\n' +
+'  function save() { try { sessionStorage.setItem(storageKey, current); } catch(e) {} }\n' +
 '  // ASCII replay — resets lines to initial offset and staggers them back in\n' +
 '  function replayAscii() {\n' +
 '    var lines = document.querySelectorAll(".slide-page.active .ascii-line");\n' +

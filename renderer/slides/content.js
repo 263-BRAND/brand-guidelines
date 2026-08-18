@@ -11,7 +11,7 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
   for (var i = 0; i < blocks.length; i++) {
     var b = blocks[i];
     blocksHtml += '<div style="margin-bottom:20px;">\n';
-    blocksHtml += '<h3 style="font-size:' + tokens.typography.sizes.subtitle.template + ';color:' + c.primaryLight + ';margin-bottom:6px;font-weight:bold;line-height:' + tokens.typography.lineHeight.html.heading + ';">' + esc(b.heading) + '</h3>\n';
+    blocksHtml += '<h3 style="font-size:' + tokens.typography.sizes.subtitle.template + ';color:' + c.primary + ';margin-bottom:6px;font-weight:bold;line-height:' + tokens.typography.lineHeight.html.heading + ';">' + esc(b.heading) + '</h3>\n';
     blocksHtml += '<p style="font-size:' + tokens.typography.sizes.body.template + ';color:' + c.gray + ';line-height:' + tokens.typography.lineHeight.html.body + ';">' + esc(b.body) + '</p>\n';
     blocksHtml += '</div>\n';
   }

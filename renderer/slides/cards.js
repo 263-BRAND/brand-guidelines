@@ -12,7 +12,7 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
   var items = slide.items || [];
   for (var i = 0; i < items.length; i++) {
     var item = items[i];
-    cardsHtml += '<div style="flex:0 0 ' + cardWidth + ';background:' + c.white + ';border-radius:8px;padding:28px 24px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border-top:3px solid ' + c.primary + ';">\n';
+    cardsHtml += '<div style="flex:0 0 ' + cardWidth + ';background:' + c.lightGray + ';border-radius:8px;padding:28px 24px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border-top:3px solid ' + c.primary + ';">\n';
     if (item.icon) { cardsHtml += '<div style="font-size:32px;margin-bottom:12px;">' + esc(item.icon) + '</div>\n'; }
     cardsHtml += '<h3 style="font-size:' + tokens.typography.sizes.subtitle.template + ';color:' + c.dark + ';font-weight:bold;margin-bottom:8px;line-height:' + tokens.typography.lineHeight.html.heading + ';">' + esc(item.title) + '</h3>\n';
     cardsHtml += '<p style="font-size:' + tokens.typography.sizes.body.template + ';color:' + c.gray + ';line-height:' + tokens.typography.lineHeight.html.card + ';">' + esc(item.description) + '</p>\n';
