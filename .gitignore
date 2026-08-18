@@ -11,5 +11,8 @@ screenshots/
 generate_pptx.py
 测试记录/
 
-# Claude 本地设置
+# Claude 本地设置（本地配置不入库；.claude/skills/ 是 skill 交付物，放行）
 .claude/
+!.claude/skills/
+.claude/skills/*
+!.claude/skills/263-vi/
