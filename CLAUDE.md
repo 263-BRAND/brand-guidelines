@@ -35,7 +35,7 @@ node generate.js <pages.json>   # 生成 <pages>.html（自包含幻灯片，零
 |------|------|------|------|
 | Geek（工作汇报） | 硬锚词：汇报/述职/总结/周报/月报/季报/年报 | ASCII 字符画 + 二进制雨 | 静态截图底图（`template-cover-bg.png`）+ 文字叠加 |
 | Geek 红色位图（工作汇报） | `scene:template` + `cover.background:red-template` | 红色设计位图底图（`cover-red-template.png`）+ 左对齐文字 | 同左，100% 一致 |
-| Themed（对外展示） | 硬锚词：介绍/展示/宣传/发布会/对外/客户 | 红底渐变 + 左上 PNG Logo | 同左，PPTX 原生实现 |
+| Themed（对外展示） | 硬锚词：介绍/展示/宣传/发布会/对外/客户 | 设计 skill 自由设计（品牌底线内）；无设计能力/严格按模板 → 兜底封面图（v1 暂用稿，后期可换）+ 左上彩稿 Logo | 同左，PPTX 原生实现 |
 | Formal（严谨兜底） | 待实现 | 位图底图 + 文字叠加 | 同左，100% 一致 |
 
 ### 两条路径
@@ -71,7 +71,8 @@ Agent 与渲染器之间的中间格式。顶层字段：`colorScheme`、`logoSe
 - **禁止纯黑**：`#000000` 不得作为文字颜色。标题 = `dark` (#2D3847)，正文 = `gray` (#595959)。
 - **语义色**：深绿 `#3E8E4E` 仅限图表涨跌数据（红涨绿跌）；禁止用于非图表设计（A/B 对比、标注、强调、装饰）。非图表两项对比用品牌红 vs 中灰/深蓝灰，不引入绿。
 - **结尾页**：始终是最后一页，居中 Logo + slogan PNG。原文件的结尾/感谢页必须替换，不得保留。
-- **字体**：全局微软雅黑。字号 HTML 用 `pt` 后缀，PPTX 写裸数字。禁止 pt↔px 换算。字号从 `typography.sizes.*.template` 读取（封面 64/内容页 40/副标题 30/正文 26/图表 22），生成前自检核对字号与行距（HTML 正文 ≥ 24pt、极限 ≥ 20pt）。
+- **对外展示封面品牌底线**：Themed 封面由设计 skill 自由设计（版式/色板内配色/装饰/动效），但底线锁死——色板只用 token 禁自造色；封面必须带 263 品牌标识（Logo 安全区零容忍）；公司数据不编造；禁纯黑；字号底线；字体开源；封面信息读 pages.json。**封面 Logo 一律彩稿（`logo-group-color`）禁止反白**，深浅底皆如此——深底彩稿不可读时调布局（Logo 置浅色区）而非换反白。无设计能力 / 用户选「严格按模板」/ agent 判定无法定制 → 兜底封面图 `cover-themed-fallback.png`（**v1 暂用稿、后期可换；图无关——换图只动 PNG，不动代码与规则**；浅底 → 深色文字 + 彩稿 Logo；pages.json 封面 `"background": "themed-fallback"` 触发；同 red-template 位图底 + 文字叠加，HTML/PPTX 100% 一致）。
+- **字体**：按场景分流（栈见「字体栈」）。字号 HTML 用 `pt` 后缀，PPTX 写裸数字。禁止 pt↔px 换算。字号从 `typography.sizes.*.template` 读取（封面 64/内容页 40/副标题 30/正文 26/图表 22），生成前自检核对字号与行距（HTML 正文 ≥ 24pt、极限 ≥ 20pt）。
 - **渲染回退**：HTML 渲染依赖 node（`node generate.js <pages.json>`）。环境无 node 时禁止降级约束——按「Node.js 可用性分支」回退：手动生成自包含 HTML（色板/安全区/字号/行距/图片全约束应用）或交外部渲染。
 - **行距**：HTML 与 PPTX 两套规范（`typography.lineHeight`）。HTML 用 CSS line-height（主标题 1.3、其余 1.8、章节页大号数字 2.0），PPTX 用倍距（标题单倍、其余 1.2倍）。覆盖章节页/目录页（含 toc 类型）。禁止互套。
 - **对话术语**：禁止对用户使用内部术语（Template/Themed/母版/硬规则）及内部文件名（red-template、cover-red-template.png、template-cover-bg.png 等）。模式/封面术语始终说「工作汇报」「对外展示」「个性化风格」「严谨商务风格」（集团 Logo、HTML/PPTX 等正常用词不受此限）。PPT 生成路径对用户说「专业PPT制作技能或设计类技能」「用Python代码生成」（Python/HTML 属正常技术词，可对用户说）。**对用户说的话只能逐字来自 SKILL.md「生成前确认 → 用户话术」编号话术（唯一输出源）**；交互措辞三铁律：① 确认问题逐字原样用固定话术；② 禁止向用户播报判断依据（命中/锚词/锁定等推理词不出现）；③ 完整「内部说法 → 用户话术」替换对照见 SKILL.md「生成前确认 → 内部思考词汇」。
@@ -79,7 +80,7 @@ Agent 与渲染器之间的中间格式。顶层字段：`colorScheme`、`logoSe
 - **图片缩放**：Logo/slogan 只允许等比缩放（HTML: `background-size:contain`；PPTX: `LockAspectRatio=true`）。Logo 容器必须正方形（宽=高）。Slogan 只固定宽度——**原生尺寸 1360×144（宽高比 9.44:1）存于 `brand-tokens.json` → `slogan`，工具需显式高度时 高度 = 宽度 ÷ 9.44**。禁止裁切/拉伸/同时固定不同宽高值。
 - **PPTX 图片嵌入**：必须内嵌二进制，禁外部路径。LockAspectRatio 顺序：插入→锁比例→设单维度尺寸。封面文字框必须透明背景（`FillVisible=false`）。
 - **PPTX 字号**：封面标题 43pt，其余见 SKILL.md 字体表。CSS pt 在 HTML 和 PowerPoint pt 解析不同——同数值不代表同比例，禁止直接复刻。
-- **字体栈**：`微软雅黑, Microsoft YaHei, Noto Sans SC, Source Han Sans SC, sans-serif`。Noto Sans SC 为跨平台开源回退（SIL OFL）。
+- **字体栈**：工作汇报（内部）用 `微软雅黑, Microsoft YaHei, Noto Sans SC, Source Han Sans SC, sans-serif`（Noto Sans SC 为跨平台开源回退，SIL OFL）；对外展示（外部）用 `Noto Sans SC, Source Han Sans SC, sans-serif`（纯开源栈，禁微软雅黑——闭源，对外分发/嵌入有许可风险）。
 - **Skill zip**：`测试记录/263-vi-skill-MMDD.zip`，19 文件（含 `cover-red-template.png`、`template-cover-bg.png`、`pptx-python-guide.md`）。`brand-tokens.json` v2.5（含 chartPalette 图表色板——唯一 7 档红尺度 + 语义色红涨绿跌 + 两灰唯一命名 + slogan 原生尺寸/宽高比）。
 
 ## 参考资料
