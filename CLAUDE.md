@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 项目概述
 
-这是一个 **Claude Code skill 项目**。263 VI skill 为 Agent 提供品牌数据层（色板、字体、Logo、公司信息），用于生成品牌化的 PPT/HTML。Skill 入口：`.claude/skills/263-vi/SKILL.md`。
+这是一个 **Claude Code skill 项目**。263 VI skill 为 Agent 提供品牌数据层（色板、字体、Logo、公司信息），用于生成品牌化的 PPT/HTML。Skill 入口：`.claude/skills/263group-brand-guidelines/SKILL.md`。
 
 ## 构建/生成命令
 
@@ -51,7 +51,7 @@ zip 从**根目录**按 19 文件清单构建（SKILL.md + pptx-python-guide.md 
 
 | 文件 | 作用 |
 |------|------|
-| `.claude/skills/263-vi/SKILL.md` | Skill 定义，唯一真相源 |
+| `.claude/skills/263group-brand-guidelines/SKILL.md` | Skill 定义，唯一真相源 |
 | `brand-tokens.json` | 配色方案、字体层级、Logo 路径、ASCII 字符画、硬规则 |
 | `company-data.json` | 公司事实、产品组合（3 板块 × 4 业务线） |
 | `generate.js` | HTML 渲染器 + 播放壳（1920×1080 画布，响应式缩放） |
