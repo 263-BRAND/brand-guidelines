@@ -468,6 +468,9 @@ PPTX ✅ Width=480pt, LockAspectRatio=true, 不设 Height
 - [ ] 没有任何品牌图片使用裁切/拉伸模式
 - [ ] 结尾页 Logo + slogan 格式正确
 - [ ] 内页右上角 Logo 格式正确
+- [ ] 字号全部从 `typography.sizes.*.template` 读取（封面标题 64 / 内容页标题 40 / 副标题 30 / 正文 26 / 图表标签 22），HTML 一律 `pt` 后缀——无 px、无 pt↔px 换算、无凭记忆写字号
+- [ ] 字号底线达标：正文 ≥ 24pt，任何文字 ≥ 20pt
+- [ ] 行距从 `typography.lineHeight.html` 读取（主标题 1.3、其余 1.8），未用 px 或 PPTX 倍距
 - [ ] PPTX: 所有图片已内嵌（非外部链接）；LockAspectRatio 设置顺序正确
 
 ### 品牌上下文（Logo 按业务线切换）
@@ -559,7 +562,7 @@ Logo 和 slogan 图片**必须**以 base64 data URI 嵌入 CSS `background-image
 - 封面 Logo（Themed）：左上角，从 `layout.coverLogo` 读取
 - 浅色底用 `.logo-color-img`，深色底用 `.logo-white-img`
 - 结尾页：居中 Logo（`layout.innerPageLogo.width/height`）+ slogan.png（宽度 45%~55% 画布宽），垂直居中排列
-- 字号不低于 20pt
+- **字号契约（渲染器与手动路径同等适用）：** 字号必须从「字体」章节逐字应用——`typography.sizes.*.template`（封面标题 64pt / 内容页标题 40pt / 副标题 30pt / 正文 26pt / 图表标签 22pt），HTML 一律 `pt` 后缀，**禁止 px 单位、禁止 pt↔px 换算、禁止凭记忆写字号**。底线：正文 ≥ 24pt，极限 ≥ 20pt（`hardRules.typography.html`）。生成后按「生成前自检」核对字号与行距
 
 ## 数据图表规范
 
