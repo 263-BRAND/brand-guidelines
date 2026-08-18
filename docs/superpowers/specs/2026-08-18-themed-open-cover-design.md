@@ -28,7 +28,7 @@ SKILL.md 新增章节「对外展示封面（Themed）」——定义自由范�
 
 **品牌底线（不可碰，自由外的硬地板）：**
 1. **色板**：只用 `colorSchemes[colorScheme]` 9 色 + `chartPalette` 色阶 7 档 + 语义色（仅图表涨跌）；禁止自造色
-2. **Logo**：封面必须带 263 品牌标识（PNG Logo 或 ASCII 图形）；Logo 安全区零容忍（左上角，`layout.coverLogo` 读取位置/尺寸）；深浅底规则（浅底彩稿 Logo / 深底反白 Logo）
+2. **Logo**：封面必须带 263 品牌标识（PNG Logo 或 ASCII 图形）；Logo 安全区零容忍（左上角，`layout.coverLogo` 读取位置/尺寸）；**封面 Logo 一律彩稿（`logo-group-color`），禁止反白**——无论封面深浅底（2026-08-18 用户补充）。若封面深色导致彩稿不可读，调整布局（Logo 置于浅色区域）而非换反白
 3. **公司数据**：不编造（公司名/股票代码/业务/口号）
 4. **文字**：禁止纯黑；标题 `dark #2D3847` / 正文 `gray #595959`；字号底线（HTML ≥ 20pt / PPTX ≥ 12pt）
 5. **字体**：对外展示用开源栈（Noto Sans SC → Source Han Sans SC），禁微软雅黑
@@ -39,8 +39,9 @@ SKILL.md 新增章节「对外展示封面（Themed）」——定义自由范�
 
 ## 交付物 2：Themed 兜底封面图
 
-**来源：** 用户提供 `视觉参考/background-red-themed_v1.png`（1920×1080，RGBA）。
-**观察：** 画面为浅蓝灰底 + 右侧蓝色几何元素，左 ~40% 为干净浅色区（用于文字）。**浅底 → 深色文字 + 彩色 Logo**（与 red-template 的深色底 + 反白 Logo 不同）。
+**来源：** 用户提供 `视觉参考/background-red-themed_v1.png`（1920×1080，RGBA）。**暂用稿——用户明确"后期可能替换图片"**。渲染实现必须图无关：路径从 token 读取，换图只替换 PNG 文件、不动渲染代码与规则。
+**观察：** 画面为浅蓝灰底 + 右侧蓝色几何元素，左 ~40% 为干净浅色区（用于文字）。**浅底 → 深色文字 + 彩色 Logo**（与 red-template 的深色底不同）。
+**Logo 规范：** 封面 Logo 一律彩稿（`logo-group-color`），**禁止反白**（用户补充规则，见交付物 1 品牌底线 point 2）。
 **入库：** 缩放/压平至 `assets/cover-themed-fallback.png`（1920×1080，与画布同比例，`contain` 不裁切）。**统一白底压平为 RGB**——原图 RGBA 含透明通道，PPTX 全幻灯片背景需确定底色，白底压平后 HTML/PPTX 100% 一致，无底色漂移风险。
 
 **触发：** Themed 封面 + 无设计 skill / 用户选「严格按模板」/ agent 判定无法定制 → 兜底图。pages.json 封面 `"background": "themed-fallback"` 触发。
@@ -50,7 +51,7 @@ SKILL.md 新增章节「对外展示封面（Themed）」——定义自由范�
 - PPTX：全幻灯片背景（内嵌二进制）+ 文字框叠加，100% 视觉一致
 - 封面元素：彩色 Logo 左上角（`layout.coverLogo`，left:6%/top:8%/125px 正方形）；文字块左侧垂直居中（left:7%，max-width:50%）；标题 `dark` 不折行（`\n` 手动分行，≤20 字符/行）；副标题独立行 `gray`；发布人/部门/日期 `gray` 圆点分隔；公司全称 bottom:6% `gray`
 
-**文字深浅判定：** 兜底图是浅底 → `isDark = false` → 文字 `dark`/`gray`，Logo 用彩稿（`logo-color-img`）。
+**文字深浅判定：** 兜底图是浅底 → `isDark = false` → 文字 `dark`/`gray`。**Logo 不随深浅切换，一律彩稿 `logo-color-img`（禁止反白）。**
 
 ## 交付物 3：字体分流
 
