@@ -1,5 +1,5 @@
 {
-  "version": "2.3",
+  "version": "2.4",
   "colorSchemes": {
     "group-red": {
       "primary": "#D0121B",
@@ -60,7 +60,13 @@
       "color": "assets/logos/logo-cloud-color.png"
     }
   },
-  "slogan": "assets/slogan.png",
+  "slogan": {
+    "path": "assets/slogan.png",
+    "nativeWidth": 1360,
+    "nativeHeight": 144,
+    "aspectRatio": 9.44,
+    "note": "原生像素尺寸 1360×144（宽高比 9.44:1）。缩放规则见 SKILL.md「图片素材缩放规则 → 各场景正确写法」（只固定宽度；工具需显式高度时 高度 = 宽度 ÷ aspectRatio），此处仅存原生尺寸数据。"
+  },
   "layout": {
     "safeArea": {
       "top": "8%",

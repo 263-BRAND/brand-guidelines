@@ -103,7 +103,8 @@ const logoSet = pages.logoSet || 'group';
 const logos = tokens.logos[logoSet] || tokens.logos.group;
 const logoColorB64 = logoBase64(logos.color);
 const logoWhiteB64 = logos.white ? logoBase64(logos.white) : '';
-const sloganB64 = tokens.slogan ? logoBase64(tokens.slogan) : '';
+const sloganPath = tokens.slogan && tokens.slogan.path;
+const sloganB64 = sloganPath ? logoBase64(sloganPath) : '';
 const redTemplateBgB64 = (tokens.redTemplateCover && tokens.redTemplateCover.path) ? logoBase64(tokens.redTemplateCover.path) : '';
 
 // Build page title: 标题 - 姓名 - MMDD

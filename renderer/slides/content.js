@@ -22,7 +22,7 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
   html += '<div class="logo-color-img" style="width:100%;height:100%;"></div>\n';
   html += '</div>\n';
 
-  html += '<div style="position:absolute;top:12%;left:6%;right:6%;">\n';
+  html += '<div style="position:absolute;top:12%;left:6%;right:calc(' + l.right + ' + ' + l.width + ');">\n';
   if (slide.sectionLabel) {
     html += '<div style="font-size:' + tokens.typography.sizes.caption.template + ';color:' + c.primary + ';letter-spacing:2px;margin-bottom:4px;">' + esc(slide.sectionLabel) + '</div>\n';
   }

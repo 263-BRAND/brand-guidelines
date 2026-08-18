@@ -9,6 +9,9 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
   var logoSize = Math.round(1080 * 0.33);
   // Slogan: width-driven, per spec 45%-55% of canvas width.
   var sloganW = Math.round(1920 * 0.50);
+  // Aspect ratio from brand-tokens.json; fallback derived from the same token's native size (never a magic constant).
+  var slogan = tokens.slogan || {};
+  var sloganRatio = slogan.aspectRatio || (slogan.nativeWidth && slogan.nativeHeight ? slogan.nativeWidth / slogan.nativeHeight : 0);
   var gap = Math.round(1080 * 0.07);
 
   var html = '<div class="slide-page" id="s' + index + '" style="background:' + bgColor + '; overflow:hidden;">\n';
@@ -17,8 +20,8 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
   // Centered logo — single square dimension, background-size:contain prevents crop/distort
   html += '<div class="' + logoClass + '" style="width:' + logoSize + 'px;height:' + logoSize + 'px;margin-bottom:' + gap + 'px;"></div>\n';
 
-  // Slogan — width-driven, height natural from image aspect ratio
-  html += '<div class="slogan-img" style="width:' + sloganW + 'px;height:auto;aspect-ratio:12;"></div>\n';
+  // Slogan — width-driven, height natural from image aspect ratio (contain prevents crop)
+  html += '<div class="slogan-img" style="width:' + sloganW + 'px;height:auto;aspect-ratio:' + sloganRatio + ';"></div>\n';
 
   html += '</div>\n</div>\n';
   return html;

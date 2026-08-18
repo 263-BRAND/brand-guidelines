@@ -57,6 +57,7 @@ def set_cn_font(run, name='微软雅黑'):
 - **Slogan**：只设宽度（480pt），不设高度：
   - `add_picture(slogan, left, top, width=Pt(480))`
 - `add_picture` 只传宽（或只传高）时，另一维自动按原图比例——**禁止同时传两个不成比例的宽高值**。
+- **slogan 原生像素尺寸 1360×144（宽高比 9.44:1），从 `brand-tokens.json` → `slogan` 读取。** 若所用库必须显式传宽高两个值，高度 = 宽度 ÷ 9.44（如宽度 480 → 高度 ≈ 51）。**禁止写死比例不符的高度**（如 640×120：渲染引擎按裁切填满处理，slogan 文字被切掉两头）。
 
 ```python
 from pptx.util import Pt

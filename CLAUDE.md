@@ -74,11 +74,11 @@ Agent 与渲染器之间的中间格式。顶层字段：`colorScheme`、`logoSe
 - **行距**：HTML 与 PPTX 两套规范（`typography.lineHeight`）。HTML 用 CSS line-height（主标题 1.3、其余 1.8、章节页大号数字 2.0），PPTX 用倍距（标题单倍、其余 1.2倍）。覆盖章节页/目录页（含 toc 类型）。禁止互套。
 - **对话术语**：禁止对用户使用内部术语（Template/Themed/母版/硬规则）及内部文件名（red-template、cover-red-template.png、template-cover-bg.png 等）。模式/封面术语始终说「工作汇报」「对外展示」「个性化风格」「严谨商务风格」（集团 Logo、HTML/PPTX 等正常用词不受此限）。PPT 生成路径对用户说「专业PPT制作技能或设计类技能」「用Python代码生成」（Python/HTML 属正常技术词，可对用户说）。**对用户说的话只能逐字来自 SKILL.md「生成前确认 → 用户话术」编号话术（唯一输出源）**；交互措辞三铁律：① 确认问题逐字原样用固定话术；② 禁止向用户播报判断依据（命中/锚词/锁定等推理词不出现）；③ 完整「内部说法 → 用户话术」替换对照见 SKILL.md「生成前确认 → 内部思考词汇」。
 - **Code review**：渲染器/UI 变更必须在浏览器实测——窗口缩放、翻页遍历、背景模式切换。只读代码不行。
-- **图片缩放**：Logo/slogan 只允许等比缩放（HTML: `background-size:contain`；PPTX: `LockAspectRatio=true`）。Logo 容器必须正方形（宽=高）。Slogan 只固定宽度。禁止裁切/拉伸/同时固定不同宽高值。
+- **图片缩放**：Logo/slogan 只允许等比缩放（HTML: `background-size:contain`；PPTX: `LockAspectRatio=true`）。Logo 容器必须正方形（宽=高）。Slogan 只固定宽度——**原生尺寸 1360×144（宽高比 9.44:1）存于 `brand-tokens.json` → `slogan`，工具需显式高度时 高度 = 宽度 ÷ 9.44**。禁止裁切/拉伸/同时固定不同宽高值。
 - **PPTX 图片嵌入**：必须内嵌二进制，禁外部路径。LockAspectRatio 顺序：插入→锁比例→设单维度尺寸。封面文字框必须透明背景（`FillVisible=false`）。
 - **PPTX 字号**：封面标题 43pt，其余见 SKILL.md 字体表。CSS pt 在 HTML 和 PowerPoint pt 解析不同——同数值不代表同比例，禁止直接复刻。
 - **字体栈**：`微软雅黑, Microsoft YaHei, Noto Sans SC, Source Han Sans SC, sans-serif`。Noto Sans SC 为跨平台开源回退（SIL OFL）。
-- **Skill zip**：`测试记录/263-vi-skill-MMDD.zip`，19 文件（含 `cover-red-template.png`、`template-cover-bg.png`、`pptx-python-guide.md`）。`brand-tokens.json` v2.3（含 chartPalette 图表色板）。
+- **Skill zip**：`测试记录/263-vi-skill-MMDD.zip`，19 文件（含 `cover-red-template.png`、`template-cover-bg.png`、`pptx-python-guide.md`）。`brand-tokens.json` v2.4（含 chartPalette 图表色板 + slogan 原生尺寸/宽高比）。
 
 ## 参考资料
 

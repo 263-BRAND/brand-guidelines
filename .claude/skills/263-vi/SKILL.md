@@ -263,8 +263,8 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 1. 读取已有文件，提取页面结构和内容
 2. **替换所有颜色为品牌色板色值**（不只是主色，包括所有辅助色：绿→主色/辅色，蓝→深色/辅色，灰→品牌灰）。Template 路径下原文件的一切非品牌颜色必须全部清除
 3. 替换字体为微软雅黑，修正字号到 Template 标准
-4. 嵌入 Logo（内页右上角，画布宽度 4.2%，见 `layout.innerPageLogo.size`），符合深浅底规则
-5. **检查 Logo 安全区**：右上角（画布宽度 4.2%，见 `layout.innerPageLogo.size`）范围不得有任何 UI 组件（翻页提示、页码、进度条等）。如有冲突，移动 UI 组件而非移动 Logo
+4. 嵌入 Logo（内页右上角，画布宽度 4.2%，见 `layout.innerPageLogo.width/height`），符合深浅底规则
+5. **检查 Logo 安全区**：右上角（画布宽度 4.2%，见 `layout.innerPageLogo.width/height`）范围不得有任何 UI 组件（翻页提示、页码、进度条等）。如有冲突，移动 UI 组件而非移动 Logo
 6. 对齐母版布局（封面、目录、内容、结尾页统一版式）
 7. **结尾页强制替换**：原文件的结尾/感谢页内容全部丢弃，替换为 VI 标准结尾（居中 Logo + slogan PNG）。此规则不可协商，Themed 模式下同样适用
 8. VI skill 全控，设计 skill 不介入
@@ -304,7 +304,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板、字体、Logo 和公�
 **HTML 画布：** 1920×1080（px），响应式缩放至视口。
 **PPTX 幻灯片：** 960×540（pt），PowerPoint 16:9 宽屏默认尺寸。所有百分比规则按此基准换算 pt 值。
 
-- 内页内容可用范围：`top:12% ~ bottom:18%`（为右上 Logo 和底部 footer 留出空间）
+- 内页内容可用范围：`top:12% ~ bottom:18%`（为右上 Logo 和底部 footer 留出空间）。**注意 top:12% 已高于 Logo 底边（5.3% + 80px ≈ 12.7%）**——顶部元素（标题等）右边界必须同时 ≤ 画布宽 − right − width（≈ 90.6%），否则与右上角 Logo 重叠（详见「Logo 安全区」章节）。内容主体区（如 top:28%）垂直已低于 Logo 底边，不在此约束内
 - **内容垂直居中：** 内容视觉重心围绕页面 50% 垂直中心对称分布，不得整体偏上或偏下
 - 左右留白：≥ 5%
 - 封面标题位置：`top:48%`，水平居中
@@ -366,7 +366,7 @@ HTML 渲染器从 token 读取行距；PPTX agent 按倍距设置行距（标题
 
 | 规则 | 刚性 |
 |------|:--:|
-| 内页 Logo 尺寸：画布宽度的 4.2%（`layout.innerPageLogo.size`） | MUST |
+| 内页 Logo 尺寸：画布宽度的 4.2%（`layout.innerPageLogo.width/height` 正方形） | MUST |
 | Logo 安全区内禁止任何装饰元素、文字、页码、页脚组件 | MUST |
 | 浅色底 → 彩稿 Logo / 深色底 → 反白 Logo | MUST |
 | 结尾页：原内容全部丢弃，替换为居中 Logo + slogan PNG 图片（不可用文字代替） | MUST |
@@ -380,8 +380,10 @@ HTML 渲染器从 token 读取行距；PPTX agent 按倍距设置行距（标题
 **绝对禁止：** 任何内容元素（标题、正文、页码、页脚、装饰、分割线、图标、背景图形）的任何像素进入安全区。Template 和 Themed 模式下同等适用，无一例外。
 
 **内页安全区（`layout.innerPageLogo`）：**
-- Logo 位于右上角，`right` / `top` 定位，`size` 正方形
-- 内容区最大右边界 = 画布宽度 − right − size = 画布宽度 × 91.6%（以默认值 right:4.2%, size:4.2% 计）
+- Logo 位于右上角，`right` / `top` 定位，`width` = `height` 正方形（token 存 `width`/`height` 两键，HTML 各 80px、PPTX 各 40pt）。下文用「尺寸」指代这个正方形边长，**token 里没有 `size` 键，禁止读 `layout.innerPageLogo.size`**
+- **安全区 = Logo 矩形边界框，X 与 Y 两个方向都算：** X 范围 `[画布宽 − right − 尺寸, 画布宽 − right]`，Y 范围 `[top, top + 尺寸]`。任一元素只要与安全区 X 和 Y 同时相交即越界——**单独 X 相交或单独 Y 相交不算越界**，但 X 和 Y 同时相交就是 Logo 压在元素上
+- **内容区右边界约束：** 内容区任何元素右边界 ≤ 画布宽 − right − 尺寸（以默认 `right:5.2%`、`width:80px` 计 = 画布宽 × 90.6%，**不是 91.6%**——91.6% 是 `right:4.2%` 的旧值，与 token 不符，禁止使用）。数值按 token 实际计算，不硬编码
+- **内容区顶部元素（标题、正文起点 top:12% 附近）特别危险：** 内容区 top:12% = 129.6px 在 Logo 底边（top:5.3% + 80px = 137.2px）之上，Y 已与安全区相交 → 顶部元素必须同时满足右边界 ≤ 画布宽 − right − 尺寸（≈90.6%），否则 Logo 盖住右侧图形/卡片。**任何顶部高于 Logo 底边的元素，右边界强制 ≤ 画布宽 − right − 尺寸**
 - 页脚右侧元素（页码等）必须显式约束在此边界内，禁用 `space-between` 布局
 
 **封面安全区（`layout.coverLogo`）：**
@@ -424,26 +426,28 @@ HTML ✅ width:356px; height:356px;  (background-size:contain)
 PPTX ✅ Width=178pt, Height=178pt, LockAspectRatio=true
 ```
 
-结尾页 Slogan（HTML: 960px = 1920×50%；PPTX: 480pt = 960×50%）：
+结尾页 Slogan（HTML: 960px = 1920×50%；PPTX: 480pt = 960×50%）。**slogan 原生像素尺寸从 `brand-tokens.json` → `slogan` 读取（当前 1360×144，宽高比 9.44:1）**。只固定宽度、不设高度时另一维自动按原图比例：
 ```
 HTML ✅ width:960px; height:auto;  (background-size:contain)
 PPTX ✅ Width=480pt, LockAspectRatio=true, 不设 Height
 ```
+**当目标工具必须显式填写宽高两个值（如 slidep 类组件要求 width+height 成对）时：** 高度 = 宽度 ÷ aspectRatio（即 宽度 ÷ 高度 = aspectRatio = 原生宽高比 9.44:1，禁止另造比例）。以当前 slogan 为例：宽度 640 → 高度 = 640 ÷ 9.44 ≈ 68；宽度 480 → 高度 ≈ 51。**禁止写死与原生比例不符的高度**（如 640×120：比例 5.33:1 ≠ 9.44:1，渲染引擎按裁切填满处理，slogan 文字被切掉两头）。
 
 **禁止做法（任何格式）：**
 - ❌ 同时设定不同的宽高值（如 300×100）→ 图片被压扁/拉伸
-- ❌ 裁切模式（`cover` / Crop）→ 图片边缘被切掉
+- ❌ slogan 宽高比 ≠ 原生宽高比（如 640×120，原生 9.44:1）→ 渲染引擎裁切填满，slogan 文字被切
+- ❌ 裁切模式（`cover` / Crop / srcRect 裁剪）→ 图片边缘被切掉
 - ❌ 不对 PPTX 图片设置 `LockAspectRatio` → 拖拽即变形
 - ❌ 容器非正方形（宽≠高）+ Logo 图片 → Logo 在错误比例框内
 
 **PPTX 图片嵌入：**
 - 必须内嵌图片二进制到 .pptx 文件中，禁止使用外部路径链接
 - LockAspectRatio 的正确设置顺序：① 插入图片 → ② 设置 `LockAspectRatio=true` → ③ 设置 Width（或 Height）单维度值。必须先锁比例再设尺寸，顺序反了会变形
-- 所有 Logo 文件路径从 `brand-tokens.json` → `logos` 读取；slogan 从 `brand-tokens.json` → `slogan` 读取
+- 所有 Logo 文件路径从 `brand-tokens.json` → `logos` 读取；slogan 路径从 `brand-tokens.json` → `slogan.path` 读取，**slogan 原生像素尺寸/宽高比同源读取**（`slogan.nativeWidth` / `slogan.nativeHeight` / `slogan.aspectRatio`）
 
 **生成前自检（HTML & PPTX）：**
 - [ ] 所有 Logo 容器为正方形（宽=高）
-- [ ] 所有 Slogan 只固定宽度，高度按原图比例自适应
+- [ ] 所有 Slogan 只固定宽度，高度按原图比例自适应；**slogan 宽高比 = 原生 9.44:1（1360×144，从 `brand-tokens.json` → `slogan` 读取）**，未写死比例不符的高度（如 640×120）
 - [ ] 没有任何品牌图片使用裁切/拉伸模式
 - [ ] 结尾页 Logo + slogan 格式正确
 - [ ] 内页右上角 Logo 格式正确
@@ -468,7 +472,7 @@ Template：全部锁死。Themed：以下 MUST 规则不可违反，其余交设
 **格式：** 居中 Logo + slogan PNG。尺寸按画布比例计算，不硬编码：
 
 - **Logo：** 高度 = 画布高度 × 30%~36%，宽度按原图等比自适应。容器设为正方形（宽=高），CSS `background-size: contain` 保证图片不裁切不变形
-- **Slogan：** 宽度 = 画布宽度 × 45%~55%，高度按原图比例自适应，**禁止硬编码固定高度**。使用 `background-size: contain` 或 `object-fit: contain`
+- **Slogan：** 宽度 = 画布宽度 × 45%~55%，高度按原图比例自适应，**禁止硬编码固定高度**。使用 `background-size: contain` 或 `object-fit: contain`。**原生像素尺寸从 `brand-tokens.json` → `slogan` 读取（当前 1360×144，宽高比 9.44:1）**；工具要求显式宽高时，高度 = 宽度 ÷ 9.44，禁止写死比例不符的高度（如 640×120 → 裁切）
 - **间距：** Logo 与 slogan 之间留白 = 画布高度 × 6%~8%
 
 以 1920×1080 画布为例：Logo 约 356px 正方形，slogan 约 960px 宽，间距约 76px。
@@ -491,7 +495,8 @@ VI skill 是品牌数据层，设计 skill 是表现层。
   "colorScheme": "group-red",
   "colors": { "primary": "#D0121B", "primaryLight": "#FE343F", "primaryDark": "#AC000A", "accent": "#FF777F", "dark": "#2D3847", "gray": "#595959", "lightGray": "#F2F2F2", "white": "#FFFFFF", "black": "#000000" },
   "typography": { "fontFamily": "微软雅黑", "html": { "body": 26 }, "pptx": { "body": 18 } },
-  "logo": { "innerPage": { "size": "4.2% of canvas width, square" }, "safeZone": "Logo bounding box, zero tolerance" },
+  "logo": { "innerPage": { "width": "80px", "height": "80px", "right": "5.2%", "top": "5.3%" }, "safeZone": "Logo bounding box (X: W−right−width~W−right, Y: top~top+height), zero tolerance. Top elements (title etc.) must keep right edge ≤ W−right−width ≈ 90.6%" },
+  "slogan": { "path": "assets/slogan.png", "nativeWidth": 1360, "nativeHeight": 144, "aspectRatio": 9.44 },
   "hardRules": ["Logo安全区", "结尾页格式", "主色不可偏色"],
   "mode": "themed"
 }
@@ -534,7 +539,7 @@ Logo 和 slogan 图片**必须**以 base64 data URI 嵌入 CSS `background-image
 - 内页 Logo：右上角固定，位置和尺寸从 `brand-tokens.json` → `layout.innerPageLogo` 读取（`right` / `top` / `size`）
 - 封面 Logo（Themed）：左上角，从 `layout.coverLogo` 读取
 - 浅色底用 `.logo-color-img`，深色底用 `.logo-white-img`
-- 结尾页：居中 Logo（`layout.innerPageLogo.size`）+ slogan.png（宽度 45%~55% 画布宽），垂直居中排列
+- 结尾页：居中 Logo（`layout.innerPageLogo.width/height`）+ slogan.png（宽度 45%~55% 画布宽），垂直居中排列
 - 字号不低于 20pt
 
 ## 数据图表规范
@@ -612,11 +617,11 @@ Logo 和 slogan 图片**必须**以 base64 data URI 嵌入 CSS `background-image
 - 禁止使用非色板颜色（不自己发明颜色，含图表多系列）
 - 禁止在 Template 路径下保留原文件的非品牌颜色（绿色/蓝色/橙色等必须全部替换为品牌色板值）
 - 禁止保留原文件的结尾页内容（必须替换为 VI 标准：居中 Logo + slogan PNG）
-- 禁止任何像素进入 Logo 安全区——安全区 = Logo 矩形边界框，无一例外。页脚页码用固定右边界，不得越界
+- 禁止任何像素进入 Logo 安全区——安全区 = Logo 矩形边界框（X: 画布宽 − right − width ~ 画布宽 − right，Y: top ~ top + height），无一例外。**顶部元素（标题等，Y 与安全区相交）右边界必须 ≤ 画布宽 − right − width（≈ 90.6%）**；页脚页码用固定右边界，不得越界
 - 禁止图表内容超出页面安全区或侵犯 Logo 安全区
 - 禁止编造公司信息（名称、股票代码、产品、数据等）
 - 禁止 font-size < 各格式底线（HTML 正文 ≥ 24pt 极限 ≥ 20pt；PPTX 正文 ≥ 16pt 极限 ≥ 12pt）
-- 禁止在内页自定义 Logo 位置（右上角，画布宽度 4.2%，见 `layout.innerPageLogo.size`，固定）
+- 禁止在内页自定义 Logo 位置（右上角，画布宽度 4.2%，见 `layout.innerPageLogo.width/height`，固定）
 - 禁止在 Logo 安全区放置任何装饰元素
 - 禁止在 Template 路径下自行调整字号、布局、配色
 - 禁止向用户暴露 Template/Themed 等内部术语**及内部文件名**（如 red-template、cover-red-template.png、template-cover-bg.png、scene/background 等字段值）。**模式/封面术语**在用户对话中永远使用「工作汇报」「对外展示」「个性化风格」「严谨商务风格」（集团 Logo、HTML/PPTX 等正常用词不受此限）。完整替换对照见「生成前确认 → 内部思考词汇」
