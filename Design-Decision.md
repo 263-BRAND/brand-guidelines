@@ -257,6 +257,19 @@ VI skill 不负责解析文件。外部 Agent 自行调用 MCP 或工具摘取�
 - **新增语义色**：`semantic`（positive=品牌红 / negative=`#3E8E4E` 深绿 / neutral=`#BFBFBF` 中灰），中国惯例**红涨绿跌**——品牌红天然承担"涨/正"，绿承担"跌/负"，避开用品牌红表坏消息的冲突。警示橙不采纳。**使用域封死（2026-08-18 测试后追加）：深绿仅限图表涨跌数据，禁止用于非图表设计**（Trae 实测 agent 在 A/B 对比误用红+绿）——非图表两项对比用品牌红 vs 中灰/深蓝灰
 - **命名澄清**：`#F2F2F2` = 结构浅灰（卡片底/表头底/斑马纹/分割线），`#BFBFBF` = 图表中灰（仅图表非重点），两灰唯一命名，消除"淡灰"歧义
 
+#### Themed 对外展示路径开放决策记录（2026-08-18）
+
+**背景：** 用户提出对外展示版本开放设计自由度（遵循品牌规范 + 公司数据），封面不固定、结尾页固定（同 template）、字体开源。现状核对：结尾页已固定、Themed 表现层已自由——真正要改的是封面开放 + 兜底封面图 + 字体分流。
+
+**决策：**
+- **封面开放 + 品牌底线**：Themed 封面由设计 skill 自由设计（版式/色板内配色/装饰/动效），但品牌底线锁死——色板 token 禁自造、封面必须带 263 品牌标识且 Logo 安全区零容忍、公司数据不编造、禁纯黑、字号底线、字体开源、封面信息来自 pages.json 字段
+- **兜底封面图**：`assets/cover-themed-fallback.png`（源图 `视觉参考/background-red-themed_v1.png`，用户提供，**暂用稿，后期可能替换**）。**渲染图无关**（路径从 token 读，换图只动 PNG、不动代码与规则）。触发：无设计 skill / 用户选「严格按模板」/ agent 判定无法定制 → pages.json 封面 `"background": "themed-fallback"`。模式同 red-template：位图底 + 文字叠加，HTML/PPTX 100% 一致。入库统一白底压平（原图 RGBA 带透明，白底保证 PPTX 背景确定）
+- **封面 Logo 禁止反白**（用户补充）：封面 Logo 一律彩稿 `logo-group-color`，不随深浅底切换；深色封面彩稿不可读时调布局（Logo 置浅色区）而非换反白
+- **字体分流**：工作汇报（内部）微软雅黑栈；对外展示（外部）开源栈 `Noto Sans SC, Source Han Sans SC, sans-serif`（token 新增 `typography.fontFamilyOpenSource`）——微软雅黑闭源，对外分发/嵌入有许可风险（SIL OFL 开源无风险）
+
+**spec：** `docs/superpowers/specs/2026-08-18-themed-open-cover-design.md`（2026-08-18 提交，设计已确认）
+**状态：** 待实现——下一步 writing-plans 出实现计划后推进（品牌底线规则 + 字体分流可先行，兜底图渲染等图片入库）
+
 #### 封面排版决策记录（2026-08-17）
 
 **背景：** 严谨风格（red-template）封面在 Trae PPTX 测试中需要规范化排版。
