@@ -52,13 +52,19 @@ for (var j = 0; j < innerKeys.length; j++) {
 }
 
 // Validate slide backgrounds
+// 封面禁红色系（2026-08-19）：彩稿 Logo 主色即品牌红，红底吞 Logo；dark-solid 深底触发反白 Logo，同样违反「封面一律彩稿禁反白」底线 → 一并剔除
+var coverForbiddenBg = { 'primary-gradient': 1, 'primary-solid': 1, 'dark-solid': 1 };
 var innerBgKeys = Object.keys(resolvedBg.inner);
 for (var k = 0; k < pages.slides.length; k++) {
   var slide = pages.slides[k];
   var t = slide.type;
   if (t === 'cover') {
-    if (slide.background && slide.background !== 'red-template' && slide.background !== 'themed-fallback' && !resolvedBg.cover[slide.background]) {
-      console.error('Slide ' + k + ' (' + t + '): invalid background "' + slide.background + '". Must be one of: ' + Object.keys(resolvedBg.cover).join(', ') + ', red-template, themed-fallback');
+    if (slide.background && coverForbiddenBg[slide.background]) {
+      console.error('Slide ' + k + ' (cover): forbidden background "' + slide.background + '" — 封面背景禁红色系（dark-solid 深底会反白 Logo，亦禁）。合法封面背景：themed-fallback（默认）/ white。见 SKILL.md「对外展示封面（Themed）→ 品牌底线」。');
+      process.exit(1);
+    }
+    if (slide.background && slide.background !== 'red-template' && slide.background !== 'themed-fallback' && slide.background !== 'white' && !resolvedBg.cover[slide.background]) {
+      console.error('Slide ' + k + ' (cover): invalid background "' + slide.background + '". Must be one of: white, red-template, themed-fallback');
       process.exit(1);
     }
   } else if (slide.background && !resolvedBg.inner[slide.background]) {

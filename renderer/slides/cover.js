@@ -9,7 +9,8 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
     }
     return renderTemplate(slide, tokens, pages, index, c);
   }
-  // Themed 封面：默认即兜底封面图（渲染器兜底，无需背景键）；显式指定背景（primary-gradient 等）才走渐变
+  // Themed 封面：默认即兜底封面图（渲染器兜底，无需背景键）；封面背景禁红色系，显式指定只允许 white（浅底，彩稿 Logo）
+  // primary-gradient/primary-solid（红底吞 Logo）、dark-solid（深底触发反白 Logo 违反禁反白底线）均已在 generate.js 校验拦截
   if (slide.background === 'themed-fallback' || !slide.background) {
     return renderThemedFallback(slide, tokens, pages, index, c);
   }
@@ -147,18 +148,19 @@ function renderThemedFallback(slide, tokens, pages, index, c) {
   return html;
 }
 
-// === Themed cover: external presentation — gradient bg, corner PNG logo, left-aligned ===
+// === Themed cover: external presentation — 浅底背景，彩稿 Logo（禁反白），左侧文字 ===
+// 封面背景禁红色系（2026-08-19）：合法封面背景 only white（浅底）。红底（primary-gradient/primary-solid）吞 Logo、dark-solid 深底触发反白 Logo——均非法，generate.js 校验已拦截
 function renderThemed(slide, tokens, pages, index, c, resolvedBg) {
   var W = 1920;
-  var bgKey = slide.background || 'primary-gradient';
-  var bgStyle = resolvedBg.cover[bgKey] || resolvedBg.cover['primary-gradient'];
-  var isDark = bgKey !== 'white';
-  var textColor = isDark ? c.white : c.dark;
-  var subTextColor = isDark ? 'rgba(255,255,255,0.85)' : c.gray;
-  var metaColor = isDark ? 'rgba(255,255,255,0.7)' : c.gray;
-  var footColor = isDark ? 'rgba(255,255,255,0.5)' : c.gray;
-  var logoClass = isDark ? 'logo-white-img' : 'logo-color-img';
-  var lineColor = isDark ? c.white : c.primary;
+  var bgKey = slide.background || 'white';
+  var bgStyle = resolvedBg.cover[bgKey] || resolvedBg.cover['white'];
+  // 浅底（white）→ 深色文字 + 彩稿 Logo；封面 Logo 一律彩稿禁反白
+  var textColor = c.dark;
+  var subTextColor = c.gray;
+  var metaColor = c.gray;
+  var footColor = c.gray;
+  var logoClass = 'logo-color-img';
+  var lineColor = c.primary;
 
   var cl = tokens.layout.coverLogo;
   var coverLogoLeft = cl.left;
@@ -166,7 +168,7 @@ function renderThemed(slide, tokens, pages, index, c, resolvedBg) {
   var html = '<div class="slide-page" id="s' + index + '" style="background:' + bgStyle + '; position:relative;">\n';
   html += '<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding-left:' + coverLogoLeft + ';">\n';
 
-  // PNG Logo — top-left (shared helper, position+dims from token)
+  // PNG Logo — top-left 彩稿（禁反白）
   html += coverLogoBlock(tokens, logoClass);
 
   html += '<h1 style="font-size:' + tokens.typography.sizes.coverTitle.template + ';font-weight:bold;color:' + textColor + ';margin-bottom:16px;max-width:80%;">' + esc(slide.title) + '</h1>\n';

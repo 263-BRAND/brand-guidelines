@@ -252,13 +252,14 @@ description: 263 品牌 VI 规范 — 提供品牌色板/字体/Logo/slogan/公�
 
 1. **色板**：只用 `colorSchemes[colorScheme]` 9 色 + `chartPalette` 色阶 7 档 + 语义色（仅图表涨跌）；禁止自造色
 2. **Logo**：封面必须带 263 品牌标识（PNG Logo 或 ASCII 图形）；Logo 安全区零容忍（左上角，`layout.coverLogo` 读取位置/尺寸）；**封面 Logo 一律彩稿（`logo-group-color`），禁止反白**——无论封面深浅底。深色封面彩稿不可读时调整布局（Logo 置于浅色区域），而非换反白
-3. **公司数据**：不编造（公司名/股票代码/业务/口号）
-4. **文字**：禁止纯黑；标题 `dark #2D3847` / 正文 `gray #595959`；字号底线（HTML ≥ 20pt / PPTX ≥ 12pt）
-5. **字体**：对外展示用开源栈（`typography.fontFamilyOpenSource`：Noto Sans SC → Source Han Sans SC），禁微软雅黑
-6. **结尾页**：固定居中 Logo + slogan（全系统一致，不可协商）
-7. **封面信息**：标题/副标题/发布人/日期从 pages.json cover 字段读取，不凭空编造
+3. **封面背景禁红色系**：彩稿 Logo 主色即品牌红 `#D0121B`，红底会吞 Logo——**封面背景禁止红色系**（品牌红 `#D0121B`、色阶 s1-s7、primaryLight `#F0575E`/primaryDark `#72090E`、accent `#FF777F` 及其任何渐变/组合）。**同时禁用 `dark-solid`**——深底会触发反白 Logo，违反「封面 Logo 一律彩稿禁反白」底线。不反白是底线 → 背景避红避深。合法封面背景：**兜底封面图（默认）或 `white`**，或设计 skill 在色板内拼非红浅色组合
+4. **公司数据**：不编造（公司名/股票代码/业务/口号）
+5. **文字**：禁止纯黑；标题 `dark #2D3847` / 正文 `gray #595959`；字号底线（HTML ≥ 20pt / PPTX ≥ 12pt）
+6. **字体**：对外展示用开源栈（`typography.fontFamilyOpenSource`：Noto Sans SC → Source Han Sans SC），禁微软雅黑
+7. **结尾页**：固定居中 Logo + slogan（全系统一致，不可协商）
+8. **封面信息**：标题/副标题/发布人/日期从 pages.json cover 字段读取，不凭空编造
 
-**兜底封面图（Themed）：** 渲染器（generate.js）渲染 Themed 封面时**默认即兜底封面图**——`brand-tokens.json` → `themedFallbackCover.path`（`assets/cover-themed-fallback.png`，浅蓝灰底 + 右侧蓝色几何，左 ~40% 干净浅色区）。**v1 暂用稿，后期可能替换——图无关：换图只替换 PNG 文件，不动渲染代码与规则。** 无需设置背景键；只有显式指定其它背景（如 `primary-gradient`）才改用对应渐变。设计能力判定见「与设计 skill 协作 → 设计能力判定」。
+**兜底封面图（Themed）：** 渲染器（generate.js）渲染 Themed 封面时**默认即兜底封面图**——`brand-tokens.json` → `themedFallbackCover.path`（`assets/cover-themed-fallback.png`，浅蓝灰底 + 右侧蓝色几何，左 ~40% 干净浅色区）。**v1 暂用稿，后期可能替换——图无关：换图只替换 PNG 文件，不动渲染代码与规则。** 无需设置背景键；只有显式指定 `white` 才改用白色背景。**封面背景禁止红色系（`primary-gradient`/`primary-solid`）与 `dark-solid`——封面即非法**——见「对外展示封面（Themed）→ 品牌底线」第 3 条。设计能力判定见「与设计 skill 协作 → 设计能力判定」。
 
 **渲染（模式同 red-template：位图底 + 文字叠加，HTML/PPTX 100% 一致）：**
 - HTML：base64 全屏背景（`.themed-fallback-bg`，`center/contain`）+ 叠加文字
@@ -277,7 +278,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板/字体/Logo/slogan/公�
 
 - **Template（对内汇报）**：`pages.scene === 'template'` → 白色背景 + ASCII 字符画 + 二进制雨 + 居中排版；`cover.background: "red-template"` 时切换为红色设计位图封面 + 左对齐文字
 - **Themed（对外展示）**：设计 skill 自由设计（品牌底线见「对外展示封面（Themed）」）；渲染器默认 → 兜底封面图（无需背景键）
-- 封面背景选项（Themed）：themed-fallback（默认，渲染器兜底图）/ primary-gradient / primary-solid / dark-solid / white
+- 封面背景选项（Themed）：themed-fallback（默认，渲染器兜底图）/ white（**禁 primary-gradient / primary-solid / dark-solid——红色系吞 Logo、dark-solid 深底反白 Logo，均非法**）
 - 封面背景选项（Template）：省略（ASCII） / red-template（红色位图）
 
 ### 路径 A × Themed：从零创作型生成
@@ -507,7 +508,8 @@ PPTX ✅ Width=480pt, LockAspectRatio=true, 不设 Height
 - [ ] 行距从 `typography.lineHeight.html` 读取（主标题 1.3、其余 1.8），未用 px 或 PPTX 倍距
 - [ ] PPTX: 所有图片已内嵌（非外部链接）；LockAspectRatio 设置顺序正确
 - [ ] 字体栈按场景分流：工作汇报 = 微软雅黑栈（`typography.fontFamily`）；对外展示 = 开源栈（`typography.fontFamilyOpenSource`），对外展示产出**不含微软雅黑**
-- [ ] 对外展示封面：渲染器默认即兜底封面图（仅加载 263group-brand-guidelines → 判定无设计能力，未自评「能设计」而跳过兜底）；封面 Logo 一律彩稿 `logo-color-img`（禁止反白），深浅底皆如此
+- [ ] 对外展示封面：渲染器默认即兜底封面图（仅加载 263group-brand-guidelines → 判定无设计能力，未自评「能设计」而跳过兜底）；封面 Logo 一律彩稿 `logo-color-img`（禁止反白）
+- [ ] 封面背景非红色系（禁 `primary-gradient`/`primary-solid`/`dark-solid`，合法背景：兜底图默认或 white）——红底吞 Logo、深底反白 Logo 均违反底线
 - [ ] PPTX 个性化封面：主标题/副标题/汇报人/公司全称坐标逐一核对写死值（`top=Pt(277)`/`Pt(337)`/`Pt(359)`/`Pt(449)`），主标题 `word_wrap=False` 不可折行，副标题独立一行，汇报人行底与公司名不重叠
 
 ### 品牌上下文（Logo 按业务线切换）

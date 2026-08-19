@@ -269,6 +269,20 @@ Themed 路径：263group-brand-guidelines 提供品牌数据 + 硬规则约束�
 **spec：** `docs/superpowers/specs/2026-08-18-themed-open-cover-design.md`（2026-08-18 提交，设计已确认）
 **状态：** 已实现（2026-08-19）——兜底封面图入库 + 渲染器支持 themed-fallback + 字体按场景分流 + zip 19→20，浏览器实测通过
 
+#### 封面背景禁红色系决策记录（2026-08-19）
+
+**背景：** 跨工具测试发现 Themed 封面 Logo 规则有漏洞——agent 用色阶红色或渐变红作封面背景（`primary-gradient`/`primary-solid`），彩稿 Logo 主色即品牌红 `#D0121B`，红底同色被吞。现有规则「深色封面 → Logo 置浅色区」是软约束，且红底既不算深色也不算浅色，agent 容易不触发。用户主张**不反白是底线**——三方案对比（浅色衬底 / 背景禁红 / Logo 区浅色块）后选择**背景禁红**（最直接、零漏洞）。
+
+**决策：**
+- **封面背景禁红色系**：品牌红 `#D0121B`、色阶 s1-s7、primaryLight `#F0575E`/primaryDark `#72090E`、accent `#FF777F` 及其任何渐变/组合——封面一律禁止。彩稿 Logo 主色即品牌红，红底会吞 Logo
+- **同时禁 `dark-solid`**：深底触发反白 Logo（`logo-white-img`），违反「封面 Logo 一律彩稿禁反白」底线——一并剔除
+- **合法封面背景收敛为两个**：兜底封面图（默认，themed-fallback）或 `white`；设计 skill 可在色板内拼非红浅色组合
+- **落点（四处）**：brand-tokens.json `backgrounds.cover` note 标注；SKILL.md 品牌底线新增第 3 条 + 封面背景选项剔除红系；generate.js 封面背景校验 fail-loud（`primary-gradient`/`primary-solid`/`dark-solid` 封面即报错 exit 1）；cover.js `renderThemed` 简化为浅底（white）强制彩稿 Logo，删除 isDark 反白分支
+- **不受影响**：red-template 严谨封面（固定红色位图底但 Logo 在左半白色文字区，不吞 Logo）；Template ASCII 封面（白底）
+
+**验证：** node 实测——white/默认兜底图正常生成，primary-gradient/dark-solid 被校验拦截 exit=1；headless Chrome 截图像素分析——white 封面纯白底 + 深色标题 `#2D3847` + 彩稿 Logo（对比度 3.39:1），兜底图封面浅蓝灰底 + 红心 Logo 轮廓清晰
+**状态：** 已实现（2026-08-19），zip 重建
+
 #### 封面排版决策记录（2026-08-17）
 
 **背景：** 严谨风格（red-template）封面在 Trae PPTX 测试中需要规范化排版。

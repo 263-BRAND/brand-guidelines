@@ -108,7 +108,8 @@
       "white": "{white}",
       "primary-gradient": "linear-gradient(135deg, {primary} 0%, {primaryDark} 100%)",
       "primary-solid": "{primary}",
-      "dark-solid": "{dark}"
+      "dark-solid": "{dark}",
+      "note": "封面背景禁红色系（2026-08-19）：`primary-gradient`/`primary-solid` 为红色系，封面禁用——彩稿 Logo 主色即品牌红，红底会吞 Logo；`dark-solid` 深底触发反白 Logo，亦禁；不反白是底线，背景避红避深。仅内页/非封面场景可用。封面合法背景：兜底封面图（默认）/white。规则唯一真相源在 SKILL.md「对外展示封面（Themed）→ 品牌底线」+ generate.js 封面背景校验。"
     },
     "inner": {
       "white": "{white}"
