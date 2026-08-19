@@ -57,8 +57,8 @@ for (var k = 0; k < pages.slides.length; k++) {
   var slide = pages.slides[k];
   var t = slide.type;
   if (t === 'cover') {
-    if (slide.background && slide.background !== 'red-template' && !resolvedBg.cover[slide.background]) {
-      console.error('Slide ' + k + ' (' + t + '): invalid background "' + slide.background + '". Must be one of: ' + Object.keys(resolvedBg.cover).join(', ') + ', red-template');
+    if (slide.background && slide.background !== 'red-template' && slide.background !== 'themed-fallback' && !resolvedBg.cover[slide.background]) {
+      console.error('Slide ' + k + ' (' + t + '): invalid background "' + slide.background + '". Must be one of: ' + Object.keys(resolvedBg.cover).join(', ') + ', red-template, themed-fallback');
       process.exit(1);
     }
   } else if (slide.background && !resolvedBg.inner[slide.background]) {
@@ -106,6 +106,7 @@ const logoWhiteB64 = logos.white ? logoBase64(logos.white) : '';
 const sloganPath = tokens.slogan && tokens.slogan.path;
 const sloganB64 = sloganPath ? logoBase64(sloganPath) : '';
 const redTemplateBgB64 = (tokens.redTemplateCover && tokens.redTemplateCover.path) ? logoBase64(tokens.redTemplateCover.path) : '';
+const themedFallbackBgB64 = (tokens.themedFallbackCover && tokens.themedFallbackCover.path) ? logoBase64(tokens.themedFallbackCover.path) : '';
 
 // Build page title: 标题 - 姓名 - MMDD
 var pageTitle = '263 PPT';
@@ -122,6 +123,8 @@ if (cs && cs.type === 'cover' && cs.title) {
 
 // Build output — fileId: 唯一文件身份，用于 sessionStorage 键命名空间（避免 file:// 页面共享存储导致跨文件位置泄漏）
 const fileId = path.basename(pagesPath, '.json');
+// 字体栈按场景分流（方案 A）：工作汇报 scene=template → 微软雅黑栈；对外展示（无 scene）→ 开源栈
+const fontFamily = (pages.scene === 'template') ? tokens.typography.fontFamily : (tokens.typography.fontFamilyOpenSource || tokens.typography.fontFamily);
 const html = buildHtml({
   slides: slideHtmlArray.join('\n'),
   tokens: tokens,
@@ -131,7 +134,9 @@ const html = buildHtml({
   logoColorB64: logoColorB64,
   logoWhiteB64: logoWhiteB64,
   sloganB64: sloganB64,
-  redTemplateBgB64: redTemplateBgB64
+  redTemplateBgB64: redTemplateBgB64,
+  themedFallbackBgB64: themedFallbackBgB64,
+  fontFamily: fontFamily
 });
 
 const outPath = pagesPath.replace(/\.json$/, '.html');
@@ -153,7 +158,7 @@ function buildHtml(opts) {
 '<title>' + opts.pageTitle + '</title>\n' +
 '<style>\n' +
 '* { margin:0; padding:0; box-sizing:border-box; }\n' +
-'html, body { width:100%; height:100%; margin:0; overflow:hidden; background:#FFFFFF; font-family:' + t.fontFamily + '; }\n' +
+'html, body { width:100%; height:100%; margin:0; overflow:hidden; background:#FFFFFF; font-family:' + opts.fontFamily + '; }\n' +
 ':root { --s: 1; }\n' +
 '#player { width:' + W + 'px; height:' + H + 'px; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(var(--s)); overflow:hidden; }\n' +
 '.slide-page { position:absolute !important; top:0; left:0; width:100%; height:100%; opacity:0; pointer-events:none; transition:opacity 0.35s ease; z-index:0; }\n' +
@@ -173,6 +178,7 @@ function buildHtml(opts) {
 '.logo-white-img { background: url(' + opts.logoWhiteB64 + ') no-repeat center/contain; }\n' +
 '.slogan-img { background: url(' + opts.sloganB64 + ') no-repeat center/contain; }\n' +
 '.red-template-bg { background: url(' + opts.redTemplateBgB64 + ') no-repeat center/contain; }\n' +
+'.themed-fallback-bg { background: url(' + opts.themedFallbackBgB64 + ') no-repeat center/contain; }\n' +
 '</style>\n' +
 '</head>\n' +
 '<body>\n' +
