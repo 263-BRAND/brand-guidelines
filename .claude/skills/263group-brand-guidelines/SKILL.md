@@ -212,7 +212,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板/字体/Logo/slogan/公�
 3. PPTX 文字框必须设置透明背景（`FillVisible=false` 或等效），**禁止填充任何颜色**——底图被遮挡会露出色块
 4. 位置为 MUST，禁止 Agent 自行调整——ASCII 图案在背景图中位置固定，文字偏移会导致重叠
 
-**使用时**：在 `pages.json` 中设置 `"scene": "template"`，渲染器自动切换到 ASCII 封面。不设置或设置为其他值时使用 Themed 封面（红底渐变 + 左上角 Logo）。
+**使用时**：在 `pages.json` 中设置 `"scene": "template"`，渲染器自动切换到 ASCII 封面。不设置或设置为其他值时使用 Themed 封面（设计 skill 自由设计；无设计能力/严格按模板时渲染器用兜底封面图 `themed-fallback`）。
 
 ### 工作汇报红色封面（Red Template Cover）
 
@@ -237,6 +237,27 @@ description: 263 品牌 VI 规范 — 提供品牌色板/字体/Logo/slogan/公�
 
 **PPTX 实现**：红色封面底图设为全幻灯片背景，文字框叠加。字号按 PPTX 列：标题 43pt Bold、副标题 20pt、汇报信息 18pt、公司全称 14pt。集团彩稿 Logo 内嵌二进制，位置 `left:57.6pt` / `top:43.2pt`，`LockAspectRatio=true` + 单维度 62pt 正方形。文字块垂直居中：`startY = (540 − totalH) / 2`。文字框必须透明背景（`FillVisible=false`），禁止填充颜色。
 
+### 对外展示封面（Themed）
+
+对外展示封面**设计开放**——由设计 skill 自由设计（版式、色板内配色组合、装饰、图形语言、动效、封面信息布局），但**品牌底线不可碰**（自由外的硬地板）：
+
+1. **色板**：只用 `colorSchemes[colorScheme]` 9 色 + `chartPalette` 色阶 7 档 + 语义色（仅图表涨跌）；禁止自造色
+2. **Logo**：封面必须带 263 品牌标识（PNG Logo 或 ASCII 图形）；Logo 安全区零容忍（左上角，`layout.coverLogo` 读取位置/尺寸）；**封面 Logo 一律彩稿（`logo-group-color`），禁止反白**——无论封面深浅底。深色封面彩稿不可读时调整布局（Logo 置于浅色区域），而非换反白
+3. **公司数据**：不编造（公司名/股票代码/业务/口号）
+4. **文字**：禁止纯黑；标题 `dark #2D3847` / 正文 `gray #595959`；字号底线（HTML ≥ 20pt / PPTX ≥ 12pt）
+5. **字体**：对外展示用开源栈（`typography.fontFamilyOpenSource`：Noto Sans SC → Source Han Sans SC），禁微软雅黑
+6. **结尾页**：固定居中 Logo + slogan（全系统一致，不可协商）
+7. **封面信息**：标题/副标题/发布人/日期从 pages.json cover 字段读取，不凭空编造
+
+**兜底封面图（Themed）：** 无设计能力 / 用户选「严格按模板」/ agent 判定无法定制 → 使用固定兜底封面图——`brand-tokens.json` → `themedFallbackCover.path`（`assets/cover-themed-fallback.png`，浅蓝灰底 + 右侧蓝色几何，左 ~40% 干净浅色区）。**v1 暂用稿，后期可能替换——图无关：换图只替换 PNG 文件，不动渲染代码与规则。** 触发：封面 slide `"background": "themed-fallback"`。
+
+**渲染（模式同 red-template：位图底 + 文字叠加，HTML/PPTX 100% 一致）：**
+- HTML：base64 全屏背景（`.themed-fallback-bg`，`center/contain`）+ 叠加文字
+- PPTX：全幻灯片背景（内嵌二进制）+ 文字框叠加，100% 视觉一致
+- 封面元素：彩色 Logo 左上角（`layout.coverLogo`，left:6%/top:8%/125px 正方形）；文字块左侧垂直居中（left:7%，max-width:50%）；标题 `dark` 不折行（`\n` 手动分行，≤20 字符/行）；副标题独立行 `gray`；发布人/部门/日期 `gray` 圆点分隔；公司全称 bottom:6% `gray`
+
+**文字/Logo 深浅判定：** 兜底图是**浅底** → `isDark = false` → 文字 `dark`/`gray`。**Logo 不随深浅切换，一律彩稿 `logo-color-img`（禁止反白）。**
+
 ### 封面二进制雨（仅 HTML，Geek 装饰）
 
 - canvas 全屏 `01` 字符下落的 Matrix 风格动画
@@ -246,8 +267,8 @@ description: 263 品牌 VI 规范 — 提供品牌色板/字体/Logo/slogan/公�
 ### 封面双模式
 
 - **Template（对内汇报）**：`pages.scene === 'template'` → 白色背景 + ASCII 字符画 + 二进制雨 + 居中排版；`cover.background: "red-template"` 时切换为红色设计位图封面 + 左对齐文字
-- **Themed（对外展示）**：默认 → 渐变/纯色背景 + 左上 PNG Logo + 左对齐排版
-- 封面背景选项（Themed）：primary-gradient / primary-solid / dark-solid / white
+- **Themed（对外展示）**：设计 skill 自由设计（品牌底线见「对外展示封面（Themed）」）；无设计能力/严格按模板 → 兜底封面图（`"background": "themed-fallback"`）
+- 封面背景选项（Themed）：primary-gradient / primary-solid / dark-solid / white / themed-fallback（兜底封面图）
 - 封面背景选项（Template）：省略（ASCII） / red-template（红色位图）
 
 ### 路径 A × Themed：从零创作型生成
@@ -356,7 +377,11 @@ PPTX 布局比 HTML 脆，不鼓励手写代码排版。按优先级决策（交
 
 **Template：全部使用固定值。Themed：设计 skill 在区间内自由决定。** 数据源：`brand-tokens.json` → `typography.sizes`（Template 用 `*.template`，Themed 用 `*.themed.min/max` 区间）。PPTX 字号值从上表"PPTX 值"列取值，不在 JSON 中重复存储。
 
-**字体回退链：** 微软雅黑 → Noto Sans SC → Source Han Sans SC → sans-serif。如果运行环境无微软雅黑（Mac/Linux/纯 Web），使用 **Noto Sans SC**（开源无版权，SIL Open Font License，Google/Adobe 联合出品，中文排版质量对标微软雅黑）。CSS font-family 完整栈从 `brand-tokens.json` → `typography.fontFamily` 读取。
+**字体按场景分流（对外展示路径开放决策，2026-08-18）：**
+- **工作汇报（Template/内部）**：微软雅黑栈（`typography.fontFamily`）——内部自用，渲染最稳
+- **对外展示（Themed/外部）**：开源栈（`typography.fontFamilyOpenSource`）——`"Noto Sans SC", "Source Han Sans SC", sans-serif`，**禁微软雅黑**（闭源，对外分发/嵌入有许可风险；Noto/Source Han 为 SIL OFL 开源，任何使用无风险）
+
+**字体回退链（工作汇报栈）：** 微软雅黑 → Noto Sans SC → Source Han Sans SC → sans-serif。如果运行环境无微软雅黑（Mac/Linux/纯 Web），使用 **Noto Sans SC**（开源无版权，SIL Open Font License）。CSS font-family 完整栈从 `brand-tokens.json` → `typography.fontFamily` 读取。
 
 **跨格式直出规则：** HTML/CSS 输出在数字后加 `pt` 后缀（如 `font-size: 64pt`），PPTX 直接写入数字（PPTX fontSize 原生单位即 pt）。**禁止任何 pt↔px 乘除换算。** 值从 JSON 读取为 number，单位由输出端明确补上。
 
@@ -472,6 +497,8 @@ PPTX ✅ Width=480pt, LockAspectRatio=true, 不设 Height
 - [ ] 字号底线达标：正文 ≥ 24pt，任何文字 ≥ 20pt
 - [ ] 行距从 `typography.lineHeight.html` 读取（主标题 1.3、其余 1.8），未用 px 或 PPTX 倍距
 - [ ] PPTX: 所有图片已内嵌（非外部链接）；LockAspectRatio 设置顺序正确
+- [ ] 字体栈按场景分流：工作汇报 = 微软雅黑栈（`typography.fontFamily`）；对外展示 = 开源栈（`typography.fontFamilyOpenSource`），对外展示产出**不含微软雅黑**
+- [ ] 对外展示封面：无设计能力/严格按模板 → 兜底封面图 `themed-fallback`；封面 Logo 一律彩稿 `logo-color-img`（禁止反白），深浅底皆如此
 
 ### 品牌上下文（Logo 按业务线切换）
 
@@ -516,7 +543,7 @@ VI skill 是品牌数据层，设计 skill 是表现层。
 {
   "colorScheme": "<从 pages.json 读取：group-red 或 business-blue>",
   "colors": "<colorSchemes[colorScheme] 的 9 个色值：primary/primaryLight/primaryDark/accent/dark/gray/lightGray/white/black，禁止硬编码示例值>",
-  "typography": { "fontFamily": "微软雅黑", "html": { "body": 26 }, "pptx": { "body": 18 } },
+  "typography": { "fontFamily": "<工作汇报: typography.fontFamily 微软雅黑栈 / 对外展示: typography.fontFamilyOpenSource 开源栈>", "html": { "body": 26 }, "pptx": { "body": 18 } },
   "logo": { "innerPage": { "width": "80px", "height": "80px", "right": "5.2%", "top": "5.3%" }, "safeZone": "Logo bounding box (X: W−right−width~W−right, Y: top~top+height), zero tolerance. Top elements (title etc.) must keep right edge ≤ W−right−width ≈ 90.6%" },
   "slogan": { "path": "assets/slogan.png", "nativeWidth": 1360, "nativeHeight": 144, "aspectRatio": 9.44 },
   "hardRules": ["Logo安全区", "结尾页格式", "主色不可偏色"],
