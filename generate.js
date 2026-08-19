@@ -40,13 +40,16 @@ function resolveBg(bgTemplate) {
 }
 
 // Resolve all background presets
+// 跳过元数据键（note 等）：brand-tokens 的 backgrounds.cover 含 note 说明键，若注入 resolvedBg 会被误当背景模板，
+// 导致 slide.background:'note' 逃过 fail-loud 校验（cover.js 拿 note 文本当 CSS 背景）。仅遍历真背景键。
+var BG_META_KEYS = { note: 1 };
 var resolvedBg = { cover: {}, inner: {} };
 var bgPresets = tokens.backgrounds;
-var coverKeys = Object.keys(bgPresets.cover);
+var coverKeys = Object.keys(bgPresets.cover).filter(function (key) { return !BG_META_KEYS[key]; });
 for (var i = 0; i < coverKeys.length; i++) {
   resolvedBg.cover[coverKeys[i]] = resolveBg(bgPresets.cover[coverKeys[i]]);
 }
-var innerKeys = Object.keys(bgPresets.inner);
+var innerKeys = Object.keys(bgPresets.inner).filter(function (key) { return !BG_META_KEYS[key]; });
 for (var j = 0; j < innerKeys.length; j++) {
   resolvedBg.inner[innerKeys[j]] = resolveBg(bgPresets.inner[innerKeys[j]]);
 }

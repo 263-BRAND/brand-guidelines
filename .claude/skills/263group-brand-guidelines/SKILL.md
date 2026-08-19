@@ -252,7 +252,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板/字体/Logo/slogan/公�
 
 1. **色板**：只用 `colorSchemes[colorScheme]` 9 色 + `chartPalette` 色阶 7 档 + 语义色（仅图表涨跌）；禁止自造色
 2. **Logo**：封面必须带 263 品牌标识（PNG Logo 或 ASCII 图形）；Logo 安全区零容忍（左上角，`layout.coverLogo` 读取位置/尺寸）；**封面 Logo 一律彩稿（`logo-group-color`），禁止反白**——无论封面深浅底。深色封面彩稿不可读时调整布局（Logo 置于浅色区域），而非换反白
-3. **封面背景禁红色系**：彩稿 Logo 主色即品牌红 `#D0121B`，红底会吞 Logo——**封面背景禁止红色系**（品牌红 `#D0121B`、色阶 s1-s7、primaryLight `#F0575E`/primaryDark `#72090E`、accent `#FF777F` 及其任何渐变/组合）。**同时禁用 `dark-solid`**——深底会触发反白 Logo，违反「封面 Logo 一律彩稿禁反白」底线。不反白是底线 → 背景避红避深。合法封面背景：**兜底封面图（默认）或 `white`**，或设计 skill 在色板内拼非红浅色组合
+3. **封面背景禁红色系**：彩稿 Logo 主色即品牌红 `#D0121B`，红底会吞 Logo——**封面背景禁止红色系**（品牌红 `#D0121B`、色阶 s1-s7、primaryLight `#F0575E`/primaryDark `#72090E`、accent `#FF777F` 及其任何渐变/组合）。**同时禁用 `dark-solid`**——深底会触发反白 Logo，违反「封面 Logo 一律彩稿禁反白」底线。不反白是底线 → 背景避红避深。**两条路径分界：** 渲染器兜底（generate.js，无设计能力时）封面背景只认**兜底封面图（默认）或 `white`**（`primary-gradient`/`primary-solid`/`dark-solid` 封面即报错 exit 1，generate.js 校验）；设计 skill 自由路径（有设计能力时，不经 generate.js）可在色板内拼**非红浅色**组合，同样受本禁红底线约束
 4. **公司数据**：不编造（公司名/股票代码/业务/口号）
 5. **文字**：禁止纯黑；标题 `dark #2D3847` / 正文 `gray #595959`；字号底线（HTML ≥ 20pt / PPTX ≥ 12pt）
 6. **字体**：对外展示用开源栈（`typography.fontFamilyOpenSource`：Noto Sans SC → Source Han Sans SC），禁微软雅黑
