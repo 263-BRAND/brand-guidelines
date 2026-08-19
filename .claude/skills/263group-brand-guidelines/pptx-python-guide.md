@@ -88,6 +88,80 @@ s.shapes.add_picture(bg_path, 0, 0, prs.slide_width, prs.slide_height)
 
 - **对外展示兜底封面（cover-themed-fallback，浅底，Themed 封面默认）**：同法铺全幻灯片背景（内嵌二进制）+ 深色文字框叠加（透明 `FillVisible=false`）+ 左上彩稿 Logo（62pt 正方形，`LockAspectRatio=true`）。**封面 Logo 一律彩稿禁止反白**（浅底不用反白，深色封面彩稿不可读时调布局）。字号用 PPTX 列：封面标题 43pt、副标题 20pt、汇报信息 18pt、公司全称 14pt。仅加载 VI skill（无设计技能）时，Themed 封面默认用此图。
 
+## 6.5 个性化封面文字叠加（template-cover-bg，写死坐标）
+
+工作汇报·个性化封面（Template·ASCII）背景图 `assets/template-cover-bg.png` 铺底后，文字框**全宽（left=0, width=960）+ 水平居中 + 垂直居中**，坐标写死（数值见 SKILL.md「PPTX Template 封面回退」，经用户验收截图校准）：
+
+```python
+from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
+from pptx.dml.color import RGBColor
+from pptx.oxml.ns import qn
+
+def _font(run, size, bold, color, name="微软雅黑"):
+    """设置 run 字体：字号/粗体/颜色 + eastAsia 中文字体"""
+    run.font.name = name                       # a:latin
+    run.font.size = Pt(size)
+    run.font.bold = bold
+    run.font.color.rgb = color
+    rPr = run._r.get_or_add_rPr()              # eastAsia 中文字体
+    for tag in ("a:ea", "a:cs"):
+        el = rPr.find(qn(tag))
+        if el is None:
+            el = rPr.makeelement(qn(tag), {})
+            rPr.append(el)
+        el.set("typeface", name)
+    return run
+
+def add_cover_center_text(slide, top, height, text, size, bold, color, no_wrap=False, line_spacing=1.2):
+    """封面单色居中文字框（主标题/副标题/公司全称）"""
+    tb = slide.shapes.add_textbox(Pt(0), Pt(top), Pt(960), Pt(height))  # 全宽框，禁止算宽度
+    tb.fill.background()                       # 透明背景，禁止填充
+    tf = tb.text_frame
+    tf.word_wrap = not no_wrap                 # 主标题传 no_wrap=True → 不可折行
+    tf.vertical_anchor = MSO_ANCHOR.MIDDLE     # 垂直居中
+    p = tf.paragraphs[0]
+    p.alignment = PP_ALIGN.CENTER              # 水平居中 → 文字中心恒为画布 50%
+    p.line_spacing = line_spacing              # 主标题 1.0（单倍），其余 1.2 倍
+    run = p.add_run(); run.text = text
+    _font(run, size, bold, RGBColor(int(color[1:3],16), int(color[3:5],16), int(color[5:7],16)))
+    return tb
+
+def add_cover_meta(slide, top, height, parts, size=18):
+    """汇报人·部门·日期 — 独立一行，品牌红圆点·分隔；parts 由 slide 字段组装，禁止写死文案"""
+    tb = slide.shapes.add_textbox(Pt(0), Pt(top), Pt(960), Pt(height))
+    tb.fill.background()
+    tf = tb.text_frame
+    tf.word_wrap = False
+    tf.vertical_anchor = MSO_ANCHOR.MIDDLE
+    p = tf.paragraphs[0]
+    p.alignment = PP_ALIGN.CENTER
+    p.line_spacing = 1.2
+    for i, part in enumerate(parts):
+        if i > 0:
+            dot = p.add_run(); dot.text = " · "
+            _font(dot, size, False, RGBColor(0xD0, 0x12, 0x1B))     # 品牌红圆点
+        run = p.add_run(); run.text = part
+        _font(run, size, False, RGBColor(0x59, 0x59, 0x59))         # 品牌 gray
+    return tb
+
+# 底图铺完后叠加（顺序：底图 → 文字）：
+add_cover_center_text(slide, 277, 44, title, 43, True, "#2D3847", no_wrap=True, line_spacing=1.0)  # 主标题（不可折行，55.4%）
+if subtitle:                                   # 副标题有 → 独立一行 64.5%，汇报人下移一行
+    add_cover_center_text(slide, 337, 22, subtitle, 20, False, "#595959")            # 副标题 20pt（比文字信息略大）
+    reporter_top = 359
+else:                                          # 副标题空 → 汇报人落 64.5%
+    reporter_top = 337
+meta_parts = []                                # 从 pages.json cover 字段读取，禁止写死文案
+if presenter: meta_parts.append("汇报人：" + presenter)
+if department: meta_parts.append(department)
+if date: meta_parts.append(date)
+if meta_parts:
+    add_cover_meta(slide, reporter_top, 22, meta_parts)             # 汇报人·部门·日期（红点·分隔）
+add_cover_center_text(slide, 449, 14, company, 14, False, "#595959")  # 公司全称（84.5%）
+```
+
+> 坐标**禁止自行调整**：主标题 277 / 副标题 337 / 汇报人 359 / 公司全称 449（视觉中心分别 55.4%/64.5%/68.5%/84.5%）。副标题为空时汇报人行落 `top=Pt(337)`。行距：副标题→汇报人 22pt 行单位；行内行距主标题单倍、其余 1.2 倍。汇报人行底 ≈381pt，公司名顶 449pt，间距 68pt，禁止重叠。主标题禁止 `\n` 手动分行（固定 44pt 单行框）。**汇报人·部门·日期行必须品牌红圆点（·）分隔、内容从 cover 字段读取，禁止灰色占位文案。**
+
 ## 7. 字号
 
 从 SKILL.md 字号表取 PPTX 列数值（如封面标题 43、正文 18），写 `Pt(n)`：

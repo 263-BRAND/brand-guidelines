@@ -48,17 +48,16 @@ function renderTemplate(slide, tokens, pages, index, c) {
 
   // Title block
   html += '<div class="cover-content" style="position:absolute;top:48%;left:50%;transform:translateX(-50%);text-align:center;z-index:10;width:80%;opacity:0;transition:opacity 0.8s ease;">\n';
-  html += '<h1 style="font-size:' + tokens.typography.sizes.coverTitle.template + ';font-weight:bold;color:' + c.dark + ';letter-spacing:3px;margin-bottom:14px;">' + esc(slide.title) + '</h1>\n';
+  // 标题 — 间距：有副标题时标题→副标题 16px；无副标题时标题→汇报信息 32px（成组拉开）
+  html += '<h1 style="font-size:' + tokens.typography.sizes.coverTitle.template + ';font-weight:bold;color:' + c.dark + ';letter-spacing:3px;margin-bottom:' + (slide.subtitle ? 16 : 32) + 'px;">' + esc(slide.title) + '</h1>\n';
 
-  if (slide.subtitle || slide.presenter || slide.department) {
-    html += '<div style="font-size:' + tokens.typography.sizes.subtitle.template + ';color:' + c.gray + ';display:flex;gap:24px;justify-content:center;">\n';
-    if (slide.subtitle) { html += '<span>' + esc(slide.subtitle) + '</span>'; }
-    if (slide.subtitle && (slide.presenter || slide.department)) { html += '<span style="color:' + c.primary + ';opacity:0.5;"> · </span>'; }
-    if (slide.presenter) { html += '<span>汇报人：' + esc(slide.presenter) + '</span>'; }
-    if (slide.presenter && slide.department) { html += '<span style="color:' + c.primary + ';opacity:0.5;"> · </span>'; }
-    if (slide.department) { html += '<span>' + esc(slide.department) + '</span>'; }
-    html += '</div>\n';
+  // 副标题 — 独立一行，30pt，不与汇报人/部门/日期同行（与 red-template 一致）
+  if (slide.subtitle) {
+    html += '<div style="font-size:' + tokens.typography.sizes.subtitle.template + ';color:' + c.gray + ';margin-bottom:32px;">' + esc(slide.subtitle) + '</div>\n';
   }
+
+  // 汇报人·部门·日期 — 独立一行，红色圆点分隔，字号小于副标题（30pt > 26pt）
+  html += coverMetaLine(slide, c, tokens.typography.sizes.body.template, '');
 
   html += '</div>\n';
 
@@ -98,18 +97,7 @@ function renderRedTemplate(slide, tokens, pages, index, c) {
   }
 
   // meta（汇报人/部门/日期）— 单独一行，红色圆点分隔；字号小于副标题（副标题30pt > meta 26pt）
-  if (slide.presenter || slide.department || slide.date) {
-    var meta = [];
-    if (slide.presenter) { meta.push('汇报人：' + esc(slide.presenter)); }
-    if (slide.department) { meta.push(esc(slide.department)); }
-    if (slide.date) { meta.push(esc(slide.date)); }
-    html += '<div style="font-size:' + tokens.typography.sizes.body.template + ';color:' + c.gray + ';line-height:1.5;white-space:nowrap;">\n';
-    for (var m = 0; m < meta.length; m++) {
-      if (m > 0) { html += '<span style="color:' + c.primary + ';opacity:0.5;margin:0 12px;">·</span>'; }
-      html += '<span>' + meta[m] + '</span>';
-    }
-    html += '</div>\n';
-  }
+  html += coverMetaLine(slide, c, tokens.typography.sizes.body.template, 'line-height:1.5;white-space:nowrap;');
 
   html += '</div>\n';
 
@@ -146,18 +134,7 @@ function renderThemedFallback(slide, tokens, pages, index, c) {
   }
 
   // meta（汇报人/部门/日期）— 单独一行，红色圆点分隔；字号小于副标题
-  if (slide.presenter || slide.department || slide.date) {
-    var meta = [];
-    if (slide.presenter) { meta.push('汇报人：' + esc(slide.presenter)); }
-    if (slide.department) { meta.push(esc(slide.department)); }
-    if (slide.date) { meta.push(esc(slide.date)); }
-    html += '<div style="font-size:' + tokens.typography.sizes.body.template + ';color:' + c.gray + ';line-height:1.5;white-space:nowrap;">\n';
-    for (var m = 0; m < meta.length; m++) {
-      if (m > 0) { html += '<span style="color:' + c.primary + ';opacity:0.5;margin:0 12px;">·</span>'; }
-      html += '<span>' + meta[m] + '</span>';
-    }
-    html += '</div>\n';
-  }
+  html += coverMetaLine(slide, c, tokens.typography.sizes.body.template, 'line-height:1.5;white-space:nowrap;');
 
   html += '</div>\n';
 
@@ -211,6 +188,22 @@ function renderThemed(slide, tokens, pages, index, c, resolvedBg) {
   html += '</div>\n';
 
   html += '</div>\n</div>\n';
+  return html;
+}
+
+// 封面 meta 行（汇报人·部门·日期）— 独立一行，红色圆点分隔；三个封面共用，改一处即可
+function coverMetaLine(slide, c, fontSize, extraStyle) {
+  var meta = [];
+  if (slide.presenter) { meta.push('汇报人：' + esc(slide.presenter)); }
+  if (slide.department) { meta.push(esc(slide.department)); }
+  if (slide.date) { meta.push(esc(slide.date)); }
+  if (!meta.length) { return ''; }
+  var html = '<div style="font-size:' + fontSize + ';color:' + c.gray + ';' + extraStyle + '">\n';
+  for (var m = 0; m < meta.length; m++) {
+    if (m > 0) { html += '<span style="color:' + c.primary + ';opacity:0.5;margin:0 12px;">·</span>'; }
+    html += '<span>' + meta[m] + '</span>';
+  }
+  html += '</div>\n';
   return html;
 }
 

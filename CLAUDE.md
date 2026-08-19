@@ -79,6 +79,7 @@ Agent 与渲染器之间的中间格式。顶层字段：`colorScheme`、`logoSe
 - **图片缩放**：Logo/slogan 只允许等比缩放（HTML: `background-size:contain`；PPTX: `LockAspectRatio=true`）。Logo 容器必须正方形（宽=高）。Slogan 只固定宽度——**原生尺寸 1360×144（宽高比 9.44:1）存于 `brand-tokens.json` → `slogan`，工具需显式高度时 高度 = 宽度 ÷ 9.44**。禁止裁切/拉伸/同时固定不同宽高值。
 - **PPTX 图片嵌入**：必须内嵌二进制，禁外部路径。LockAspectRatio 顺序：插入→锁比例→设单维度尺寸。封面文字框必须透明背景（`FillVisible=false`）。
 - **PPTX 字号**：封面标题 43pt，其余见 SKILL.md 字体表。CSS pt 在 HTML 和 PowerPoint pt 解析不同——同数值不代表同比例，禁止直接复刻。
+- **ASCII 封面（个性化）**：副标题**独立一行**（HTML/PPTX 同规则，禁止与汇报人/部门/日期同排）。PPTX 文字坐标**写死 pt**（全宽框 `left=0/width=960` + 水平/垂直居中，文字中心恒为画布 50% 对齐背景图中心，禁百分比换算）：主标题 `top=Pt(277)`/`h=44` 43pt Bold dark **不可折行**（禁 `\n`）；副标题（如有）`top=Pt(337)`/`h=22` 20pt；汇报人·部门·时间 `top=Pt(359)`/`h=22` 18pt 红点分隔；公司全称 `top=Pt(449)`/`h=14` 14pt。副标题为空 → 汇报人落 `Pt(337)`。见 SKILL.md「PPTX Template 封面回退」+「母版封面页」。
 - **字体栈**：工作汇报（内部）用 `微软雅黑, Microsoft YaHei, Noto Sans SC, Source Han Sans SC, sans-serif`（Noto Sans SC 为跨平台开源回退，SIL OFL）；对外展示（外部）用 `Noto Sans SC, Source Han Sans SC, sans-serif`（纯开源栈，禁微软雅黑——闭源，对外分发/嵌入有许可风险）。
 - **Skill zip**：`测试记录/263-vi-skill-MMDD.zip`，20 文件（含 `cover-red-template.png`、`cover-themed-fallback.png`、`template-cover-bg.png`、`pptx-python-guide.md`）。`brand-tokens.json` v2.5（含 chartPalette 图表色板——唯一 7 档红尺度 + 语义色红涨绿跌 + 两灰唯一命名 + slogan 原生尺寸/宽高比 + 开源字体栈 + themedFallbackCover）。
 
