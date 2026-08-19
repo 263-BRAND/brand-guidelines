@@ -45,7 +45,7 @@ node generate.js <pages.json>   # 生成 <pages>.html（自包含幻灯片，零
 
 ### Skill zip 打包
 
-zip 从**根目录**按 19 文件清单构建（SKILL.md + pptx-python-guide.md + assets/*.png + renderer/slides/*.js + brand-tokens.json + company-data.json + generate.js），存入 `测试记录/263-vi-skill-MMDD.zip`。zip 必须自包含——SKILL.md 引用的每个文件都必须打包。缺文件会导致外部 AI 工具报错。
+zip 从**根目录**按 20 文件清单构建（SKILL.md + pptx-python-guide.md + assets/*.png（含 `cover-themed-fallback.png`）+ renderer/slides/*.js + brand-tokens.json + company-data.json + generate.js），存入 `测试记录/263-vi-skill-MMDD.zip`。zip 必须自包含——SKILL.md 引用的每个文件都必须打包。缺文件会导致外部 AI 工具报错。
 
 ### 核心文件
 
@@ -81,7 +81,7 @@ Agent 与渲染器之间的中间格式。顶层字段：`colorScheme`、`logoSe
 - **PPTX 图片嵌入**：必须内嵌二进制，禁外部路径。LockAspectRatio 顺序：插入→锁比例→设单维度尺寸。封面文字框必须透明背景（`FillVisible=false`）。
 - **PPTX 字号**：封面标题 43pt，其余见 SKILL.md 字体表。CSS pt 在 HTML 和 PowerPoint pt 解析不同——同数值不代表同比例，禁止直接复刻。
 - **字体栈**：工作汇报（内部）用 `微软雅黑, Microsoft YaHei, Noto Sans SC, Source Han Sans SC, sans-serif`（Noto Sans SC 为跨平台开源回退，SIL OFL）；对外展示（外部）用 `Noto Sans SC, Source Han Sans SC, sans-serif`（纯开源栈，禁微软雅黑——闭源，对外分发/嵌入有许可风险）。
-- **Skill zip**：`测试记录/263-vi-skill-MMDD.zip`，19 文件（含 `cover-red-template.png`、`template-cover-bg.png`、`pptx-python-guide.md`）。`brand-tokens.json` v2.5（含 chartPalette 图表色板——唯一 7 档红尺度 + 语义色红涨绿跌 + 两灰唯一命名 + slogan 原生尺寸/宽高比）。
+- **Skill zip**：`测试记录/263-vi-skill-MMDD.zip`，20 文件（含 `cover-red-template.png`、`cover-themed-fallback.png`、`template-cover-bg.png`、`pptx-python-guide.md`）。`brand-tokens.json` v2.5（含 chartPalette 图表色板——唯一 7 档红尺度 + 语义色红涨绿跌 + 两灰唯一命名 + slogan 原生尺寸/宽高比 + 开源字体栈 + themedFallbackCover）。
 
 ## 参考资料
 

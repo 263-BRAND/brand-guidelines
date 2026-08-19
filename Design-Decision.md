@@ -268,7 +268,7 @@ VI skill 不负责解析文件。外部 Agent 自行调用 MCP 或工具摘取�
 - **字体分流**：工作汇报（内部）微软雅黑栈；对外展示（外部）开源栈 `Noto Sans SC, Source Han Sans SC, sans-serif`（token 新增 `typography.fontFamilyOpenSource`）——微软雅黑闭源，对外分发/嵌入有许可风险（SIL OFL 开源无风险）
 
 **spec：** `docs/superpowers/specs/2026-08-18-themed-open-cover-design.md`（2026-08-18 提交，设计已确认）
-**状态：** 待实现——下一步 writing-plans 出实现计划后推进（品牌底线规则 + 字体分流可先行，兜底图渲染等图片入库）
+**状态：** 已实现（2026-08-19）——兜底封面图入库 + 渲染器支持 themed-fallback + 字体按场景分流 + zip 19→20，浏览器实测通过
 
 #### 封面排版决策记录（2026-08-17）
 
