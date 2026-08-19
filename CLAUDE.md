@@ -36,7 +36,6 @@ node generate.js <pages.json>   # 生成 <pages>.html（自包含幻灯片，零
 | Geek（工作汇报） | 硬锚词：汇报/述职/总结/周报/月报/季报/年报 | ASCII 字符画 + 二进制雨 | 静态截图底图（`template-cover-bg.png`）+ 文字叠加 |
 | Geek 红色位图（工作汇报） | `scene:template` + `cover.background:red-template` | 红色设计位图底图（`cover-red-template.png`）+ 左对齐文字 | 同左，100% 一致 |
 | Themed（对外展示） | 硬锚词：介绍/展示/宣传/发布会/对外/客户 | 设计 skill 自由设计（品牌底线内）；渲染器默认 → 兜底封面图（v1 暂用稿，后期可换）+ 左上彩稿 Logo | 同左，PPTX 原生实现 |
-| Formal（严谨兜底） | 待实现 | 位图底图 + 文字叠加 | 同左，100% 一致 |
 
 ### 两条路径
 

@@ -168,7 +168,6 @@ Template 路径全部锁定。Themed 路径在硬规则约束内由设计 skill 
 |---|---|
 | **Template（母版型）** | 受众在组织内部；目的是汇报/同步/述职；设计上要求统一规范而非个性表达 |
 | **Themed（主题型）** | 受众在组织外部；目的是说服/展示/介绍；设计上允许在品牌框架内发挥个性 |
-| **Formal（严谨型）** | 待实现。工作汇报兜底风格：纯白/浅灰底 + 左上彩稿 Logo + 居中排版 + 红色细线装饰。HTML/PPTX 100% 一致 |
 
 Agent 按特征推理，不硬匹配关键词。用户自然语言纠正即可切换模式。
 
@@ -306,6 +305,5 @@ VI skill 不负责解析文件。外部 Agent 自行调用 MCP 或工具摘取�
 
 - 商务蓝色值 — 官方确认
 - 云通信 Logo 反白稿
-- Formal（严谨型）封面 — 正式实现到 cover.js + SKILL.md
 - 位图底图方案 — 豆包生成封面位图 → HTML/PPTX 共用底图 + 动态文字叠加，100% 视觉一致。**已落地为工作汇报红色封面（red-template）**：`scene:template` + `cover.background:red-template`，`assets/cover-red-template.png` 全屏底图 + 左对齐文字
 - v2 视口原生方案 — 100vw×100vh + flexbox 替代固定画布+scale。2026-08-11 先以方案A过渡。方案B的视口原生改造待方案A验证稳定后执行。
