@@ -44,7 +44,7 @@ SKILL.md 新增章节「对外展示封面（Themed）」——定义自由范�
 **Logo 规范：** 封面 Logo 一律彩稿（`logo-group-color`），**禁止反白**（用户补充规则，见交付物 1 品牌底线 point 2）。
 **入库：** 缩放/压平至 `assets/cover-themed-fallback.png`（1920×1080，与画布同比例，`contain` 不裁切）。**统一白底压平为 RGB**——原图 RGBA 含透明通道，PPTX 全幻灯片背景需确定底色，白底压平后 HTML/PPTX 100% 一致，无底色漂移风险。
 
-**触发：** Themed 封面 + 无设计 skill / 用户选「严格按模板」/ agent 判定无法定制 → 兜底图。pages.json 封面 `"background": "themed-fallback"` 触发。
+**触发（2026-08-19 实现时纠正为默认）：** 渲染器（generate.js）渲染 Themed 封面时**默认即兜底封面图**——无需设背景键；只有显式指定其它背景（如 `primary-gradient`）才走渐变。设计能力判定同 PPTX 客观尺子：本次对话是否加载能产出 HTML/PPTX 版式的设计类技能或 agent，VI skill/代码能力不算——仅加载 VI skill → 无设计能力 → 兜底图。`"background": "themed-fallback"` 保留作显式别名。
 
 **渲染（模式同 red-template：位图底 + 文字叠加）：**
 - HTML：base64 全屏背景（`.themed-fallback-bg` class，`center/contain`）+ 叠加文字

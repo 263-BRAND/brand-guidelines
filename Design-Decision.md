@@ -263,7 +263,7 @@ VI skill 不负责解析文件。外部 Agent 自行调用 MCP 或工具摘取�
 
 **决策：**
 - **封面开放 + 品牌底线**：Themed 封面由设计 skill 自由设计（版式/色板内配色/装饰/动效），但品牌底线锁死——色板 token 禁自造、封面必须带 263 品牌标识且 Logo 安全区零容忍、公司数据不编造、禁纯黑、字号底线、字体开源、封面信息来自 pages.json 字段
-- **兜底封面图**：`assets/cover-themed-fallback.png`（源图 `视觉参考/background-red-themed_v1.png`，用户提供，**暂用稿，后期可能替换**）。**渲染图无关**（路径从 token 读，换图只动 PNG、不动代码与规则）。触发：无设计 skill / 用户选「严格按模板」/ agent 判定无法定制 → pages.json 封面 `"background": "themed-fallback"`。模式同 red-template：位图底 + 文字叠加，HTML/PPTX 100% 一致。入库统一白底压平（原图 RGBA 带透明，白底保证 PPTX 背景确定）
+- **兜底封面图**：`assets/cover-themed-fallback.png`（源图 `视觉参考/background-red-themed_v1.png`，用户提供，**暂用稿，后期可能替换**）。**渲染图无关**（路径从 token 读，换图只动 PNG、不动代码与规则）。**触发（2026-08-19 纠正为默认）**：渲染器渲染 Themed 封面时默认即兜底封面图（无需背景键）；`"background": "themed-fallback"` 保留作显式别名；设计能力判定同 PPTX 客观尺子（VI skill/代码能力不算，仅加载 VI skill → 兜底图）。模式同 red-template：位图底 + 文字叠加，HTML/PPTX 100% 一致。入库统一白底压平（原图 RGBA 带透明，白底保证 PPTX 背景确定）
 - **封面 Logo 禁止反白**（用户补充）：封面 Logo 一律彩稿 `logo-group-color`，不随深浅底切换；深色封面彩稿不可读时调布局（Logo 置浅色区）而非换反白
 - **字体分流**：工作汇报（内部）微软雅黑栈；对外展示（外部）开源栈 `Noto Sans SC, Source Han Sans SC, sans-serif`（token 新增 `typography.fontFamilyOpenSource`）——微软雅黑闭源，对外分发/嵌入有许可风险（SIL OFL 开源无风险）
 
