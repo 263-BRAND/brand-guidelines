@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 项目概述
 
-这是一个 **Claude Code skill 项目**。263 VI skill 为 Agent 提供品牌数据层（色板、字体、Logo、公司信息），用于生成品牌化的 PPT/HTML。Skill 入口：`.claude/skills/263group-brand-guidelines/SKILL.md`。
+这是一个 **Claude Code skill 项目**。263group-brand-guidelines 为 Agent 提供品牌数据层（色板、字体、Logo、公司信息），用于生成品牌化的 PPT/HTML。Skill 入口：`.claude/skills/263group-brand-guidelines/SKILL.md`。
 
 ## 构建/生成命令
 
@@ -16,18 +16,18 @@ node generate.js <pages.json>   # 生成 <pages>.html（自包含幻灯片，零
 
 ## 架构
 
-**品牌数据层，不是渲染引擎。** VI skill 是 263 品牌规则的唯一真相源。内容策划交给 LLM，排版表现交给设计 skill。
+**品牌数据层，不是渲染引擎。** 263group-brand-guidelines 是 263 品牌规则的唯一真相源。内容策划交给 LLM，排版表现交给设计 skill。
 
 ### 数据流
 
 ```
-用户需求 → VI skill（品牌决策）→ pages.json → generate.js → slides.html
+用户需求 → 263group-brand-guidelines（品牌决策）→ pages.json → generate.js → slides.html
 ```
 
 ### 输出格式
 
 - **HTML**：1920×1080 画布，响应式缩放。`node generate.js <pages.json>` 渲染。
-- **PPTX**：960×540pt（PowerPoint 16:9 宽屏默认）。无生成脚本。PPTX 输出优先用原生 PPTX 排版能力（= 对话中已加载的、能直接产出 .pptx 版式的专业PPT制作技能或设计类技能或设计 agent，**VI skill 本身不算**）；无则推荐改网页文件（HTML）或使用专业PPT制作技能或设计类技能；用户坚持代码生成 PPT 时，生成前警告并按 `pptx-python-guide.md` 实现要点。所有尺寸按 960×540 基准换算。
+- **PPTX**：960×540pt（PowerPoint 16:9 宽屏默认）。无生成脚本。PPTX 输出优先用原生 PPTX 排版能力（= 对话中已加载的、能直接产出 .pptx 版式的专业PPT制作技能或设计类技能或设计 agent，**263group-brand-guidelines 本身不算**）；无则推荐改网页文件（HTML）或使用专业PPT制作技能或设计类技能；用户坚持代码生成 PPT 时，生成前警告并按 `pptx-python-guide.md` 实现要点。所有尺寸按 960×540 基准换算。
 
 ### 封面三种模式
 
@@ -64,13 +64,13 @@ Agent 与渲染器之间的中间格式。顶层字段：`colorScheme`、`logoSe
 
 ## 关键约定
 
-- **硬门禁**：生成前必须逐项确认，按场景分支（工作汇报 → 场景/配色/输出格式/封面风格；对外展示 → 场景/配色/视觉风格/输出格式）。Agent 先判断场景但判断后也必须逐一询问用户确认，禁止跳过、禁止假设默认值。用户话术用固定平实词，禁止暴露内部文件名。**封面风格推荐与输出格式联动**：选 PPT 文件才推荐严谨商务风格；选网页文件禁止推荐。**PPT 输出路径**：Q4 选 PPT 文件后——对话中已加载能产出 .pptx 版式的 PPT/设计技能或 agent（VI skill 本身不算）直接用；未加载则走话术 4a 推荐改网页文件或用专业PPT制作技能或设计类技能；用户坚持代码生成则话术 4b 生成前警告效果可能需人工调整，并按 `pptx-python-guide.md` 实现。
+- **硬门禁**：生成前必须逐项确认，按场景分支（工作汇报 → 场景/配色/输出格式/封面风格；对外展示 → 场景/配色/视觉风格/输出格式）。Agent 先判断场景但判断后也必须逐一询问用户确认，禁止跳过、禁止假设默认值。用户话术用固定平实词，禁止暴露内部文件名。**封面风格推荐与输出格式联动**：选 PPT 文件才推荐严谨商务风格；选网页文件禁止推荐。**PPT 输出路径**：Q4 选 PPT 文件后——对话中已加载能产出 .pptx 版式的 PPT/设计技能或 agent（263group-brand-guidelines 本身不算）直接用；未加载则走话术 4a 推荐改网页文件或用专业PPT制作技能或设计类技能；用户坚持代码生成则话术 4b 生成前警告效果可能需人工调整，并按 `pptx-python-guide.md` 实现。
 - **Logo 安全区**：零容忍——任何 UI 元素的任何像素都不得进入 Logo 边界框。安全区 = Logo 矩形框，**X/Y 双轴都算**（X: 画布宽 − right − width ~ 画布宽 − right，Y: top ~ top + height）。**顶部高于 Logo 底边的元素（如 top:12% 标题）右边界强制 ≤ 画布宽 − right − width（≈90.6%）**；内容主体区（top:28%）垂直已低于 Logo 底边不受限。数值按 token 实算，禁止硬编码派生值；键名用 `layout.innerPageLogo.width/height`（token 无 `size` 键）。
 - **ASCII 字符画**：封面 ASCII Logo 存储在 `brand-tokens.json` → `coverAscii.art`。Agent 必须原样读取，禁止自行生成或修改。
 - **禁止纯黑**：`#000000` 不得作为文字颜色。标题 = `dark` (#2D3847)，正文 = `gray` (#595959)。
 - **语义色**：深绿 `#3E8E4E` 仅限图表涨跌数据（红涨绿跌）；禁止用于非图表设计（A/B 对比、标注、强调、装饰）。非图表两项对比用品牌红 vs 中灰/深蓝灰，不引入绿。
 - **结尾页**：始终是最后一页，居中 Logo + slogan PNG。原文件的结尾/感谢页必须替换，不得保留。
-- **对外展示封面品牌底线**：Themed 封面由设计 skill 自由设计（版式/色板内配色/装饰/动效），但底线锁死——色板只用 token 禁自造色；封面必须带 263 品牌标识（Logo 安全区零容忍）；公司数据不编造；禁纯黑；字号底线；字体开源；封面信息读 pages.json。**封面 Logo 一律彩稿（`logo-group-color`）禁止反白**，深浅底皆如此——深底彩稿不可读时调布局（Logo 置浅色区）而非换反白。渲染器默认即兜底封面图 `cover-themed-fallback.png`（**v1 暂用稿、后期可换；图无关——换图只动 PNG，不动代码与规则**；浅底 → 深色文字 + 彩稿 Logo；无需背景键，显式指定其它背景才走渐变；同 red-template 位图底 + 文字叠加，HTML/PPTX 100% 一致；设计能力判定同 PPTX 客观尺子，VI skill 不算——仅加载 VI skill → 兜底图）。
+- **对外展示封面品牌底线**：Themed 封面由设计 skill 自由设计（版式/色板内配色/装饰/动效），但底线锁死——色板只用 token 禁自造色；封面必须带 263 品牌标识（Logo 安全区零容忍）；公司数据不编造；禁纯黑；字号底线；字体开源；封面信息读 pages.json。**封面 Logo 一律彩稿（`logo-group-color`）禁止反白**，深浅底皆如此——深底彩稿不可读时调布局（Logo 置浅色区）而非换反白。渲染器默认即兜底封面图 `cover-themed-fallback.png`（**v1 暂用稿、后期可换；图无关——换图只动 PNG，不动代码与规则**；浅底 → 深色文字 + 彩稿 Logo；无需背景键，显式指定其它背景才走渐变；同 red-template 位图底 + 文字叠加，HTML/PPTX 100% 一致；设计能力判定同 PPTX 客观尺子，263group-brand-guidelines 不算——仅加载 263group-brand-guidelines → 兜底图）。
 - **字体**：按场景分流（栈见「字体栈」）。字号 HTML 用 `pt` 后缀，PPTX 写裸数字。禁止 pt↔px 换算。字号从 `typography.sizes.*.template` 读取（封面 64/内容页 40/副标题 30/正文 26/图表 22），生成前自检核对字号与行距（HTML 正文 ≥ 24pt、极限 ≥ 20pt）。
 - **渲染回退**：HTML 渲染依赖 node（`node generate.js <pages.json>`）。环境无 node 时禁止降级约束——按「Node.js 可用性分支」回退：手动生成自包含 HTML（色板/安全区/字号/行距/图片全约束应用）或交外部渲染。
 - **行距**：HTML 与 PPTX 两套规范（`typography.lineHeight`）。HTML 用 CSS line-height（主标题 1.3、其余 1.8、章节页大号数字 2.0），PPTX 用倍距（标题单倍、其余 1.2倍）。覆盖章节页/目录页（含 toc 类型）。禁止互套。

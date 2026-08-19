@@ -64,7 +64,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板/字体/Logo/slogan/公�
 1. **使用场景**：判断为「工作汇报」→ 逐字说：「根据您提供的资料，我判断这个 PPT 用于**工作汇报**。如果实际是用于**对外展示**，请告诉我，我会切换设计风格。」判断为「对外展示」→ 把两个说法对调。
 2. **配色方案**：逐字说：「用**集团红**还是**商务蓝**？」（默认集团红）
 3. **视觉风格**（仅对外展示时询问；工作汇报不询问，默认严格按模板排版）：逐字说：「**严格按模板排版**，还是调用**专业设计能力美化排版**？」选「严格按模板」→ 排版完全按固定模板；选「专业设计美化」→ 品牌硬规则锁死、软规则由设计 skill 自由发挥。
-4. **输出格式**：逐字说：「要**网页文件**还是**PPT 文件**？」选「PPT 文件」→ 检查本次对话中用户是否已加载**能直接产出 .pptx 版式**的专业PPT制作技能或设计类技能、或调用过**设计类 sub-agent**（客观可查的事实，不是你的能力自评）。**VI skill 本身不算**——它只提供品牌数据，产不出 .pptx 版式：
+4. **输出格式**：逐字说：「要**网页文件**还是**PPT 文件**？」选「PPT 文件」→ 检查本次对话中用户是否已加载**能直接产出 .pptx 版式**的专业PPT制作技能或设计类技能、或调用过**设计类 sub-agent**（客观可查的事实，不是你的能力自评）。**263group-brand-guidelines 本身不算**——它只提供品牌数据，产不出 .pptx 版式：
    - **已加载** → 有原生 PPTX 排版能力，把品牌数据（尺寸/字号/行距/图片规则）作为契约交给该技能/agent，直接按该路径生成；
    - **未加载** → 无原生能力，唯一 PPT 手段是写代码（python-pptx 等）→ 走 4a 把路径选择摆给用户。
    选「网页文件」→ 直接第 5 题。第 5 题仅「工作汇报」分支询问（对外展示分支第 4 题即结束）。
@@ -100,7 +100,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板/字体/Logo/slogan/公�
 
 - 全部必答问题确认前，禁止进入后续任何步骤（大纲收集、封面信息提取、数据图表收集、pages.json 生成、透明声明）
 - 禁止假设默认值跳过提问。**Agent 的判断结果不能替代用户确认**——每个分支问题都必须向用户询问，用户未明确回答的选项必须追问
-- **PPT 能力检查（Q4 选「PPT 文件」时）**：原生 PPTX 排版能力只看一条客观事实——本次对话中用户是否已加载**能直接产出 .pptx 版式**的专业PPT制作技能或设计类技能、或调用过设计类 sub-agent。**VI skill 不算**（品牌数据层，只产品牌数据与 HTML）。**你的代码能力（python-pptx 等）也不构成原生能力**。禁止以「我能用 python-pptx 精确实现规范」或「VI skill 就是 PPT 技能」为由跳过 4a/4b；未加载 → 按无原生能力处理，走 4a。
+- **PPT 能力检查（Q4 选「PPT 文件」时）**：原生 PPTX 排版能力只看一条客观事实——本次对话中用户是否已加载**能直接产出 .pptx 版式**的专业PPT制作技能或设计类技能、或调用过设计类 sub-agent。**263group-brand-guidelines 不算**（品牌数据层，只产品牌数据与 HTML）。**你的代码能力（python-pptx 等）也不构成原生能力**。禁止以「我能用 python-pptx 精确实现规范」或「263group-brand-guidelines 就是 PPT 技能」为由跳过 4a/4b；未加载 → 按无原生能力处理，走 4a。
 - **封面风格推荐必须与第 4 题输出格式联动**：用户选「PPT 文件」才推荐严谨商务风格；用户选「网页文件」禁止推荐（违反 = 交互逻辑错误）。Agent 必须先问完 Q4 拿到输出格式答案，才能决定 Q5 是否补推荐语
 - 确认结果必须写入 pages.json：问题 1「工作汇报」→ `"scene": "template"`；「对外展示」→ 省略 `scene`。问题 2「集团红」→ `"colorScheme": "group-red"`；「商务蓝」→ `"business-blue"`。问题 5「个性化」→ 省略封面 `background`（ASCII 默认）；「严谨」→ 封面 `"background": "red-template"`
 
@@ -301,7 +301,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板/字体/Logo/slogan/公�
 5. **检查 Logo 安全区**：右上角（画布宽度 4.2%，见 `layout.innerPageLogo.width/height`）范围不得有任何 UI 组件（翻页提示、页码、进度条等）。如有冲突，移动 UI 组件而非移动 Logo
 6. 对齐母版布局（封面、目录、内容、结尾页统一版式）
 7. **结尾页强制替换**：原文件的结尾/感谢页内容全部丢弃，替换为 VI 标准结尾（居中 Logo + slogan PNG）。此规则不可协商，Themed 模式下同样适用
-8. VI skill 全控，设计 skill 不介入
+8. 263group-brand-guidelines 全控，设计 skill 不介入
 
 ### 路径 B × Themed：已有文件品牌重设计
 
@@ -360,7 +360,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板/字体/Logo/slogan/公�
 
 PPTX 布局比 HTML 脆，不鼓励手写代码排版。按优先级决策（交互见「生成前确认 → 用户话术」4a/4b）：
 
-1. **对话中已加载能直接产出 .pptx 版式的专业PPT制作技能或设计类技能（或调用过设计类 sub-agent）** → 这就是原生 PPTX 排版能力，优先用它，把品牌数据（尺寸/字号/行距/图片规则）作为契约交给它。**VI skill 不算**（品牌数据层，只产品牌数据与 HTML）；你的代码能力也不构成原生能力——判断只看用户是否加载过该技能/agent，不是你的能力自评。
+1. **对话中已加载能直接产出 .pptx 版式的专业PPT制作技能或设计类技能（或调用过设计类 sub-agent）** → 这就是原生 PPTX 排版能力，优先用它，把品牌数据（尺寸/字号/行距/图片规则）作为契约交给它。**263group-brand-guidelines 不算**（品牌数据层，只产品牌数据与 HTML）；你的代码能力也不构成原生能力——判断只看用户是否加载过该技能/agent，不是你的能力自评。
 2. **未加载 → 推荐生成网页文件（HTML）**：交互见 4a，用户接受则按网页文件生成（可靠）。
 3. **用户坚持代码生成 PPT** → 生成前逐字提醒（4b）效果可能有差距；**当且仅当此路径下读取 `pptx-python-guide.md`**（python-pptx 实现要点，把行距/中文字体/图片等比/透明文字框等机械点写死），其他路径不读该文件。
 
@@ -507,7 +507,7 @@ PPTX ✅ Width=480pt, LockAspectRatio=true, 不设 Height
 - [ ] 行距从 `typography.lineHeight.html` 读取（主标题 1.3、其余 1.8），未用 px 或 PPTX 倍距
 - [ ] PPTX: 所有图片已内嵌（非外部链接）；LockAspectRatio 设置顺序正确
 - [ ] 字体栈按场景分流：工作汇报 = 微软雅黑栈（`typography.fontFamily`）；对外展示 = 开源栈（`typography.fontFamilyOpenSource`），对外展示产出**不含微软雅黑**
-- [ ] 对外展示封面：渲染器默认即兜底封面图（仅加载 VI skill → 判定无设计能力，未自评「能设计」而跳过兜底）；封面 Logo 一律彩稿 `logo-color-img`（禁止反白），深浅底皆如此
+- [ ] 对外展示封面：渲染器默认即兜底封面图（仅加载 263group-brand-guidelines → 判定无设计能力，未自评「能设计」而跳过兜底）；封面 Logo 一律彩稿 `logo-color-img`（禁止反白），深浅底皆如此
 - [ ] PPTX 个性化封面：主标题/副标题/汇报人/公司全称坐标逐一核对写死值（`top=Pt(277)`/`Pt(337)`/`Pt(359)`/`Pt(449)`），主标题 `word_wrap=False` 不可折行，副标题独立一行，汇报人行底与公司名不重叠
 
 ### 品牌上下文（Logo 按业务线切换）
@@ -538,16 +538,16 @@ Template：全部锁死。Themed：以下 MUST 规则不可违反，其余交设
 
 ## 与设计 skill 协作
 
-VI skill 是品牌数据层，设计 skill 是表现层。
+263group-brand-guidelines 是品牌数据层，设计 skill 是表现层。
 
 | 层 | 谁负责 | 锁定的内容 |
 |----|--------|-----------|
-| 品牌数据层 | VI skill | 色彩、字体、Logo 规则、结尾页格式、硬规则 |
+| 品牌数据层 | 263group-brand-guidelines | 色彩、字体、Logo 规则、结尾页格式、硬规则 |
 | 表现层 | 设计 skill | 排版布局、装饰元素、图表风格、动画、阴影 |
 
-**设计能力判定（与 PPTX 能力同一把客观尺子，HTML/PPTX 通用）：** 本次对话中是否加载/调用了**能直接产出 HTML 或 PPTX 版式**的设计类技能或 agent（frontend-design、专业PPT制作技能或设计类技能、设计类 sub-agent）。**VI skill（263group-brand-guidelines）不算**——只产品牌数据与 pages.json，产不出表现层（HTML 与 PPTX 都如此）；**你的代码能力不算**——任何工具都能写代码，手写 HTML/PPTX 属回退路径。仅加载 VI skill → 判定**无设计能力** → Themed 封面走渲染器兜底封面图（默认）。
+**设计能力判定（与 PPTX 能力同一把客观尺子，HTML/PPTX 通用）：** 本次对话中是否加载/调用了**能直接产出 HTML 或 PPTX 版式**的设计类技能或 agent（frontend-design、专业PPT制作技能或设计类技能、设计类 sub-agent）。**263group-brand-guidelines 不算**——只产品牌数据与 pages.json，产不出表现层（HTML 与 PPTX 都如此）；**你的代码能力不算**——任何工具都能写代码，手写 HTML/PPTX 属回退路径。仅加载 263group-brand-guidelines → 判定**无设计能力** → Themed 封面走渲染器兜底封面图（默认）。
 
-**Brand Data Contract：** VI skill 输出给设计 skill 的数据结构：
+**Brand Data Contract：** 263group-brand-guidelines 输出给设计 skill 的数据结构：
 
 > **示例仅为结构示意，不是可照抄的常量。** `colorScheme`/`colors` 的取值、`typography` 字号、`slogan` 尺寸等，Agent 传给设计 skill 时必须从 `brand-tokens.json` 对应字段实时读取（如当前 `colorScheme` 决定 `colorSchemes[colorScheme]` 的 9 个色值）。示例中出现的色值/数值一旦与 token 冲突，以 token 为准。
 
@@ -567,7 +567,7 @@ VI skill 是品牌数据层，设计 skill 是表现层。
 
 ## 输入格式
 
-VI skill 不负责解析文件。外部 Agent 自行调用 MCP 或其他工具摘取内容后送入管线。
+263group-brand-guidelines 不负责解析文件。外部 Agent 自行调用 MCP 或其他工具摘取内容后送入管线。
 
 | 分级 | 格式 | 可靠性 |
 |------|------|--------|
