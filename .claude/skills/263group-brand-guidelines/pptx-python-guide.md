@@ -86,7 +86,7 @@ s.shapes.add_picture(bg_path, 0, 0, prs.slide_width, prs.slide_height)
 
 > 顺序必须是：底图 → 文字（后加的在上面）。
 
-- **对外展示兜底封面（cover-themed-fallback，浅底）**：同法铺全幻灯片背景（内嵌二进制）+ 深色文字框叠加（透明 `FillVisible=false`）+ 左上彩稿 Logo（62pt 正方形，`LockAspectRatio=true`）。**封面 Logo 一律彩稿禁止反白**（浅底不用反白，深色封面彩稿不可读时调布局）。字号用 PPTX 列：封面标题 43pt、副标题 20pt、汇报信息 18pt、公司全称 14pt。
+- **对外展示兜底封面（cover-themed-fallback，浅底，Themed 封面默认）**：同法铺全幻灯片背景（内嵌二进制）+ 深色文字框叠加（透明 `FillVisible=false`）+ 左上彩稿 Logo（62pt 正方形，`LockAspectRatio=true`）。**封面 Logo 一律彩稿禁止反白**（浅底不用反白，深色封面彩稿不可读时调布局）。字号用 PPTX 列：封面标题 43pt、副标题 20pt、汇报信息 18pt、公司全称 14pt。仅加载 VI skill（无设计技能）时，Themed 封面默认用此图。
 
 ## 7. 字号
 

@@ -9,7 +9,8 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
     }
     return renderTemplate(slide, tokens, pages, index, c);
   }
-  if (slide.background === 'themed-fallback') {
+  // Themed 封面：默认即兜底封面图（渲染器兜底，无需背景键）；显式指定背景（primary-gradient 等）才走渐变
+  if (slide.background === 'themed-fallback' || !slide.background) {
     return renderThemedFallback(slide, tokens, pages, index, c);
   }
   return renderThemed(slide, tokens, pages, index, c, resolvedBg);

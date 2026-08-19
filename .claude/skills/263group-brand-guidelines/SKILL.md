@@ -212,7 +212,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板/字体/Logo/slogan/公�
 3. PPTX 文字框必须设置透明背景（`FillVisible=false` 或等效），**禁止填充任何颜色**——底图被遮挡会露出色块
 4. 位置为 MUST，禁止 Agent 自行调整——ASCII 图案在背景图中位置固定，文字偏移会导致重叠
 
-**使用时**：在 `pages.json` 中设置 `"scene": "template"`，渲染器自动切换到 ASCII 封面。不设置或设置为其他值时使用 Themed 封面（设计 skill 自由设计；无设计能力/严格按模板时渲染器用兜底封面图 `themed-fallback`）。
+**使用时**：在 `pages.json` 中设置 `"scene": "template"`，渲染器自动切换到 ASCII 封面。不设置或设置为其他值时使用 Themed 封面（设计 skill 自由设计；渲染器兜底时默认用兜底封面图）。
 
 ### 工作汇报红色封面（Red Template Cover）
 
@@ -249,7 +249,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板/字体/Logo/slogan/公�
 6. **结尾页**：固定居中 Logo + slogan（全系统一致，不可协商）
 7. **封面信息**：标题/副标题/发布人/日期从 pages.json cover 字段读取，不凭空编造
 
-**兜底封面图（Themed）：** 无设计能力 / 用户选「严格按模板」/ agent 判定无法定制 → 使用固定兜底封面图——`brand-tokens.json` → `themedFallbackCover.path`（`assets/cover-themed-fallback.png`，浅蓝灰底 + 右侧蓝色几何，左 ~40% 干净浅色区）。**v1 暂用稿，后期可能替换——图无关：换图只替换 PNG 文件，不动渲染代码与规则。** 触发：封面 slide `"background": "themed-fallback"`。
+**兜底封面图（Themed）：** 渲染器（generate.js）渲染 Themed 封面时**默认即兜底封面图**——`brand-tokens.json` → `themedFallbackCover.path`（`assets/cover-themed-fallback.png`，浅蓝灰底 + 右侧蓝色几何，左 ~40% 干净浅色区）。**v1 暂用稿，后期可能替换——图无关：换图只替换 PNG 文件，不动渲染代码与规则。** 无需设置背景键；只有显式指定其它背景（如 `primary-gradient`）才改用对应渐变。设计能力判定见「与设计 skill 协作 → 设计能力判定」。
 
 **渲染（模式同 red-template：位图底 + 文字叠加，HTML/PPTX 100% 一致）：**
 - HTML：base64 全屏背景（`.themed-fallback-bg`，`center/contain`）+ 叠加文字
@@ -267,8 +267,8 @@ description: 263 品牌 VI 规范 — 提供品牌色板/字体/Logo/slogan/公�
 ### 封面双模式
 
 - **Template（对内汇报）**：`pages.scene === 'template'` → 白色背景 + ASCII 字符画 + 二进制雨 + 居中排版；`cover.background: "red-template"` 时切换为红色设计位图封面 + 左对齐文字
-- **Themed（对外展示）**：设计 skill 自由设计（品牌底线见「对外展示封面（Themed）」）；无设计能力/严格按模板 → 兜底封面图（`"background": "themed-fallback"`）
-- 封面背景选项（Themed）：primary-gradient / primary-solid / dark-solid / white / themed-fallback（兜底封面图）
+- **Themed（对外展示）**：设计 skill 自由设计（品牌底线见「对外展示封面（Themed）」）；渲染器默认 → 兜底封面图（无需背景键）
+- 封面背景选项（Themed）：themed-fallback（默认，渲染器兜底图）/ primary-gradient / primary-solid / dark-solid / white
 - 封面背景选项（Template）：省略（ASCII） / red-template（红色位图）
 
 ### 路径 A × Themed：从零创作型生成
@@ -498,7 +498,7 @@ PPTX ✅ Width=480pt, LockAspectRatio=true, 不设 Height
 - [ ] 行距从 `typography.lineHeight.html` 读取（主标题 1.3、其余 1.8），未用 px 或 PPTX 倍距
 - [ ] PPTX: 所有图片已内嵌（非外部链接）；LockAspectRatio 设置顺序正确
 - [ ] 字体栈按场景分流：工作汇报 = 微软雅黑栈（`typography.fontFamily`）；对外展示 = 开源栈（`typography.fontFamilyOpenSource`），对外展示产出**不含微软雅黑**
-- [ ] 对外展示封面：无设计能力/严格按模板 → 兜底封面图 `themed-fallback`；封面 Logo 一律彩稿 `logo-color-img`（禁止反白），深浅底皆如此
+- [ ] 对外展示封面：渲染器默认即兜底封面图（仅加载 VI skill → 判定无设计能力，未自评「能设计」而跳过兜底）；封面 Logo 一律彩稿 `logo-color-img`（禁止反白），深浅底皆如此
 
 ### 品牌上下文（Logo 按业务线切换）
 
@@ -534,6 +534,8 @@ VI skill 是品牌数据层，设计 skill 是表现层。
 |----|--------|-----------|
 | 品牌数据层 | VI skill | 色彩、字体、Logo 规则、结尾页格式、硬规则 |
 | 表现层 | 设计 skill | 排版布局、装饰元素、图表风格、动画、阴影 |
+
+**设计能力判定（与 PPTX 能力同一把客观尺子，HTML/PPTX 通用）：** 本次对话中是否加载/调用了**能直接产出 HTML 或 PPTX 版式**的设计类技能或 agent（frontend-design、专业PPT制作技能或设计类技能、设计类 sub-agent）。**VI skill（263group-brand-guidelines）不算**——只产品牌数据与 pages.json，产不出表现层（HTML 与 PPTX 都如此）；**你的代码能力不算**——任何工具都能写代码，手写 HTML/PPTX 属回退路径。仅加载 VI skill → 判定**无设计能力** → Themed 封面走渲染器兜底封面图（默认）。
 
 **Brand Data Contract：** VI skill 输出给设计 skill 的数据结构：
 
