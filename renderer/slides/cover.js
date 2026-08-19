@@ -9,6 +9,9 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
     }
     return renderTemplate(slide, tokens, pages, index, c);
   }
+  if (slide.background === 'themed-fallback') {
+    return renderThemedFallback(slide, tokens, pages, index, c);
+  }
   return renderThemed(slide, tokens, pages, index, c, resolvedBg);
 }
 
@@ -110,6 +113,54 @@ function renderRedTemplate(slide, tokens, pages, index, c) {
   html += '</div>\n';
 
   // company name — bottom-left, on light-pink band (不动)
+  html += '<div style="position:absolute;bottom:6%;left:7%;font-size:' + tokens.typography.sizes.caption.template + ';color:' + c.gray + ';z-index:2;">\n';
+  html += esc(pages.companyName || '二六三网络通信股份有限公司') + '\n';
+  html += '</div>\n';
+
+  html += '</div>\n';
+  return html;
+}
+
+// === Themed fallback cover: external presentation — 浅底位图 bg，彩稿 Logo（禁反白），左侧深色文字 ===
+function renderThemedFallback(slide, tokens, pages, index, c) {
+  var html = '<div class="slide-page" id="s' + index + '" style="position:relative; overflow:hidden;">\n';
+
+  // full-bleed bitmap background（base64 via .themed-fallback-bg in generate.js）— 图无关，路径从 token 读
+  html += '<div class="themed-fallback-bg" style="position:absolute;top:0;left:0;width:100%;height:100%;"></div>\n';
+
+  // 封面 Logo — 一律彩稿 logo-color-img（禁止反白），浅底不切换反白
+  html += coverLogoBlock(tokens, 'logo-color-img', 3);
+
+  // 文字块 — 左侧垂直居中（left:7%，max-width:50%）；浅底 → 深色文字（dark/gray）
+  html += '<div style="position:absolute;top:0;left:7%;max-width:50%;height:100%;display:flex;flex-direction:column;justify-content:center;z-index:2;">\n';
+
+  // 标题 — 不折行（white-space:nowrap），agent 以 \n 手动分行（≤20 字符/行）
+  var titleLines = esc(slide.title).replace(/\n/g, '<br>');
+  var titleMargin = slide.subtitle ? 16 : 32;
+  html += '<h1 style="font-size:' + tokens.typography.sizes.coverTitle.template + ';font-weight:bold;color:' + c.dark + ';letter-spacing:2px;margin:0 0 ' + titleMargin + 'px 0;line-height:1.3;white-space:nowrap;">' + titleLines + '</h1>\n';
+
+  // 副标题 — 独立一行，30pt，不加粗
+  if (slide.subtitle) {
+    html += '<div style="font-size:' + tokens.typography.sizes.subtitle.template + ';color:' + c.gray + ';line-height:1.5;margin-bottom:32px;white-space:nowrap;">' + esc(slide.subtitle) + '</div>\n';
+  }
+
+  // meta（汇报人/部门/日期）— 单独一行，红色圆点分隔；字号小于副标题
+  if (slide.presenter || slide.department || slide.date) {
+    var meta = [];
+    if (slide.presenter) { meta.push('汇报人：' + esc(slide.presenter)); }
+    if (slide.department) { meta.push(esc(slide.department)); }
+    if (slide.date) { meta.push(esc(slide.date)); }
+    html += '<div style="font-size:' + tokens.typography.sizes.body.template + ';color:' + c.gray + ';line-height:1.5;white-space:nowrap;">\n';
+    for (var m = 0; m < meta.length; m++) {
+      if (m > 0) { html += '<span style="color:' + c.primary + ';opacity:0.5;margin:0 12px;">·</span>'; }
+      html += '<span>' + meta[m] + '</span>';
+    }
+    html += '</div>\n';
+  }
+
+  html += '</div>\n';
+
+  // company name — bottom:6%，浅底 gray
   html += '<div style="position:absolute;bottom:6%;left:7%;font-size:' + tokens.typography.sizes.caption.template + ';color:' + c.gray + ';z-index:2;">\n';
   html += esc(pages.companyName || '二六三网络通信股份有限公司') + '\n';
   html += '</div>\n';
