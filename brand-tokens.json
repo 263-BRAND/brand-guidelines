@@ -32,6 +32,7 @@
   },
   "typography": {
     "fontFamily": "\"微软雅黑\", \"Microsoft YaHei\", \"Noto Sans SC\", \"Source Han Sans SC\", sans-serif",
+    "fontFamilyOpenSource": "\"Noto Sans SC\", \"Source Han Sans SC\", sans-serif",
     "minSize": "20pt",
     "minBodySize": "24pt",
     "sizes": {
@@ -116,6 +117,10 @@
   "redTemplateCover": {
     "path": "assets/cover-red-template.png",
     "note": "内部汇报第二种封面：红色设计位图底图（1920×1080）+ 左上角集团红心 Logo（= 集团彩稿 `logos.group.color`，与内页一致；位置固定 left:6%/top:8%/125px 正方形）。HTML 以 base64 全屏背景 + 文字叠加；PPTX 以全幻灯片背景 + 文字框叠加，100% 视觉一致。触发：scene=template + cover.background=red-template（硬门禁第 5 题「严谨」）。默认仍为 ASCII 字符画封面。文字布局见 SKILL.md 与 renderer/slides/cover.js。"
+  },
+  "themedFallbackCover": {
+    "path": "assets/cover-themed-fallback.png",
+    "note": "对外展示兜底封面（Themed）：浅蓝灰底 + 右侧蓝色几何，左 ~40% 干净浅色区（1920×1080，v1 暂用稿、后期可换——图无关，换图只动 PNG 不动代码与规则）。触发：cover.background=themed-fallback（无设计能力/严格按模板/agent 判定无法定制）。HTML 以 base64 全屏背景 + 文字叠加；PPTX 以全幻灯片背景 + 文字框叠加。浅底 → 深色文字（dark/gray）；封面 Logo 一律彩稿 logo-color-img 禁止反白。"
   },
   "hardRules": {
     "logo": {
