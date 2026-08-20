@@ -28,6 +28,12 @@ if (!pages.slides || !Array.isArray(pages.slides) || pages.slides.length === 0) 
   process.exit(1);
 }
 
+// Validate scene: 工作汇报 = "template"，对外展示 = 省略；其他值非法（堵 agent 错写 scene 值绕过广告法检查）
+if (pages.scene !== undefined && pages.scene !== 'template') {
+  console.error('Invalid scene: "' + pages.scene + '". Must be "template"（工作汇报）或省略（对外展示）。');
+  process.exit(1);
+}
+
 // Resolve background templates with color scheme values
 var c = tokens.colorSchemes[pages.colorScheme];
 function resolveBg(bgTemplate) {
@@ -74,6 +80,96 @@ for (var k = 0; k < pages.slides.length; k++) {
     console.error('Slide ' + k + ' (' + t + '): invalid background "' + slide.background + '". Inner slides must use: ' + innerBgKeys.join(', '));
     process.exit(1);
   }
+}
+
+// 广告法合规审查（仅对外展示；工作汇报 scene=template 不查）——2026-08-20
+// 对外展示输出前，对 pages.json 全部文本字段做违禁词/极限词精确匹配（先剔除非豁免短语压误报）。
+// 命中 → exit(1) 打断生成（硬门禁循环：agent 把命中和位置列给用户，用户改词后重跑直到审查干净）。
+// custom.html 跳过：含标签/属性，子串匹配误报率高，内容层面由 agent 自查兜底。
+var adCheckScene = pages.scene !== 'template';
+if (adCheckScene) {
+  if (!fs.existsSync('ad-compliance.json')) {
+    console.error('广告法合规审查（对外展示）未执行：缺少 ad-compliance.json 词库文件。zip 必须自包含该文件。');
+    process.exit(1);
+  }
+  var adCompliance = JSON.parse(fs.readFileSync('ad-compliance.json', 'utf-8'));
+  // 顶层文本字段（companyName——页脚渲染可见）一并入扫
+  var adTopTexts = [];
+  if (pages.companyName) adTopTexts.push({ label: 'companyName', text: pages.companyName });
+  var adHit = findAdViolation(pages.slides, adCompliance.bannedWords || [], adCompliance.exempt || [], adTopTexts);
+  if (adHit) {
+    var adWhere = (adHit.slide === 'page') ? ('顶层字段 "' + adHit.field + '"') : ('slide ' + adHit.slide + ' 字段 "' + adHit.field + '"');
+    console.error('广告法合规审查未通过（对外展示）—— ' + adWhere + ' 命中「' + adHit.category + '」违禁词："' + adHit.word + '"（原文："' + adHit.text + '"）。按 SKILL.md「对外展示 → 广告法合规审查」流程：把命中和位置列给用户，用户改词后重跑直到审查干净。');
+    process.exit(1);
+  }
+}
+
+// 广告法词库匹配辅助：先剔除非豁免短语（防精确匹配误报），再对剩余文本做小写不敏感子串匹配
+function stripExemptWords(text, exemptWords) {
+  var t = String(text).toLowerCase();
+  for (var i = 0; i < exemptWords.length; i++) {
+    t = t.split(String(exemptWords[i]).toLowerCase()).join('');
+  }
+  return t;
+}
+function adTextFields(slide) {
+  var out = [];
+  function add(label, text) {
+    if (text !== undefined && text !== null && String(text).length > 0) out.push({ label: label, text: String(text) });
+  }
+  var type = slide.type;
+  if (type === 'cover') {
+    add('title', slide.title); add('subtitle', slide.subtitle); add('presenter', slide.presenter); add('department', slide.department); add('date', slide.date);
+  } else if (type === 'section') {
+    add('title', slide.title); add('subtitle', slide.subtitle); add('sectionNumber', slide.sectionNumber);
+  } else if (type === 'toc') {
+    add('title', slide.title); add('sectionLabel', slide.sectionLabel);
+    if (Array.isArray(slide.items)) slide.items.forEach(function (it, i) { add('items[' + i + '].index', it.index); add('items[' + i + '].text', it.text); });
+  } else if (type === 'content') {
+    add('title', slide.title); add('sectionLabel', slide.sectionLabel);
+    if (Array.isArray(slide.blocks)) slide.blocks.forEach(function (bl, i) { add('blocks[' + i + '].heading', bl.heading); add('blocks[' + i + '].body', bl.body); });
+  } else if (type === 'cards') {
+    add('title', slide.title); add('sectionLabel', slide.sectionLabel);
+    if (Array.isArray(slide.items)) slide.items.forEach(function (it, i) { add('items[' + i + '].icon', it.icon); add('items[' + i + '].title', it.title); add('items[' + i + '].description', it.description); });
+  } else if (type === 'timeline') {
+    add('title', slide.title); add('sectionLabel', slide.sectionLabel);
+    if (Array.isArray(slide.events)) slide.events.forEach(function (ev, i) { add('events[' + i + '].year', ev.year); add('events[' + i + '].title', ev.title); add('events[' + i + '].description', ev.description); });
+  }
+  return out;
+}
+function findAdViolation(slides, bannedWords, exemptWords, topTexts) {
+  // 更具体的词（更长）优先匹配：让「100%可靠」按「承诺词」上报，不被「100%」抢成「极限词」，分类更准
+  var bannedSorted = bannedWords.slice().sort(function (a, b) {
+    var wa = (typeof a === 'string') ? a : (a.word || '');
+    var wb = (typeof b === 'string') ? b : (b.word || '');
+    return wb.length - wa.length;
+  });
+  function check(text, label, slideLabel) {
+    var remaining = stripExemptWords(text, exemptWords);
+    for (var b = 0; b < bannedSorted.length; b++) {
+      var bw = bannedSorted[b];
+      var w = (typeof bw === 'string') ? bw : (bw.word || '');
+      if (w && remaining.indexOf(String(w).toLowerCase()) !== -1) {
+        return { slide: slideLabel, field: label, word: w, category: (typeof bw === 'string') ? '违禁词' : (bw.category || '违禁词'), text: String(text) };
+      }
+    }
+    return null;
+  }
+  // 顶层文本字段（companyName——页脚渲染可见）先扫
+  if (topTexts) {
+    for (var t = 0; t < topTexts.length; t++) {
+      var topHit = check(topTexts[t].text, topTexts[t].label, 'page');
+      if (topHit) return topHit;
+    }
+  }
+  for (var s = 0; s < slides.length; s++) {
+    var fields = adTextFields(slides[s]);
+    for (var f = 0; f < fields.length; f++) {
+      var hit = check(fields[f].text, fields[f].label, s);
+      if (hit) return hit;
+    }
+  }
+  return null;
 }
 
 // Load slide renderers
