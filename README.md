@@ -1,6 +1,6 @@
 # 263group-brand-guidelines — 263 品牌 VI 数据层 Skill
 
-为 AI Agent 提供 263 品牌规范数据层与生成流程，产出视觉统一的 263 品牌 PPT / 网页 / 文档。**品牌数据层，不是渲染引擎**——内容是 263 品牌规则的唯一真相源（色板、字体、Logo、slogan、公司数据、合规词库）。
+为 AI Agent 提供 263 品牌规范数据层与生成流程，产出视觉统一的 263 品牌 PPT / 网页。**品牌数据层，不是渲染引擎**——内容是 263 品牌规则的唯一真相源（色板、字体、Logo、slogan、公司数据、合规词库）。
 
 ---
 
@@ -10,10 +10,10 @@
 
 `263group-brand-guidelines` 是一个 **skill 包**（一个 `263group-brand-guidelines/` 文件夹）。安装到 AI 工具的 skills 目录后，AI 就能帮你生成符合 263 品牌规范的 PPT / 网页。
 
-**它做什么：**
+**它能做什么：**
 - 统一品牌视觉：色板、字体、Logo、slogan、封面、结尾页规范锁定
-- 强制合规：广告法违禁词审查、品牌色板白名单、结尾页固定
-- 多格式输出：HTML（网页）和 PPT
+- 符合法规：广告法违禁词审查和提示（用于对外展示类内容生成）
+- 多格式内容生成辅助：HTML（网页）和 PPT
 
 ### 安装
 
@@ -21,13 +21,14 @@
 
 #### 方式一：zip 安装（推荐）
 
-1. 拿到 `263-vi-skill-<日期>.zip`（分发时按版本命名）
+1. 拿到 `263-vi-skill.zip`（分发时按版本命名）
 2. **解压**——得到 `263group-brand-guidelines/` 文件夹
 3. 把整个 `263group-brand-guidelines/` 文件夹放到工具的 skills 目录：
    - **Claude Code**：项目级 `.claude/skills/263group-brand-guidelines/`，或用户级 `~/.claude/skills/263group-brand-guidelines/`
-   - **其他 AI 工具**：按其约定的 skills 目录放置
+   - **其他 AI 工具**：按其指定的 skills 目录放置
 4. 重启工具（或新开对话），skill 即可用
-
+5. **确认数据文件**：在 `263group-brand-guidelines/` 文件夹中，确认包含`SKILL.md`、 `brand-tokens.json`、`company-data.json`、`ad-compliance.json`、`generate.js` 这 5 个文件。
+6. **确认安装成功**：在 AI 对话中，使用“+”加载技能时可见本skill，或使用“/skills”在已安装列表中可见本skill，则安装成功。在对话中尝试生成一个简单的 PPT（例如「帮我做一个 Q3 工作汇报 PPT」），确认能正常工作。
 > **更新**：拿到新版 zip → 解压 → 替换旧的 `263group-brand-guidelines/` 文件夹 → 新对话自动用新版，无需重装。
 
 #### 方式二：GitHub 安装
