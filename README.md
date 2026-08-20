@@ -10,12 +10,22 @@
 
 ### 安装
 
-将 `.claude/skills/263group-brand-guidelines/` 目录放入目标工具的 skills 目录：
+Skill 是**自包含目录**（`263group-brand-guidelines/`，内含 SKILL.md + 全部数据文件 + 渲染脚本 + 资产）。安装方式：
 
-- **Claude Code**：放到项目的 `.claude/skills/263group-brand-guidelines/`
-- **其他 AI 工具**：解压交付包 `263-vi-skill-MMDD.zip`（见「Skill zip 交付」），按工具要求注册
+- **zip 交付包**（推荐，企业版/个人版通用）：解压 `263-vi-skill-MMDD.zip` → 得到 `263group-brand-guidelines/` 目录 → 按工具要求放到 skills 目录（Claude Code：项目 `.claude/skills/` 或用户级 `~/.claude/skills/`；其他工具按其约定）
+- **git 仓库**：仓库根是开发/测试源；也可 `git pull` 更新（无需重装，新会话自动用新版）
 
-Skill 由 `SKILL.md` 驱动，Agent 加载后自动读取品牌数据（`brand-tokens.json`、`company-data.json`、`ad-compliance.json`）。
+Skill 由 `SKILL.md` 驱动，Agent 加载后自动读取品牌数据（`brand-tokens.json`、`company-data.json`、`ad-compliance.json`）——所有数据文件以 skill 目录为基准，`generate.js` 内部自动解析（任意 CWD 可运行）。
+
+### 分发与更新（2026-08-20）
+
+| 方式 | 适用 | 更新 |
+|------|------|------|
+| **zip 交付包**（主） | 全公司企业版/个人版，所有工具 | 替换 zip 目录，重开会话 |
+| **git 仓库**（备份/开发源） | 可 clone 的场景 | `git pull`，无需重装 |
+| **企业受管配置** | Claude Code Enterprise | IT 统一推送，优先级最高 |
+
+> **无需重装**：skill 是运行时目录扫描，不是安装时复制——替换目录或 `git pull` 后新会话自动用新版。**marketplace 暂不采用**（改调用名、复制进缓存覆盖用户本地改动、需额外配置）。
 
 ### 生成一份品牌 PPT/网页
 
@@ -56,16 +66,18 @@ node generate.js pages.json   # 生成 pages.html（自包含幻灯片，1920×1
 
 ## 目录结构
 
+仓库根是**开发/测试工作区**（维护用）；**分发 zip 是自包含 skill 目录**（`263group-brand-guidelines/` 内含下方同名列的数据/脚本/资产）。仓库根文件与分发 zip 是同源的两套拷贝——改仓库后重建 zip 同步（`测试记录/build-skill-zip.py`）。
+
 ```
-263viForAgent/
+263viForAgent/                        # git 仓库（开发源）
 ├── .claude/skills/263group-brand-guidelines/
 │   ├── SKILL.md                  # Skill 定义（唯一真相源，含全部生成流程/规则/话术）
 │   └── pptx-python-guide.md      # PPTX 代码生成实现要点（仅「用户坚持代码生成 PPT」时读取）
 ├── brand-tokens.json             # 品牌视觉规范：色板/字体层级/Logo/slogan/行距/图表色板/封面图
 ├── company-data.json             # 公司事实、产品组合（3 板块 × 4 业务线）、solutions 8 场景
 ├── ad-compliance.json            # 广告法合规词库（极限词/承诺词 + 代码层豁免清单）
-├── generate.js                   # HTML 渲染器 + 播放壳（1920×1080 画布，响应式缩放）
-├── brand-check-pptx.py           # PPTX 品牌合规检查（可选工具，python-pptx）
+├── generate.js                   # HTML 渲染器 + 播放壳（1920×1080 画布，响应式缩放，__dirname 自包含）
+├── brand-check-pptx.py           # PPTX 品牌合规检查（可选工具，python-pptx，script_dir 自包含）
 ├── renderer/slides/*.js          # 按 slide 类型的渲染器：cover/section/toc/content/cards/timeline/custom/end
 ├── assets/                       # Logo、slogan、封面位图（cover-red-template / cover-themed-fallback / template-cover-bg）
 ├── company-data/                 # 分文件公司数据（facts/products/profile-zh/profile-en）
@@ -103,9 +115,9 @@ python brand-check-pptx.py 产出.pptx --scheme group-red --external  # 对外�
 
 ## Skill zip 交付
 
-zip 从根目录按 **22 文件清单**构建，存入 `测试记录/263-vi-skill-MMDD.zip`，必须自包含——SKILL.md 引用的每个文件都必须打包，缺文件会导致外部 AI 工具报错。
+zip 按 **22 文件清单**构建为**自包含 skill 目录结构**（`263group-brand-guidelines/` 为 zip 根），存入 `测试记录/263-vi-skill-MMDD.zip`，构建脚本 `测试记录/build-skill-zip.py`。zip 必须自包含——SKILL.md 引用的每个文件都必须打包，缺文件会导致外部 AI 工具报错。
 
-**22 文件清单**：`SKILL.md` + `pptx-python-guide.md` + `assets/*.png`（含 cover-red-template.png / cover-themed-fallback.png / template-cover-bg.png）+ `renderer/slides/*.js`（含 toc.js）+ `brand-tokens.json` + `company-data.json` + `ad-compliance.json` + `generate.js` + `brand-check-pptx.py`
+**zip 内结构**（`263group-brand-guidelines/` 下）：`SKILL.md` + `pptx-python-guide.md` + `brand-tokens.json` + `company-data.json` + `ad-compliance.json` + `generate.js` + `brand-check-pptx.py` + `assets/*.png`（含 cover-red-template.png / cover-themed-fallback.png / template-cover-bg.png）+ `renderer/slides/*.js`（含 toc.js）——共 22 文件。解压后该目录即完整 skill，可直接用作 skills 目录。
 
 ---
 

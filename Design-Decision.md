@@ -364,6 +364,23 @@ Themed 路径：263group-brand-guidelines 提供品牌数据 + 硬规则约束�
 **验证：** 8 样例 + 交付断言 3 路（对外合法开源字体过 / 对内合法微软雅黑过 / 对外违规红底浅粉拦）+ 语义绿合法过（修复后）+ 自造色/ea 面微软雅黑/中间感谢残留全对
 **状态：** 已实现（2026-08-20），zip 重建 22 文件
 
+---
+
+#### 自包含化 + 分发方式决策记录（2026-08-20）
+
+**背景：** 后续要维护 skill 并分发给全公司同事（企业版 + 个人版各类 AI 工具）。用户问两个问题：① 更新新版要重装吗？② git clone 能否支持自动更新？经 claude-code-guide 查证官方机制（skill 是运行时目录扫描非安装时复制 → 替换目录/git pull 即更新无需重装；真·自动更新只有 marketplace；加载优先级企业受管 > 用户级 > 项目级），用户确认分发方式为 **zip 为主 + git 作备份**。
+
+**决策：**
+- **仓库物理布局不动**：数据文件留在根，git 历史零破坏；仓库根 = 开发/测试工作区，zip = 分发产物（改仓库数据后重建 zip 同步，`测试记录/build-skill-zip.py`）
+- **generate.js 改 `__dirname` 相对**：`BASE_DIR` + `resolveBase()`，数据/资产/渲染器从 `__dirname` 解析，任意 CWD 可运行；pages.json/输出 HTML 仍相对调用方 CWD（外部输入，不 resolve）——用户不必 cd 到数据文件旁
+- **zip 改自包含 skill 目录结构**：`263group-brand-guidelines/` 为 zip 根，内含 22 文件；解压该目录即完整 skill（企业版/个人版通用）
+- **兼容性**：SKILL.md 不用 `${CLAUDE_SKILL_DIR}`（非 Claude Code 工具不识别），用明文路径描述「以 skill 目录为基准」；SKILL.md 裸文件名对 agent 是相对可见范围解析，仓库根和 zip 目录两种布局下均成立，无需改 32 处引用本身
+- **更新无需重装**：用户替换 zip 目录或 `git pull`，新会话自动用新版
+- **marketplace 暂缓**：改调用名（`/插件名:skill名`）、复制进缓存覆盖用户本地改动、需 plugin.json/marketplace.json 额外配置——等有大量非技术用户、需版本管理时再评估
+
+**验证：** test-generate-anywhere.js（临时目录运行 HTML 含 base64 Logo）+ brand-check 任意 CWD + 打包版解压运行（HTML/PPTX 均自包含生效）
+**状态：** 已实现（2026-08-20），zip 0820 重建 22 文件自包含结构
+
 ## 待定事项
 
 - 商务蓝色值 — 官方确认

@@ -44,7 +44,9 @@ node generate.js <pages.json>   # 生成 <pages>.html（自包含幻灯片，零
 
 ### Skill zip 打包
 
-zip 从**根目录**按 22 文件清单构建（SKILL.md + pptx-python-guide.md + assets/*.png（含 `cover-themed-fallback.png`）+ renderer/slides/*.js + brand-tokens.json + company-data.json + ad-compliance.json + generate.js + brand-check-pptx.py），存入 `测试记录/263-vi-skill-MMDD.zip`。zip 必须自包含——SKILL.md 引用的每个文件都必须打包。缺文件会导致外部 AI 工具报错。
+zip 从**根目录**按 22 文件清单构建，**结构为 `263group-brand-guidelines/` 自包含 skill 目录**（解压后该目录即完整 skill：SKILL.md + pptx-python-guide.md + brand-tokens.json + company-data.json + ad-compliance.json + generate.js + brand-check-pptx.py + assets/*.png（含 `cover-themed-fallback.png`）+ renderer/slides/*.js），存入 `测试记录/263-vi-skill-MMDD.zip`。构建脚本：`测试记录/build-skill-zip.py`。zip 必须自包含——SKILL.md 引用的每个文件都必须打包，缺文件会导致外部 AI 工具报错。
+
+**分发方式（2026-08-20）**：zip 为主（解压 `263group-brand-guidelines/` 目录即用，企业版/个人版通用），git 仓库作备份/开发源（仓库根是开发/测试工作区，zip 是分发产物——改仓库数据后需重建 zip 同步）。**更新无需重装**：用户替换 zip 目录或 `git pull` 后，新会话自动用新版。企业受管配置优先级最高（IT 统一推送）。marketplace 暂不采用（改调用名、复制进缓存覆盖用户本地改动、需 plugin.json/marketplace.json 额外配置）。
 
 ### 核心文件
 

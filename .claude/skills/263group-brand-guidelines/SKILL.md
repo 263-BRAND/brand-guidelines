@@ -18,6 +18,8 @@ description: 263 品牌 VI 规范 — 提供品牌色板/字体/Logo/slogan/公�
 
 ## 品牌数据文件
 
+> **自包含布局（2026-08-20）**：本 skill 的全部数据文件（`brand-tokens.json`、`company-data.json`、`ad-compliance.json`、`generate.js`、`brand-check-pptx.py`、`assets/`、`renderer/`）与 SKILL.md 位于**同一 skill 目录**（分发 zip 解压后即此结构，git 仓库根为开发/测试源、zip 为分发产物）。读取品牌数据文件时以 skill 目录为基准；`node generate.js <pages.json>` 内部自动从 skill 目录解析数据/资产文件（`generate.js` 已按 `__dirname` 解析，任意 CWD 可运行），pages.json 由调用方传入。
+
 | 文件 | 内容 | 何时读取 |
 |------|------|----------|
 | `brand-tokens.json` | 色板、字体层级、Logo、硬规则 | 任何视觉输出 |
