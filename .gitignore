@@ -11,6 +11,15 @@ screenshots/
 generate_pptx.py
 测试记录/
 
+# 内部开发文档（不打包、不公开——GitHub 仓库只放 skill 交付物 + README 说明书）
+开发日志.md
+Design-Decision.md
+CLAUDE.md
+.superpowers/
+docs/
+company-data/
+design-skill-recommendations.json
+
 # Claude 本地设置（本地配置不入库；.claude/skills/ 是 skill 交付物，放行）
 .claude/*
 !.claude/skills/
