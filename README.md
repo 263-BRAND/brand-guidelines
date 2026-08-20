@@ -21,7 +21,7 @@
 
 #### 方式一：zip 安装（推荐）
 
-1. 拿到 `263-vi-skill.zip`（分发时按版本命名）
+1. 拿到 `263group-brand-guidelines-<日期>.zip`（与 skill 同名 + 日期）
 2. **解压**——得到 `263group-brand-guidelines/` 文件夹
 3. 把整个 `263group-brand-guidelines/` 文件夹放到工具的 skills 目录：
    - **Claude Code**：项目级 `.claude/skills/263group-brand-guidelines/`，或用户级 `~/.claude/skills/263group-brand-guidelines/`
