@@ -175,3 +175,45 @@ p.font.size = Pt(43)
 - 百分比 → pt：横向 `960 × pct%`，纵向 `540 × pct%`（如 `left:7%` = `Pt(67.2)`）。
 - 用 `Pt()` 直接传 pt，或 `Inches(pt / 72)`。
 - 封面文字块垂直居中：`top = Pt((540 − totalH) / 2)`，totalH 为文字块总高。
+
+## 9. 品牌校验（PPTX 生成后闸门）
+
+PPTX 由 agent 直接产出，没有 generate.js 那样的机器闸门——品牌规范是声明式。校验分两条路径，强度不同：
+
+### 9.1 4b 代码生成路径：交付断言（硬，嵌进生成脚本）
+
+**用户坚持代码生成 PPT（4b）时，`brand-check-pptx.py` 不是可选步骤，而是生成脚本的交付断言**——生成脚本末尾必须调用它，校验不通过 → `sys.exit(1)` → 不产出 .pptx。这样"生成"动作本身就包含"验证"，agent 照着本文件写代码时检查就是产出的一部分，无法事后跳过：
+
+```python
+import subprocess, sys, os
+
+def brand_check(out_file, external=False):
+    """交付断言：品牌校验不通过 → 返回 False（调用方必须退出）。"""
+    here = os.path.dirname(os.path.abspath(__file__))
+    cmd = [sys.executable, os.path.join(here, 'brand-check-pptx.py'), out_file,
+           '--scheme', 'group-red']          # 商务蓝 → 'business-blue'
+    if external:
+        cmd.append('--external')             # 对外展示：额外禁微软雅黑
+    return subprocess.run(cmd).returncode == 0
+
+# 生成 .pptx 完成后、交付前（必须写，不通过不产出）：
+if not brand_check(out_file, external=True):   # 对外展示 external=True / 工作汇报 False
+    sys.exit(1)                                # 校验不通过 → 不交付，修复后重跑
+```
+
+- 脚本路径约定：`brand-check-pptx.py` 与生成脚本**同目录**（zip 解压后即同目录）。若生成脚本放在临时位置，用绝对路径指向解压目录中的脚本。
+- `--scheme` 与产出所用配色一致（默认 `group-red`；商务蓝 `business-blue`）。
+- **python 可用性分支**：本机无 python-pptx 时**禁止降级约束**——生成脚本改为按 SKILL.md「PPTX 生成后自查」清单人工逐条核对（agent 自查），一条不少，通过后才交付。脚本是可选的机器兜底，不是约束的来源（约束唯一真相源 = SKILL.md）。
+
+### 9.2 设计技能产出路径：可选检具 + 清单（无机器强制）
+
+**设计技能/agent 直接产出 .pptx 时**，产出方式在本文件控制之外——无法把校验嵌进它的生成动作，只能退化为"可选检具 + 人工清单"：
+
+```bash
+python brand-check-pptx.py 产出.pptx --scheme group-red          # 工作汇报（内部，不查字体）
+python brand-check-pptx.py 产出.pptx --scheme group-red --external  # 对外展示（额外禁微软雅黑）
+```
+
+脚本检查：颜色全部来自色板白名单（colorSchemes + semantic + chartPalette，无自造 hex）/ 红底场景文字=白（未用 accent 浅粉或浅档）/ 结尾页必须最后（居中 Logo+slogan 图、无「感谢」残留）/ 图片内嵌二进制（无外部链接）/ `--external` 时全文件禁微软雅黑。违规 → exit 1 fail-loud。
+
+> **强制边界（诚实标注）**：此路径**没有机器强制**——设计技能可以完全不读本文件/不运行脚本。可用性排序：有 python-pptx → 运行脚本（机器校验）；无 python-pptx → 按 SKILL.md「PPTX 生成后自查」清单人工逐条核对。无论哪条，最终交付前必须核对清单一条不少。
