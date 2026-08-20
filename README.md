@@ -52,6 +52,15 @@ AI 会先与你确认：**使用场景 / 配色 / 输出格式 / 视觉风格 / 
 
 ## 如果你是 Agent，请看这里
 
+### 获取本 skill
+
+```bash
+git clone https://github.com/263-BRAND/brand-guidelines.git
+```
+
+skill 位于 `.claude/skills/263group-brand-guidelines/`。更新用 `git pull`。
+如果人类希望你自主安装、自主调用，请读取上方「如果你是人类，请看这里 → 安装」按步骤执行。
+
 ### 你的职责
 
 你负责 263 品牌数据层的全部决策。生成任何品牌内容前，**必须先完成「生成前确认」**——逐字询问用户并确认后，才能开始生成（见 `SKILL.md` → 生成前确认 → 用户话术）。
