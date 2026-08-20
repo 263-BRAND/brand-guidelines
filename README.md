@@ -17,21 +17,46 @@
 
 ### 安装
 
-有两种方式，任选其一。
+按你的工具类型选择安装方式。
 
-#### 方式一：zip 安装（推荐）
+#### 方式一：客户端类 AI 工具（如 Workbuddy / Trae Work）
+
+在工具界面直接上传 zip，无需手动解压：
 
 1. 拿到 `263group-brand-guidelines-<日期>.zip`（与 skill 同名 + 日期）
+2. 点击对话框的 **「+」** → 选择 **「技能」** → **「管理技能」** → **上传 zip**
+3. 工具自动解压并注册 skill
+
+> **确认安装成功**：上传后，在工具的技能列表中应能看到本 skill。在对话中尝试生成一个简单的 PPT（例如「帮我做一个 Q3 工作汇报 PPT」），确认能正常工作。
+> **更新**：用新版 zip 重新上传，替换旧版即可。
+
+#### 方式二：CLI agent（如 Claude Code）
+
+告知 agent zip 文件路径，agent 自动解压安装到 skills 目录——无需人类手动解压：
+
+> 「把 `263group-brand-guidelines-<日期>.zip` 解压安装到 `.claude/skills/263group-brand-guidelines/`」
+
+1. agent 解压 zip → 得到 `263group-brand-guidelines/` 文件夹
+2. agent 把整个文件夹放到 `.claude/skills/` 下（项目级或用户级 `~/.claude/skills/`）
+3. **新开对话**后 skill 生效（skill 触发在会话启动时加载）
+
+> **确认安装成功**：新对话中 `/skills` 应能看到本 skill；尝试生成一个简单的 PPT 确认正常。
+> **更新**：告知 agent 用新版 zip 重新安装即可。
+
+#### 方式三：手动解压安装
+
+1. 拿到 `263group-brand-guidelines-<日期>.zip`
 2. **解压**——得到 `263group-brand-guidelines/` 文件夹
-3. 把整个 `263group-brand-guidelines/` 文件夹放到工具的 skills 目录：
+3. 把整个文件夹放到工具的 skills 目录：
    - **Claude Code**：项目级 `.claude/skills/263group-brand-guidelines/`，或用户级 `~/.claude/skills/263group-brand-guidelines/`
    - **其他 AI 工具**：按其指定的 skills 目录放置
 4. 重启工具（或新开对话），skill 即可用
-5. **确认数据文件**：在 `263group-brand-guidelines/` 文件夹中，确认包含`SKILL.md`、 `brand-tokens.json`、`company-data.json`、`ad-compliance.json`、`generate.js` 这 5 个文件。
-6. **确认安装成功**：在 AI 对话中，使用“+”加载技能时可见本skill，或使用“/skills”在已安装列表中可见本skill，则安装成功。在对话中尝试生成一个简单的 PPT（例如「帮我做一个 Q3 工作汇报 PPT」），确认能正常工作。
+
+> **确认数据文件**：在 `263group-brand-guidelines/` 文件夹中，确认包含`SKILL.md`、 `brand-tokens.json`、`company-data.json`、`ad-compliance.json`、`generate.js` 这 5 个文件。
+> **确认安装成功**：在 AI 对话中，使用“+”加载技能时可见本skill，或使用“/skills”在已安装列表中可见本skill，则安装成功。在对话中尝试生成一个简单的 PPT（例如「帮我做一个 Q3 工作汇报 PPT」），确认能正常工作。
 > **更新**：拿到新版 zip → 解压 → 替换旧的 `263group-brand-guidelines/` 文件夹 → 新对话自动用新版，无需重装。
 
-#### 方式二：GitHub 安装
+#### 方式四：GitHub 安装
 
 ```bash
 git clone https://github.com/263-BRAND/brand-guidelines.git
