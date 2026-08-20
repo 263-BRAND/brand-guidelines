@@ -4,7 +4,7 @@
 
 **品牌数据层，不是渲染引擎。** 本 skill 是 263 品牌规则的唯一真相源（色板、字体、Logo、slogan、公司数据、合规词库）。内容策划交给 LLM，排版表现交给设计 skill 或本仓库的兜底渲染器。
 
----
+***
 
 ## 快速开始
 
@@ -40,7 +40,7 @@ Skill 由 `SKILL.md` 驱动，Agent 加载后自动读取品牌数据（`brand-t
 node generate.js pages.json   # 生成 pages.html（自包含幻灯片，1920×1080 画布，零外部依赖）
 ```
 
----
+***
 
 ## 架构
 
@@ -52,17 +52,17 @@ node generate.js pages.json   # 生成 pages.html（自包含幻灯片，1920×1
 
 ### 两种使用场景
 
-| 场景 | 触发词 | 封面 | 字体 |
-|------|--------|------|------|
-| **工作汇报**（内部） | 汇报/述职/总结/周报/月报/季报/年报 | 个性化（ASCII 字符画）或严谨商务风格（红色位图封面） | 微软雅黑栈 |
-| **对外展示**（外部） | 介绍/展示/宣传/发布会/对外/客户 | 设计 skill 自由设计（品牌底线内）；渲染器默认兜底封面图 | 开源栈（Noto Sans SC），禁微软雅黑 |
+| 场景           | 触发词                  | 封面                              | 字体                      |
+| ------------ | -------------------- | ------------------------------- | ----------------------- |
+| **工作汇报**（内部） | 汇报/述职/总结/周报/月报/季报/年报 | 个性化（ASCII 字符画）或严谨商务风格（红色位图封面）   | 微软雅黑栈                   |
+| **对外展示**（外部） | 介绍/展示/宣传/发布会/对外/客户   | 设计 skill 自由设计（品牌底线内）；渲染器默认兜底封面图 | 开源栈（Noto Sans SC），禁微软雅黑 |
 
 ### 两条生成路径
 
 - **路径 A（从零生成）**：Agent 根据用户提纲策划内容 → pages.json → 渲染
 - **路径 B（改写已有）**：Agent 读取已有文件，提取内容，对齐品牌规则
 
----
+***
 
 ## 目录结构
 
@@ -93,17 +93,17 @@ Agent 与渲染器之间的中间格式。顶层字段：`colorScheme`、`logoSe
 
 八种 slide 类型：`cover`、`section`、`toc`、`content`、`cards`、`timeline`、`custom`、`end`。**结尾页必须在数组末尾**。
 
----
+***
 
 ## 品牌合规机制（三层闸门）
 
 品牌规范对 Agent 是声明式的，本项目通过三层闸门把关键规则变成强制：
 
-| 层 | 机制 | 强制强度 |
-|----|------|---------|
-| **HTML 侧** | `generate.js` fail-loud：结尾页必须最后 / custom.html 颜色白名单 / 对外展示禁微软雅黑 | 真 harness（HTML 必经渲染路径，物理绕不过） |
-| **广告法审查** | 对外展示提纲对照 `ad-compliance.json` 审查违禁词/极限词，命中打断、列出给用户改、循环至干净；generate.js 精确匹配兜底（exit 1） | Agent 自查 + 代码兜底 |
-| **PPTX 侧** | SKILL.md「PPTX 生成后自查」7 条清单；4b 代码生成路径用 `brand-check-pptx.py` 做交付断言（不通过不产出）；设计技能产出路径为可选检具 + 清单人工核对 | 4b 硬强制 / 设计技能路径无机器强制（诚实边界） |
+| 层          | 机制                                                                                              | 强制强度                         |
+| ---------- | ----------------------------------------------------------------------------------------------- | ---------------------------- |
+| **HTML 侧** | `generate.js` fail-loud：结尾页必须最后 / custom.html 颜色白名单 / 对外展示禁微软雅黑                                 | 真 harness（HTML 必经渲染路径，物理绕不过） |
+| **广告法审查**  | 对外展示提纲对照 `ad-compliance.json` 审查违禁词/极限词，命中打断、列出给用户改、循环至干净；generate.js 精确匹配兜底（exit 1）            | Agent 自查 + 代码兜底              |
+| **PPTX 侧** | SKILL.md「PPTX 生成后自查」7 条清单；4b 代码生成路径用 `brand-check-pptx.py` 做交付断言（不通过不产出）；设计技能产出路径为可选检具 + 清单人工核对 | 4b 硬强制 / 设计技能路径无机器强制（诚实边界）   |
 
 ```bash
 # PPTX 品牌校验（有 python-pptx 环境时）
@@ -111,7 +111,7 @@ python brand-check-pptx.py 产出.pptx --scheme group-red            # 工作汇
 python brand-check-pptx.py 产出.pptx --scheme group-red --external  # 对外展示（额外禁微软雅黑）
 ```
 
----
+***
 
 ## Skill zip 交付
 
@@ -119,7 +119,7 @@ zip 按 **22 文件清单**构建为**自包含 skill 目录结构**（`263group
 
 **zip 内结构**（`263group-brand-guidelines/` 下）：`SKILL.md` + `pptx-python-guide.md` + `brand-tokens.json` + `company-data.json` + `ad-compliance.json` + `generate.js` + `brand-check-pptx.py` + `assets/*.png`（含 cover-red-template.png / cover-themed-fallback.png / template-cover-bg.png）+ `renderer/slides/*.js`（含 toc.js）——共 22 文件。解压后该目录即完整 skill，可直接用作 skills 目录。
 
----
+***
 
 ## 开发说明
 
@@ -128,9 +128,10 @@ zip 按 **22 文件清单**构建为**自包含 skill 目录结构**（`263group
 - **Code review 惯例**：渲染器/UI 变更必须在浏览器实测（窗口缩放、翻页遍历、背景模式切换），只读代码不行
 - **维护参考**：`CLAUDE.md`（Claude Code 工作指南）、`Design-Decision.md`（设计决策）、`开发日志.md`（历史进度）
 
----
+***
 
 ## 参考资料
 
 - `视觉参考/` — 263 官方品牌文件（品牌视觉规范手册 PDF/PPTX、各版本 Logo、集团介绍文档）。**不入 git**
 - `docs/superpowers/` — 早期设计文档与实现计划（历史归档）
+
