@@ -5,6 +5,10 @@
 const fs = require('fs');
 const path = require('path');
 
+// 自包含基准：数据/资产/渲染器按 __dirname 解析，不依赖运行时 CWD（zip 自包含目录与仓库根均适用）
+const BASE_DIR = path.dirname(__filename);
+function resolveBase(p) { return path.join(BASE_DIR, p); }
+
 const pagesPath = process.argv[2];
 if (!pagesPath) {
   console.error('Usage: node generate.js <pages.json>');
@@ -15,7 +19,7 @@ if (!fs.existsSync(pagesPath)) {
   process.exit(1);
 }
 
-const tokens = JSON.parse(fs.readFileSync('brand-tokens.json', 'utf-8'));
+const tokens = JSON.parse(fs.readFileSync(resolveBase('brand-tokens.json'), 'utf-8'));
 const pages = JSON.parse(fs.readFileSync(pagesPath, 'utf-8'));
 
 // Validate colorScheme
@@ -99,11 +103,11 @@ for (var k = 0; k < pages.slides.length; k++) {
 // custom.html 跳过：含标签/属性，子串匹配误报率高，内容层面由 agent 自查兜底。
 var adCheckScene = pages.scene !== 'template';
 if (adCheckScene) {
-  if (!fs.existsSync('ad-compliance.json')) {
+  if (!fs.existsSync(resolveBase('ad-compliance.json'))) {
     console.error('广告法合规审查（对外展示）未执行：缺少 ad-compliance.json 词库文件。zip 必须自包含该文件。');
     process.exit(1);
   }
-  var adCompliance = JSON.parse(fs.readFileSync('ad-compliance.json', 'utf-8'));
+  var adCompliance = JSON.parse(fs.readFileSync(resolveBase('ad-compliance.json'), 'utf-8'));
   // 顶层文本字段（companyName——页脚渲染可见）一并入扫
   var adTopTexts = [];
   if (pages.companyName) adTopTexts.push({ label: 'companyName', text: pages.companyName });
@@ -278,7 +282,7 @@ function scanCustomHtmlFonts(html) {
 const slideTypes = ['cover', 'section', 'toc', 'content', 'cards', 'timeline', 'end', 'custom'];
 const renderers = {};
 for (const t of slideTypes) {
-  renderers[t] = require('./renderer/slides/' + t + '.js');
+  renderers[t] = require(resolveBase('renderer/slides/' + t + '.js'));
 }
 
 // 品牌色卡强制：custom.html 是 HTML 路径唯一能塞任意色/字体的口子，渲染后扫描（非白名单色值 exit 1；对外展示禁微软雅黑）
@@ -313,13 +317,13 @@ for (let i = 0; i < pages.slides.length; i++) {
 
 // Embed logos as base64
 function logoBase64(logoPath) {
-  if (!fs.existsSync(logoPath)) {
+  if (!fs.existsSync(resolveBase(logoPath))) {
     console.warn('Warning: logo not found: ' + logoPath);
     return '';
   }
   const ext = path.extname(logoPath).toLowerCase();
   const mime = ext === '.svg' ? 'image/svg+xml' : 'image/png';
-  const data = fs.readFileSync(logoPath).toString('base64');
+  const data = fs.readFileSync(resolveBase(logoPath)).toString('base64');
   return 'data:' + mime + ';base64,' + data;
 }
 
