@@ -72,6 +72,7 @@ Agent 与渲染器之间的中间格式。顶层字段：`colorScheme`、`logoSe
 - **语义色**：深绿 `#3E8E4E` 仅限图表涨跌数据（红涨绿跌）；禁止用于非图表设计（A/B 对比、标注、强调、装饰）。非图表两项对比用品牌红 vs 中灰/深蓝灰，不引入绿。
 - **结尾页**：始终是最后一页，居中 Logo + slogan PNG。原文件的结尾/感谢页必须替换，不得保留。
 - **广告法合规审查（对外展示硬门禁）**：对外展示提纲写入 pages.json 前对照 `ad-compliance.json` 词库审查，命中打断、列出给用户改、循环至干净；generate.js 渲染时对 pages.json 文本精确匹配兜底（exit 1）。工作汇报不审查。改写由用户定、不代写替代词（同义替换同样可能违规）。
+- **品牌合规审查（生成后闸门）**：generate.js 对产出做强制校验——**结尾页必须最后**（type==='end'，否则 exit 1）、**custom.html 颜色白名单**（只用 colorSchemes/semantic/chartPalette 色值，非白名单 exit 1）、**对外展示 custom.html 禁微软雅黑**（开源栈，闭源禁止）。品牌色卡/结尾页/Logo/公司数据是底线，**内/外皆强制**；行距/字号/封面对外可放。
 - **对外展示封面品牌底线**：Themed 封面由设计 skill 自由设计（版式/色板内配色/装饰/动效），但底线锁死——色板只用 token 禁自造色；封面必须带 263 品牌标识（Logo 安全区零容忍）；公司数据不编造；禁纯黑；字号底线；字体开源；封面信息读 pages.json。**封面背景禁红色系**（品牌红 `#D0121B`/色阶 s1-s7/primaryLight/primaryDark/accent 及其渐变——彩稿 Logo 主色即品牌红，红底会吞 Logo；`dark-solid` 深底触发反白 Logo 亦禁；合法封面背景：兜底图默认/white）。**封面 Logo 一律彩稿（`logo-group-color`）禁止反白**，深浅底皆如此——深底彩稿不可读时调布局（Logo 置浅色区）而非换反白。渲染器默认即兜底封面图 `cover-themed-fallback.png`（**v1 暂用稿、后期可换；图无关——换图只动 PNG，不动代码与规则**；浅底 → 深色文字 + 彩稿 Logo；无需背景键，显式指定 `white` 才走纯白背景；同 red-template 位图底 + 文字叠加，HTML/PPTX 100% 一致；设计能力判定同 PPTX 客观尺子，263group-brand-guidelines 不算——仅加载 263group-brand-guidelines → 兜底图）。
 - **字体**：按场景分流（栈见「字体栈」）。字号 HTML 用 `pt` 后缀，PPTX 写裸数字。禁止 pt↔px 换算。字号从 `typography.sizes.*.template` 读取（封面 64/内容页 40/副标题 30/正文 26/图表 22），生成前自检核对字号与行距（HTML 正文 ≥ 24pt、极限 ≥ 20pt）。
 - **渲染回退**：HTML 渲染依赖 node（`node generate.js <pages.json>`）。环境无 node 时禁止降级约束——按「Node.js 可用性分支」回退：手动生成自包含 HTML（色板/安全区/字号/行距/图片/广告法审查全约束应用）或交外部渲染。
