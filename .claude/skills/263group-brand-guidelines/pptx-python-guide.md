@@ -191,7 +191,7 @@ def brand_check(out_file, external=False):
     """交付断言：品牌校验不通过 → 返回 False（调用方必须退出）。"""
     here = os.path.dirname(os.path.abspath(__file__))
     cmd = [sys.executable, os.path.join(here, 'brand-check-pptx.py'), out_file,
-           '--scheme', 'group-red']          # 商务蓝 → 'business-blue'
+           '--scheme', 'group-red']          # 通信蓝 → 'business-blue'（暂不可选）
     if external:
         cmd.append('--external')             # 对外展示：额外禁微软雅黑
     return subprocess.run(cmd).returncode == 0
@@ -202,7 +202,7 @@ if not brand_check(out_file, external=True):   # 对外展示 external=True / �
 ```
 
 - 脚本路径约定：`brand-check-pptx.py` 与生成脚本**同目录**（zip 解压后即同目录）。若生成脚本放在临时位置，用绝对路径指向解压目录中的脚本。
-- `--scheme` 与产出所用配色一致（默认 `group-red`；商务蓝 `business-blue`）。
+- `--scheme` 与产出所用配色一致（默认 `group-red`；通信蓝 `business-blue` **暂不可选**）。
 - **python 可用性分支**：本机无 python-pptx 时**禁止降级约束**——生成脚本改为按 SKILL.md「PPTX 生成后自查」清单人工逐条核对（agent 自查），一条不少，通过后才交付。脚本是可选的机器兜底，不是约束的来源（约束唯一真相源 = SKILL.md）。
 
 ### 9.2 设计技能产出路径：可选检具 + 清单（无机器强制）
