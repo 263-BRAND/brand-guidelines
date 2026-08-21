@@ -448,9 +448,6 @@ opts.slides + '\n' +
 '    save();\n' +
 '    if (current === 0) setTimeout(replayAscii, 50);\n' +
 '  }\n' +
-'  document.getElementById("player").addEventListener("click", function(e) {\n' +
-'    show(current + 1);\n' +
-'  });\n' +
 '  document.addEventListener("keydown", function(e) {\n' +
 '    var key = e.key || e.code;\n' +
 '    if (key === "ArrowRight" || key === "ArrowDown" || key === "PageDown" || key === " " || key === "Space") {\n' +
