@@ -410,6 +410,8 @@ description: 263 品牌 VI 规范 — 提供品牌色板/字体/Logo/slogan/公�
 | HTML | **brand-check-html.py = 交付断言**（自有产出路径嵌入生成脚本末尾，不通过 exit 1 不产出）；设计 skill 产出路径只能后置检具 + 清单人工核对（诚实边界，同 pptx §9.1/§9.2） | 机器强制（自有路径）/ 检具（设计 skill 路径） |
 | 自查清单 | 逐项写死（读 token 核对色板 / Logo / 字体 / 公司数据 / 广告法 / 封面结尾页） | 内容锁死兜底 |
 
+**HTML 交付断言用法**：`python brand-check-html.py <file.html> [--scheme group-red] [--external]`——自有产出路径（走 generate.js 或脚本改写）生成动作末尾必须调用，校验不通过 `exit 1` 不交付；设计 skill 产出路径作后置检具 + 清单人工核对。`--external` 追加对外禁微软雅黑检查。
+
 ### 与现有路径的整合
 
 - 废除「路径 A / 路径 B」说法 → 「任务类型 × 场景」矩阵（改写 / 新做 × 内 / 外 × 用途）
