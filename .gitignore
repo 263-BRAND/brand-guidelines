@@ -10,6 +10,7 @@ screenshots/
 # 测试产物（PPTX 生成脚本、测试记录）
 generate_pptx.py
 测试记录/
+projects/
 
 # 内部开发文档（不打包、不公开——GitHub 仓库只放 skill 交付物 + README 说明书）
 开发日志.md
