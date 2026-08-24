@@ -43,16 +43,6 @@
       "body": { "template": "26pt", "themed": { "min": "24pt", "max": "28pt" } },
       "caption": { "template": "22pt", "themed": { "min": "20pt", "max": "24pt" } }
     },
-    "asciiArt": {
-      "fontFamily": "'Courier New','Source Code Pro',Consolas,monospace",
-      "fontSize": "11pt",
-      "lineHeight": "0.6",
-      "scaleX": "1.8",
-      "overallScaleX": "0.576",
-      "overallScaleY": "0.528",
-      "offsetX": "0",
-      "exemption": "ASCII 字符画属于装饰图形，不受 minSize 16px 限制"
-    },
     "lineHeight": {
       "html": { "title": 1.3, "heading": 1.8, "body": 1.8, "card": 1.8, "timeline": 1.8, "tocItem": 1.8, "sectionNumber": 2.0, "note": "CSS line-height 乘数（行盒 = 字号 × 值）。HTML 与 PPTX 是两套规范，禁止互套。章节页标题/副标题复用 title/heading；目录页标题复用 title；tocItem=目录页条目；sectionNumber=章节页大号数字底纹。" },
       "pptx": { "title": 1.0, "heading": 1.2, "body": 1.2, "card": 1.2, "timeline": 1.2, "tocItem": 1.2, "sectionNumber": 1.2, "note": "PPTX 倍距：标题单倍(100%)，其余 1.2倍(120%)，基于字体自身行高。PPTX 1.2倍 ≈ HTML line-height ~1.6（一般换算）；HTML 正文按规范取 1.8 为屏幕阅读宽松值，两套规范各自取值，不互套。章节页标题/副标题复用 title/heading；目录页标题复用 title；tocItem=目录页条目；sectionNumber=章节页大号数字底纹。" }
@@ -117,7 +107,7 @@
   },
   "redTemplateCover": {
     "path": "assets/cover-red-template.png",
-    "note": "内部汇报第二种封面：红色设计位图底图（1920×1080）+ 左上角集团红心 Logo（= 集团彩稿 `logos.group.color`，与内页一致；位置固定 left:6%/top:8%/125px 正方形）。HTML 以 base64 全屏背景 + 文字叠加；PPTX 以全幻灯片背景 + 文字框叠加，100% 视觉一致。触发：scene=template + cover.background=red-template（硬门禁第 5 题「严谨」）。默认仍为 ASCII 字符画封面。文字布局见 SKILL.md 与 renderer/slides/cover.js。"
+    "note": "内部汇报**工作汇报唯一封面**（2026-08-23 移除 ASCII 个性化封面）：红色设计位图底图（1920×1080）+ 左上角集团红心 Logo（= 集团彩稿 `logos.group.color`，与内页一致；位置固定 left:6%/top:8%/125px 正方形）。HTML 以 base64 全屏背景 + 文字叠加；PPTX 以全幻灯片背景 + 文字框叠加，100% 视觉一致。触发：scene:template 即默认（唯一）。文字布局见 SKILL.md 与 renderer/slides/cover.js。"
   },
   "themedFallbackCover": {
     "path": "assets/cover-themed-fallback.png",
@@ -172,17 +162,5 @@
       "status": "pending",
       "note": "通信蓝色值待官方确认后按同法定义（蓝系色阶 + 非重点静默色）。当前暂不可选，禁止启用。"
     }
-  },
-  "templateCoverBgPptx": {
-    "path": "assets/template-cover-bg.png",
-    "note": "Template 封面 ASCII 字符画 + 二进制雨的静态截图（1920×1080 2x）。PPTX 中用作全幻灯片背景，等比缩放至 960×540pt。Agent 在其上叠加标题/副标题/汇报人/部门文字框。"
-  },
-  "coverAscii": {
-    "art": "                                         ▓▓▓▓▓▒\n                                  ▓▓██████████████▓\n                              ██████████████████████▓\n                          ▓███████████████████████████\n                       ▒██████████████████████████████▒\n                     ▓█████████████████████████████████\n                   ████████████████████████████████████\n                 ██████████████████████████████████████\n                ███████████████████████████████████████\n               ▒███████████████████████████████████████\n               ████████████████████████████████████████\n               ████████████████████████████████████████\n               ███████████████████████████████████████▓\n               ▓███▓▓▓▓▓▓▓▓▓▓█▓▓▓██▓▓▓▓▓▓█▓▓▓▓▓▓▓▓▓▓██\n               ▒███          █   █      ██          ██\n               ▒██████████   █   █▓▓▓▓▓▓█████████   █\n                ██          ▓▓          █▓         ▒█\n                ██          █           █▒         ▓▒\n                ▒█  ▒████████   █████   ████████   ▓\n                 ▒         ▓█          ▒▓         ▒\n                 ▓         ██         ▓█▓▒▒      ▓▒\n                 ▓███████████████████████████████▓\n                  ███████████████████████████████\n                  ██████████████████████████████\n                   ████████████████████████████▒\n                   ███████████████████████████▓\n                    █████████████████████████▓\n                    ████████████████████████▓\n                     ██████████████████████▓\n                     ▓████████████████████▓\n                      ███████████████████\n                       █████████████████\n                        ██████████████▓\n                         ████████████\n                          █████████▒\n                           ▒████▒\n",
-    "color": "{primary}",
-    "stagger": 30,
-    "transition": "0.6s ease",
-    "slideDistance": "60px",
-    "rule": "ASCII 字符画从 brand-tokens.json 读取，禁止 AI 自行生成或修改。每行独立 <span> + 奇偶交错滑入，JS setTimeout 逐行动画。"
   }
 }
