@@ -35,16 +35,19 @@ if hasattr(sys.stdout, 'reconfigure'):
 
 META_KEYS = {'note'}
 
-# CSS 命名色映射（常见值；其余未知命名色返回原串 → 判违规）
+# CSS 命名色映射（常见值；其余未知命名色返回原串 → 判违规；transparent → None 跳过）
 NAMED_COLORS = {
     'white': '#ffffff', 'black': '#000000', 'gray': '#808080', 'grey': '#808080',
-    'silver': '#c0c0c0', 'red': '#ff0000',
+    'silver': '#c0c0c0', 'red': '#ff0000', 'transparent': None,
 }
 
-# 颜色出现的属性（background 简写可含图片 url，无颜色 token 时自然跳过）
+# 颜色出现的属性（含 border/outline 简写——渲染器 emit border-top/border-left 简写，
+# 与 generate.js scanCustomHtmlColors 对齐；box-shadow/text-shadow 不在此列，中性阴影豁免）
 COLOR_PROPS = {
     'color', 'background', 'background-color', 'background-image',
-    'border-color', 'outline-color', 'fill', 'stroke', 'stop-color',
+    'border', 'border-color', 'border-top', 'border-right', 'border-bottom', 'border-left',
+    'outline', 'outline-color',
+    'fill', 'stroke', 'stop-color',
 }
 
 def load_tokens():
@@ -125,14 +128,17 @@ def normalize_color(s):
         return NAMED_COLORS[s]
     return s  # 无法归一化 → 判违规
 
-# 颜色 token：hex / rgb() / rgba() / hsl() / hsla() / 常见命名色
-COLOR_TOKEN = re.compile(r'(?:#[0-9a-f]{3,8}|rgba?\([^)]*\)|hsla?\([^)]*\)|\b(?:white|black|gray|grey|silver|red)\b)', re.I)
+# 颜色 token：hex / rgb() / rgba() / hsl() / hsla() / 常见命名色（含 transparent）
+COLOR_TOKEN = re.compile(r'(?:#[0-9a-f]{3,8}|rgba?\([^)]*\)|hsla?\([^)]*\)|\b(?:white|black|gray|grey|silver|red|transparent)\b)', re.I)
 DECL = re.compile(r'([a-zA-Z-]+)\s*:\s*([^;]+)')
-STYLE_ATTR = re.compile(r'style\s*=\s*"([^"]*)"', re.I)
+STYLE_ATTR = re.compile(r'style\s*=\s*["\']([^"\']*)["\']', re.I)
 STYLE_BLOCK = re.compile(r'<style[^>]*>(.*?)</style>', re.I | re.S)
-SVG_ATTR = re.compile(r'(?:fill|stroke|stop-color)\s*=\s*"([^"]*)"', re.I)
+SVG_ATTR = re.compile(r'(?:fill|stroke|stop-color)\s*=\s*["\']([^"\']*)["\']', re.I)
+FONT_COLOR = re.compile(r'<font\b[^>]*\bcolor\s*=\s*["\']([^"\']*)["\']', re.I)
 FONT_FAMILY = re.compile(r'font-family\s*:\s*([^;}]+)', re.I)
-IMG_CLASS = re.compile(r'class="([^"]*)"')
+IMG_CLASS = re.compile(r'class\s*=\s*["\']([^"\']*)["\']', re.I)
+IMG_TAG = re.compile(r'<img\b[^>]*>', re.I)
+IMG_SRC = re.compile(r'src\s*=\s*["\']([^"\']+)["\']', re.I)
 BG_URL = re.compile(r'background(?:\s*-\s*image)?\s*:\s*[^;]*url\(\s*(["\']?)([^"\')\s]+)\1\s*\)', re.I)
 SLIDE_PAGE = re.compile(r'<div[^>]*class="[^"]*\bslide-page\b[^"]*"', re.I)
 
@@ -144,8 +150,14 @@ def extract_colors(html):
     def scan_decls(content, lineno):
         for dm in DECL.finditer(content):
             prop = dm.group(1).strip().lower()
-            # 颜色属性 + CSS 自定义属性（--primary 等：改动其值即改变输出颜色，须查）
-            if prop in COLOR_PROPS or prop.startswith('--'):
+            if prop.startswith('--'):
+                # CSS 自定义属性：整体是纯色才查（--primary: #d0121b → 查；--shadow: 0 0 5px rgba(...) 复合值 → 跳过，避免误报）
+                # 末尾 `}`（无分号的最后一条声明）与空白要去掉，否则 #123456} 无法归一化漏检
+                val = dm.group(2).strip().rstrip('}').strip()
+                norm = normalize_color(val)
+                if norm is not None and re.fullmatch(r'#[0-9a-f]{6}', norm):
+                    out.append((norm, lineno, val))
+            elif prop in COLOR_PROPS:
                 for tok in COLOR_TOKEN.findall(dm.group(2)):
                     norm = normalize_color(tok)
                     if norm is not None:
@@ -154,6 +166,10 @@ def extract_colors(html):
         for m in STYLE_ATTR.finditer(line):
             scan_decls(m.group(1), lineno)
         for m in SVG_ATTR.finditer(line):
+            norm = normalize_color(m.group(1))
+            if norm is not None:
+                out.append((norm, lineno, m.group(1)))
+        for m in FONT_COLOR.finditer(line):
             norm = normalize_color(m.group(1))
             if norm is not None:
                 out.append((norm, lineno, m.group(1)))
@@ -207,6 +223,15 @@ def check_images_embedded(html):
             um = BG_URL.search(line)
             if um and not um.group(2).startswith('data:image/'):
                 errs.append('第 %d 行：品牌图片元素（class=%s）背景为外部路径（%s...），必须内嵌 base64 data URI。' % (lineno, ','.join(c for c in classes if c in BRAND_IMG_CLASSES), um.group(2)[:40]))
+    # <img> 标签带品牌 class 但 src 为外部路径
+    for im in IMG_TAG.finditer(html):
+        tag = im.group(0)
+        cm = IMG_CLASS.search(tag)
+        if not cm or not any(c in BRAND_IMG_CLASSES for c in cm.group(1).split()):
+            continue
+        sm = IMG_SRC.search(tag)
+        if sm and not sm.group(1).startswith('data:image/'):
+            errs.append('品牌图片 <img> 使用外部 src（%s...），必须内嵌 base64 data URI。' % sm.group(1)[:40])
     return errs
 
 def check_end_last(html):
