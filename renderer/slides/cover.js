@@ -4,10 +4,8 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
   var isTemplate = pages.scene === 'template' || slide.type === 'cover-template';
 
   if (isTemplate) {
-    if (slide.background === 'red-template') {
-      return renderRedTemplate(slide, tokens, pages, index, c);
-    }
-    return renderTemplate(slide, tokens, pages, index, c);
+    // 工作汇报封面唯一 = 红色位图封面（2026-08-23 移除 ASCII 个性化封面）
+    return renderRedTemplate(slide, tokens, pages, index, c);
   }
   // Themed 封面：默认即兜底封面图（渲染器兜底，无需背景键）；封面背景禁红色系，显式指定只允许 white（浅底，彩稿 Logo）
   // primary-gradient/primary-solid（红底吞 Logo）、dark-solid（深底触发反白 Logo 违反禁反白底线）均已在 generate.js 校验拦截
@@ -15,60 +13,6 @@ function renderSlide(slide, tokens, pages, index, resolvedBg) {
     return renderThemedFallback(slide, tokens, pages, index, c);
   }
   return renderThemed(slide, tokens, pages, index, c, resolvedBg);
-}
-
-// === Template cover: internal reporting — white bg, ASCII logo, binary rain, centered ===
-function renderTemplate(slide, tokens, pages, index, c) {
-  var bgStyle = '#FFFFFF';
-  var html = '<div class="slide-page" id="s' + index + '" style="background:' + bgStyle + '; position:relative; overflow:hidden;">\n';
-
-  // Binary rain canvas
-  html += '<canvas id="binaryRain' + index + '" style="position:absolute;inset:0;z-index:0;opacity:0.18;"></canvas>\n';
-
-  // ASCII art — from brand-tokens
-  var ascii = tokens.coverAscii;
-  if (ascii && ascii.art) {
-    var asciiFont = tokens.typography.asciiArt;
-    var asciiColor = ascii.color.replace('{primary}', c.primary);
-    var dist = ascii.slideDistance || '60px';
-    var lines = ascii.art.split('\n');
-    html += '<div style="position:absolute;top:16%;left:50%;transform:translateX(-50%);z-index:5;">\n';
-    var scaleX = asciiFont.scaleX || '1';
-    var overallScaleX = asciiFont.overallScaleX || '1';
-    var overallScaleY = asciiFont.overallScaleY || '1';
-    html += '<div style="transform:scale(' + overallScaleX + ', ' + overallScaleY + ');transform-origin:top center;">\n';
-    html += '<pre style="font-family:' + asciiFont.fontFamily + ';font-size:' + asciiFont.fontSize + ';line-height:' + asciiFont.lineHeight + ';color:' + asciiColor + ';white-space:pre;user-select:none;margin:0;transform:scaleX(' + scaleX + ');">\n';
-    for (var i = 0; i < lines.length; i++) {
-      var dir = (i % 2 === 0) ? '-' + dist : dist;
-      html += '<span class="ascii-line" data-dir="' + dir + '" style="display:block;opacity:0;transform:translateX(' + dir + ');transition:opacity 0.6s ease,transform 0.6s ease;">' + lines[i].substring(15) + '</span>\n';
-    }
-    html += '</pre>\n';
-    html += '</div>\n';
-    html += '</div>\n';
-  }
-
-  // Title block
-  html += '<div class="cover-content" style="position:absolute;top:48%;left:50%;transform:translateX(-50%);text-align:center;z-index:10;width:80%;opacity:0;transition:opacity 0.8s ease;">\n';
-  // 标题 — 间距：有副标题时标题→副标题 16px；无副标题时标题→汇报信息 32px（成组拉开）
-  html += '<h1 style="font-size:' + tokens.typography.sizes.coverTitle.template + ';font-weight:bold;color:' + c.dark + ';letter-spacing:3px;margin-bottom:' + (slide.subtitle ? 16 : 32) + 'px;">' + esc(slide.title) + '</h1>\n';
-
-  // 副标题 — 独立一行，30pt，不与汇报人/部门/日期同行（与 red-template 一致）
-  if (slide.subtitle) {
-    html += '<div style="font-size:' + tokens.typography.sizes.subtitle.template + ';color:' + c.gray + ';margin-bottom:32px;">' + esc(slide.subtitle) + '</div>\n';
-  }
-
-  // 汇报人·部门·日期 — 独立一行，红色圆点分隔，字号小于副标题（30pt > 26pt）
-  html += coverMetaLine(slide, c, tokens.typography.sizes.body.template, '');
-
-  html += '</div>\n';
-
-  // Footer
-  html += '<div style="position:absolute;top:82%;left:0;width:100%;text-align:center;font-size:' + tokens.typography.sizes.caption.template + ';color:' + c.gray + ';opacity:0.45;">\n';
-  html += esc(pages.companyName || '二六三网络通信股份有限公司') + '\n';
-  html += '</div>\n';
-
-  html += '</div>\n';
-  return html;
 }
 
 // === Red-template cover: internal reporting — bitmap bg, top-left heart logo, left-aligned centered text ===
