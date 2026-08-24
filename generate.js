@@ -417,36 +417,17 @@ opts.slides + '\n' +
 '(function() {\n' +
 '  var slides = document.querySelectorAll(".slide-page");\n' +
 '  var total = ' + pages.slides.length + ';\n' +
-'  var stagger = ' + ((tokens.coverAscii && tokens.coverAscii.stagger) || 30) + ';\n' +
 '  var current = 0;\n' +
 '  // Restore saved slide on refresh — 键按文件身份命名空间（file:// 页面共享 sessionStorage，裸键会跨文件泄漏）\n' +
 '  var storageKey = "263-slide-" + "' + opts.fileId + '";\n' +
 '  try { var s = sessionStorage.getItem(storageKey); if (s !== null) current = parseInt(s, 10) % total; } catch(e) {}\n' +
 '  function save() { try { sessionStorage.setItem(storageKey, current); } catch(e) {} }\n' +
-'  // ASCII replay — resets lines to initial offset and staggers them back in\n' +
-'  function replayAscii() {\n' +
-'    var lines = document.querySelectorAll(".slide-page.active .ascii-line");\n' +
-'    if (!lines.length) return;\n' +
-'    for (var i = 0; i < lines.length; i++) {\n' +
-'      lines[i].style.opacity = "0";\n' +
-'      lines[i].style.transform = "translateX(" + (lines[i].dataset.dir || "-60px") + ")";\n' +
-'    }\n' +
-'    var cc = document.querySelector(".slide-page.active .cover-content");\n' +
-'    if (cc) cc.style.opacity = "0";\n' +
-'    for (var j = 0; j < lines.length; j++) {\n' +
-'      setTimeout(function(idx) {\n' +
-'        return function() { lines[idx].style.opacity = "1"; lines[idx].style.transform = "translateX(0)"; };\n' +
-'      }(j), j * stagger);\n' +
-'    }\n' +
-'    if (cc) { setTimeout(function() { cc.style.opacity = "1"; }, lines.length * stagger + 200); }\n' +
-'  }\n' +
 '  function show(idx) {\n' +
 '    if (current === ((idx % total) + total) % total) return;\n' +
 '    slides[current].classList.remove("active");\n' +
 '    current = ((idx % total) + total) % total;\n' +
 '    slides[current].classList.add("active");\n' +
 '    save();\n' +
-'    if (current === 0) setTimeout(replayAscii, 50);\n' +
 '  }\n' +
 '  document.addEventListener("keydown", function(e) {\n' +
 '    var key = e.key || e.code;\n' +
@@ -458,47 +439,12 @@ opts.slides + '\n' +
 '    else if (key === "End") { e.preventDefault(); show(total - 1); }\n' +
 '  });\n' +
 '  slides[current].classList.add("active");\n' +
-'  if (current === 0) setTimeout(replayAscii, 100);\n' +
 '  function resize() {\n' +
 '    var s = Math.min(window.innerWidth / ' + W + ', window.innerHeight / ' + H + ');\n' +
 '    document.documentElement.style.setProperty("--s", s);\n' +
 '  }\n' +
 '  window.addEventListener("resize", resize);\n' +
 '  resize();\n' +
-'  // Binary rain (Matrix-style) for cover slides\n' +
-'  var rainCanvases = document.querySelectorAll("canvas[id^=binaryRain]");\n' +
-'  for (var rc = 0; rc < rainCanvases.length; rc++) {\n' +
-'    (function(canvas) {\n' +
-'      var ctx = canvas.getContext("2d");\n' +
-'      canvas.width = 1920;\n' +
-'      canvas.height = 1080;\n' +
-'      var chars = "01";\n' +
-'      var fontSize = 28;\n' +
-'      var columns = Math.floor(canvas.width / fontSize);\n' +
-'      var drops = [];\n' +
-'      for (var d = 0; d < columns; d++) {\n' +
-'        drops[d] = Math.floor(Math.random() * -canvas.height / fontSize);\n' +
-'      }\n' +
-'      var primaryColor = getComputedStyle(document.documentElement).getPropertyValue("--primary").trim() || "#D0121B";\n' +
-'      function draw() {\n' +
-'        ctx.fillStyle = "rgba(255,255,255,0.05)";\n' +
-'        ctx.fillRect(0, 0, canvas.width, canvas.height);\n' +
-'        ctx.fillStyle = primaryColor;\n' +
-'        ctx.font = fontSize + "px Courier New, monospace";\n' +
-'        for (var c = 0; c < drops.length; c++) {\n' +
-'          var text = chars[Math.floor(Math.random() * chars.length)];\n' +
-'          var x = c * fontSize;\n' +
-'          var y = drops[c] * fontSize;\n' +
-'          ctx.fillText(text, x, y);\n' +
-'          if (y > canvas.height && Math.random() > 0.975) {\n' +
-'            drops[c] = 0;\n' +
-'          }\n' +
-'          drops[c]++;\n' +
-'        }\n' +
-'      }\n' +
-'      setInterval(draw, 80);\n' +
-'    })(rainCanvases[rc]);\n' +
-'  }\n' +
 '})();\n' +
 '</script>\n' +
 '</body>\n' +
