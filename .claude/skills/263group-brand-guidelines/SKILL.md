@@ -237,7 +237,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板/字体/Logo/slogan/公�
 7. **结尾页**：固定居中 Logo + slogan（全系统一致，不可协商）
 8. **封面信息**：标题/副标题/发布人/日期从 pages.json cover 字段读取，不凭空编造
 
-**兜底封面图（Themed）：** 渲染器（generate.js）渲染 Themed 封面时**默认即兜底封面图**——`brand-tokens.json` → `themedFallbackCover.path`（`assets/cover-themed-fallback.png`，浅蓝灰底 + 右侧蓝色几何，左 ~40% 干净浅色区）。**v1 暂用稿，后期可能替换——图无关：换图只替换 PNG 文件，不动渲染代码与规则。** 无需设置背景键；只有显式指定 `white` 才改用白色背景。**封面背景禁止红色系（`primary-gradient`/`primary-solid`）与 `dark-solid`——封面即非法**——见「对外展示封面（Themed）→ 品牌底线」第 3 条。设计能力判定见「与设计 skill 协作 → 设计能力判定」。
+**兜底封面图（Themed）：** 渲染器（generate.js）渲染 Themed 封面时**默认即兜底封面图**——`brand-tokens.json` → `themedFallbackCover.path`（`assets/cover-themed-fallback.png`，浅蓝灰底 + 右侧蓝色几何，左 ~40% 干净浅色区）。**图无关：换图只替换 PNG 文件，不动渲染代码与规则（2026-08-25 已换为用户提供稿）。** 无需设置背景键；只有显式指定 `white` 才改用白色背景。**封面背景禁止红色系（`primary-gradient`/`primary-solid`）与 `dark-solid`——封面即非法**——见「对外展示封面（Themed）→ 品牌底线」第 3 条。设计能力判定见「与设计 skill 协作 → 设计能力判定」。
 
 **渲染（模式同 red-template：位图底 + 文字叠加，HTML/PPTX 100% 一致）：**
 - HTML：base64 全屏背景（`.themed-fallback-bg`，`center/contain`）+ 叠加文字
