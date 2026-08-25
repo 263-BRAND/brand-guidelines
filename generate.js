@@ -327,6 +327,11 @@ function logoBase64(logoPath) {
   return 'data:' + mime + ';base64,' + data;
 }
 
+// 云通信 Logo 暂隐藏（2026-08-25）：云通信蓝 Logo 仅在通信蓝色系（business-blue，未开放）下合规，红系 PPT 混用不合规 → fail-loud 拒绝
+if (pages.logoSet === 'cloud') {
+  console.error('Invalid logoSet: "cloud" 暂不可用——云通信 Logo 仅在通信蓝色系（business-blue，待官方确认后开放）下合规，当前仅集团 Logo 可用。请省略 logoSet 或设为 "group"。');
+  process.exit(1);
+}
 const logoSet = pages.logoSet || 'group';
 const logos = tokens.logos[logoSet] || tokens.logos.group;
 const logoColorB64 = logoBase64(logos.color);

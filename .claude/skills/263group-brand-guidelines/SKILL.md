@@ -116,7 +116,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板/字体/Logo/slogan/公�
 
 1. **判断场景** → 工作汇报还是对外展示（见上方「场景判断」）。判断是内部动作，不要向用户播报——你的第一句话就是「用户话术」第 1 问的原文
 2. **生成前确认** → 按场景分支逐个询问（见上方「生成前确认」：工作汇报 → 问 1/2/3；对外展示 → 问 1/2/3/4）。Agent 先判断场景，但判断后也必须逐一询问用户确认。全部确认后才能继续。禁止跳过，禁止假设默认值
-3. **确定品牌上下文** → 按确认结果：配色方案 + Logo 归属（默认集团 Logo，按业务线切换）
+3. **确定品牌上下文** → 按确认结果：配色方案 + Logo（一律集团 Logo——业务线 Logo 切换规则暂隐藏，见「品牌上下文（Logo 按业务线切换）」）
 4. **收集内容大纲** → 向用户索要提纲或要点。话术：`"如果你已经做好提纲，请发给我。或者把大概的内容要点列给我，我来帮你整理成提纲。确认后开始生成。"` 用户确认大纲后再进入下一步
 5. **收集数据图表** → 大纲确认后，询问用户是否有具体数据。话术：`"提纲确认了。如果有具体的数据、图表或关键数字需要展示，可以一并发给我，我会嵌入到对应页面中。"` 用户没数据则跳过
 6. **收集封面信息** → 从用户描述中提取，并向用户确认。不得未经确认直接填入：
@@ -170,7 +170,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板/字体/Logo/slogan/公�
 | 字段 | 类型 | 说明 |
 |------|------|------|
 | `colorScheme` | string | `"group-red"`（默认）或 `"business-blue"` |
-| `logoSet` | string | `"group"`（默认）或 `"cloud"` |
+| `logoSet` | string | `"group"`（默认，唯一可用值）。`"cloud"` 暂禁用——云通信蓝 Logo 仅在通信蓝色系下合规，通信蓝未开放前禁止使用 |
 | `scene` | string | `"template"`（工作汇报封面）或省略（对外展示封面） |
 | `companyName` | string | 公司全称，用于页脚 |
 | `slides` | array | 页面数组，封面第一、结尾最后 |
@@ -372,7 +372,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板/字体/Logo/slogan/公�
 | 渐变 | **封面禁红底**；内容页品牌红渐变可用；禁大面积黑/深灰用淡灰纯白代替 |
 | 无法归类 | gray 兜底 |
 | 图片/照片内容 | 不动（内容素材） |
-| Logo | 替换为集团 Logo（按 logoSet） |
+| Logo | 替换为集团 Logo（一律彩稿 `logo-group-color`；云通信 Logo 暂隐藏，禁止切 `logoSet:"cloud"`） |
 | 图表颜色 | 遵循数据图表规范（chartPalette） |
 
 **执行前告知**：原文件为蓝色调时，先告知「原文件是蓝色调，会调整为集团红品牌色」再执行。
@@ -632,9 +632,14 @@ PPTX ✅ Width=480pt, LockAspectRatio=true, 不设 Height
 
 ### 品牌上下文（Logo 按业务线切换）
 
-默认使用集团 Logo。当用户指定业务线（如云通信）时，切换到该业务线的 Logo，其他品牌规则不变。
+> **⚠️ 业务线切换规则暂隐藏（2026-08-25，暂停生效）**：以下原规则**保留**，待通信蓝色系（`business-blue`，视觉未补齐、待官方确认后开放）启用后恢复。云通信蓝 Logo 仅在通信蓝色系下合规；当前可用配色仅集团红，红系 PPT 混用云通信蓝 Logo 不合规。
+>
+> **原规则（保留，当前不生效）：** 默认使用集团 Logo。当用户指定业务线（如云通信）时，切换到该业务线的 Logo，其他品牌规则不变。在 `pages.json` 中设置 `"logoSet": "cloud"` 切换到云通信 Logo，省略或 `"group"` 为集团 Logo。Logo 文件路径从 `brand-tokens.json` → `logos.group` / `logos.cloud` 读取。
 
-在 `pages.json` 中设置 `"logoSet": "cloud"` 切换到云通信 Logo，省略或 `"group"` 为集团 Logo。Logo 文件路径从 `brand-tokens.json` → `logos.group` / `logos.cloud` 读取。
+**暂隐藏期生效规则：**
+- **一律使用集团 Logo**（`logos.group` 彩稿 `logo-group-color`），不受用户业务内容影响——用户内容涉及云通信（企业邮箱、直播、电话会议等）时**不得**自动切换云通信 Logo
+- 一律 `logoSet:"group"`（或省略），**禁止 `logoSet:"cloud"`**；`brand-tokens.json` → `logos.cloud` 保留作数据储备，Agent 不得读取使用；generate.js 对 `logoSet:"cloud"` 会 fail-loud（exit 1）兜底拒绝渲染
+- Logo 文件路径一律从 `brand-tokens.json` → `logos.group` 读取
 
 ### 硬规则
 

@@ -17,7 +17,9 @@ projects/
 Design-Decision.md
 CLAUDE.md
 .superpowers/
-docs/
+docs/*
+!docs/images/
+!docs/images/**
 company-data/
 design-skill-recommendations.json
 
