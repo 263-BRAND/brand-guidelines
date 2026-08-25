@@ -55,7 +55,8 @@
     },
     "cloud": {
       "color": "assets/logos/logo-cloud-color.png",
-      "note": "暂隐藏（2026-08-25）：云通信蓝 Logo 仅在通信蓝色系（business-blue，待官方确认后开放）下合规，通信蓝开放前禁止使用（SKILL.md「品牌上下文（Logo 按业务线切换）」+ generate.js fail-loud 兜底）。"
+      "disabled": true,
+      "note": "暂隐藏（2026-08-25）：云通信蓝 Logo 仅在通信蓝色系（business-blue，待官方确认后开放）下合规，通信蓝开放前禁止使用。disabled 即禁用开关——generate.js 读 logos.*.disabled fail-loud（exit 1）兜底，重启用只需删除 disabled 或置 false。"
     }
   },
   "slogan": {

@@ -170,7 +170,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板/字体/Logo/slogan/公�
 | 字段 | 类型 | 说明 |
 |------|------|------|
 | `colorScheme` | string | `"group-red"`（默认）或 `"business-blue"` |
-| `logoSet` | string | `"group"`（默认，唯一可用值）。`"cloud"` 暂禁用——云通信蓝 Logo 仅在通信蓝色系下合规，通信蓝未开放前禁止使用 |
+| `logoSet` | string | `"group"`（默认，唯一可用值）。`"cloud"` 暂禁用（`brand-tokens.json → logos.cloud.disabled` 为禁用开关）——云通信蓝 Logo 仅在通信蓝色系下合规，通信蓝未开放前禁止使用 |
 | `scene` | string | `"template"`（工作汇报封面）或省略（对外展示封面） |
 | `companyName` | string | 公司全称，用于页脚 |
 | `slides` | array | 页面数组，封面第一、结尾最后 |
@@ -638,7 +638,7 @@ PPTX ✅ Width=480pt, LockAspectRatio=true, 不设 Height
 
 **暂隐藏期生效规则：**
 - **一律使用集团 Logo**（`logos.group` 彩稿 `logo-group-color`），不受用户业务内容影响——用户内容涉及云通信（企业邮箱、直播、电话会议等）时**不得**自动切换云通信 Logo
-- 一律 `logoSet:"group"`（或省略），**禁止 `logoSet:"cloud"`**；`brand-tokens.json` → `logos.cloud` 保留作数据储备，Agent 不得读取使用；generate.js 对 `logoSet:"cloud"` 会 fail-loud（exit 1）兜底拒绝渲染
+- 一律 `logoSet:"group"`（或省略），**禁止 `logoSet:"cloud"`**；`brand-tokens.json` → `logos.cloud` 保留作数据储备（`disabled:true` 为禁用开关，Agent 不得读取使用）；generate.js 读 `logos.*.disabled` 标志 fail-loud（exit 1）兜底拒绝渲染
 - Logo 文件路径一律从 `brand-tokens.json` → `logos.group` 读取
 
 ### 硬规则

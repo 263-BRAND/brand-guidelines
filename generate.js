@@ -27,6 +27,14 @@ if (!pages.colorScheme || !tokens.colorSchemes[pages.colorScheme]) {
   console.error('Invalid colorScheme: ' + pages.colorScheme + '. Must be one of: ' + Object.keys(tokens.colorSchemes).join(', '));
   process.exit(1);
 }
+// Validate logoSet: 只允许 "group"（默认）或未禁用的已定义 Logo；未知值/禁用值 fail-loud（数据驱动——禁用状态以 brand-tokens.json → logos.<name>.disabled 为准，云通信 Logo 暂隐藏，见 SKILL.md「品牌上下文（Logo 按业务线切换）」）
+if (pages.logoSet !== undefined && pages.logoSet !== 'group') {
+  var reqLogo = tokens.logos[pages.logoSet];
+  if (!reqLogo || reqLogo.disabled) {
+    console.error('Invalid logoSet: "' + pages.logoSet + '" 暂不可用——' + (reqLogo && reqLogo.disabled ? '该 Logo 在 brand-tokens.json → logos.' + pages.logoSet + ' 标记为禁用（仅对应色系开放后可用）' : '未在 brand-tokens.json → logos 中定义') + '。当前仅集团 Logo（"group"）可用，请省略 logoSet 或设为 "group"。');
+    process.exit(1);
+  }
+}
 if (!pages.slides || !Array.isArray(pages.slides) || pages.slides.length === 0) {
   console.error('pages.json must contain a non-empty "slides" array.');
   process.exit(1);
@@ -327,11 +335,6 @@ function logoBase64(logoPath) {
   return 'data:' + mime + ';base64,' + data;
 }
 
-// 云通信 Logo 暂隐藏（2026-08-25）：云通信蓝 Logo 仅在通信蓝色系（business-blue，未开放）下合规，红系 PPT 混用不合规 → fail-loud 拒绝
-if (pages.logoSet === 'cloud') {
-  console.error('Invalid logoSet: "cloud" 暂不可用——云通信 Logo 仅在通信蓝色系（business-blue，待官方确认后开放）下合规，当前仅集团 Logo 可用。请省略 logoSet 或设为 "group"。');
-  process.exit(1);
-}
 const logoSet = pages.logoSet || 'group';
 const logos = tokens.logos[logoSet] || tokens.logos.group;
 const logoColorB64 = logoBase64(logos.color);
