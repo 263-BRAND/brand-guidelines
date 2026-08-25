@@ -113,9 +113,7 @@ git clone https://github.com/263-BRAND/brand-guidelines.git
 
 **方式 B — 下载 ZIP**（无需安装 Git，适合快速体验）：
 
-[GitHub Releases](https://github.com/263-BRAND/brand-guidelines/releases) → 下载最新版 `263group-brand-guidelines-v<版本号>.zip`
-
-*（Releases 页面即将上线，敬请期待）*
+前往 [GitHub Releases](https://github.com/263-BRAND/brand-guidelines/releases) 下载最新版 `263group-brand-guidelines-v<版本号>.zip`（当前最新：**v1.1.0**，与顶部「当前版本」一致）
 
 解压后同样把 `263group-brand-guidelines/` 目录放到 Agent 的 skills 目录。**确认安装成功**：`263group-brand-guidelines/` 文件夹应包含 `SKILL.md`、`brand-tokens.json`、`company-data.json`、`ad-compliance.json`、`generate.js` 这 5 个核心文件。
 
