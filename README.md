@@ -117,7 +117,7 @@ git clone https://github.com/263-BRAND/brand-guidelines.git
 
 *（Releases 页面即将上线，敬请期待）*
 
-解压后同样把 `263group-brand-guidelines/` 目录放到 Agent 的 skills 目录。
+解压后同样把 `263group-brand-guidelines/` 目录放到 Agent 的 skills 目录。**确认安装成功**：`263group-brand-guidelines/` 文件夹应包含 `SKILL.md`、`brand-tokens.json`、`company-data.json`、`ad-compliance.json`、`generate.js` 这 5 个核心文件。
 
 > 客户端工具（WorkBuddy、飞书、千问办公）可直接在界面上传 zip，无需手动解压。安装成功后可在技能列表中看到本 Skill。
 
@@ -269,6 +269,10 @@ Agent 生成文件，并自动跑品牌合规校验（颜色白名单 / 字体 /
 **上传了新版 zip，AI 还是用旧规范生成？**
 
 更新陷阱：仅把 zip 作为对话附件不会替换已安装版本。必须走「技能管理 → 上传 zip 安装」入口，先删除旧版再装新版，装完新开会话（技能在会话启动时加载）。
+
+**怎么确认我装的 skill 是哪个版本？**
+
+打开已安装的 `263group-brand-guidelines/` 文件夹，看 `SKILL.md` 头部 frontmatter 的 `version` 字段——应为 `1.1.0`（与本文顶部「当前版本」一致）。旧版无 `version` 字段或版本号更低，说明装的不是最新版。
 
 **生成的 HTML 怎么播放？**
 
