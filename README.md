@@ -5,6 +5,8 @@
 ![license](https://img.shields.io/static/v1?label=license&message=Internal&color=red)
 ![output](https://img.shields.io/static/v1?label=output&message=HTML%20%7C%20PPTX&color=2D3847)
 
+**当前版本：v1.1.0**（与 `SKILL.md` frontmatter `version` 一致，以此为准）
+
 把 263 集团的 VI 规范、公司数据和文档标准做成 Agent 可执行的规则，支持 PPT 和网页输出，对外展示自动合规审查。　[快速开始](#快速开始)　·　[模型推荐](#模型推荐)　·　[路线图](#路线图)
 
 ---
