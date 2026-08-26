@@ -1,11 +1,11 @@
 # 263集团品牌指南Skill——让你的 AI 助手交付合规的263品牌内容
 
-![version](https://img.shields.io/static/v1?label=version\&message=1.1.1\&color=D0121B)
+![version](https://img.shields.io/static/v1?label=version\&message=1.1.0\&color=D0121B)
 ![last commit](https://img.shields.io/github/last-commit/263-BRAND/brand-guidelines)
 ![license](https://img.shields.io/static/v1?label=license\&message=Internal\&color=red)
 ![output](https://img.shields.io/static/v1?label=output\&message=HTML%20%7C%20PPTX\&color=2D3847)
 
-**当前版本：v1.1.1**（与 `SKILL.md` frontmatter `version` 一致，以此为准）
+**当前版本：v1.1.0**（与 `SKILL.md` frontmatter `version` 一致，以此为准）
 
 把 263 集团的 VI 规范、公司数据和文档标准做成 Agent 可执行的规则，支持 PPT 和网页输出，对外展示自动合规审查。　[快速开始](#快速开始)　·　[模型推荐](#模型推荐)　·　[路线图](#路线图)
 
@@ -116,7 +116,7 @@ git clone https://github.com/263-BRAND/brand-guidelines.git
 
 **方式 B — 下载 ZIP**（无需安装 Git，适合快速体验）：
 
-前往 [GitHub Releases](https://github.com/263-BRAND/brand-guidelines/releases) 下载最新版 `263group-brand-guidelines-v<版本号>.zip`（当前最新：**v1.1.1**，与顶部「当前版本」一致）
+前往 [GitHub Releases](https://github.com/263-BRAND/brand-guidelines/releases) 下载最新版 `263group-brand-guidelines-v<版本号>.zip`（当前最新：**v1.1.0**，与顶部「当前版本」一致）
 
 解压后同样把 `263group-brand-guidelines/` 目录放到 Agent 的 skills 目录。**确认安装成功**：`263group-brand-guidelines/` 文件夹应包含 `SKILL.md`、`brand-tokens.json`、`company-data.json`、`ad-compliance.json`、`generate.js` 这 5 个核心文件。
 
@@ -271,7 +271,7 @@ Agent 生成文件，并自动跑品牌合规校验（颜色白名单 / 字体 /
 
 **怎么确认我装的 skill 是哪个版本？**
 
-打开已安装的 `263group-brand-guidelines/` 文件夹，看 `SKILL.md` 头部 frontmatter 的 `version` 字段——应为 `1.1.1`（与本文顶部「当前版本」一致）。旧版无 `version` 字段或版本号更低，说明装的不是最新版。
+打开已安装的 `263group-brand-guidelines/` 文件夹，看 `SKILL.md` 头部 frontmatter 的 `version` 字段——应为 `1.1.0`（与本文顶部「当前版本」一致）。旧版无 `version` 字段或版本号更低，说明装的不是最新版。
 
 **生成的 HTML 怎么播放？**
 
@@ -296,7 +296,7 @@ Agent 生成文件，并自动跑品牌合规校验（颜色白名单 / 字体 /
 以下是已列入规划、将在后续版本中逐步支持的功能：
 
 - **Word / Excel 支持** — 扩展品牌化改写和合规审查到 .docx / .xlsx 格式，补齐办公文档全场景覆盖
-- **通信蓝配色方案** — 色值已定义（`#1677FF`），待官方确认视觉规范后开放，届时支持集团红 / 通信蓝双色方案
+- **通信蓝配色方案** — 暂不支持，待后续开放，届时支持集团红 / 通信蓝双色方案
 - **.docx 格式输出** — 在现有 HTML / PPTX 输出基础上，新增 .docx 文件直接生成能力
 
 ***
@@ -322,13 +322,13 @@ Agent 生成文件，并自动跑品牌合规校验（颜色白名单 / 字体 /
 
 **多模态能力扩展** — 当下以 HTML 和 PPTX 为重心。计划支持 HTML 复杂框架（代码动效、思维导图、生图模型约束），迭代为多模态 VI 规范，实现文档、图片、视频均规范化生产交付。
 
-**通信蓝配色方案** — 色值已定义（`#1677FF`），待官方确认视觉规范后启用。
+**通信蓝配色方案** — 暂不支持，待后续开放。
 
 ***
 
 ## 更新日志
 
-各版本更新记录见 [`CHANGELOG.md`](CHANGELOG.md)（新增 / 修复分块，倒序排列）。当前版本：**v1.1.1**（2026-08-26 发布），每次发版会在 [GitHub Releases](https://github.com/263-BRAND/brand-guidelines/releases) 同步发布说明。
+各版本更新记录见 [`CHANGELOG.md`](CHANGELOG.md)（新增 / 修复分块，倒序排列）。当前版本：**v1.1.0**（2026-08-26 更新），每次发版会在 [GitHub Releases](https://github.com/263-BRAND/brand-guidelines/releases) 同步发布说明。
 
 ***
 
