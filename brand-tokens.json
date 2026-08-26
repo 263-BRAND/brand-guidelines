@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
+  "version": "1.1.1",
   "colorSchemes": {
     "group-red": {
       "primary": "#D0121B",
@@ -19,6 +19,7 @@
       }
     },
     "business-blue": {
+      "disabled": true,
       "primary": "#1677FF",
       "primaryLight": "#4A9BFF",
       "primaryDark": "#0055CC",
@@ -27,7 +28,8 @@
       "gray": "#595959",
       "lightGray": "#F2F2F2",
       "white": "#FFFFFF",
-      "black": "#000000"
+      "black": "#000000",
+      "note": "禁用（2026-08-26）：通信蓝视觉未补齐、待官方确认后开放；视觉/生成/改写规范补全前禁止启用。disabled 即禁用开关——generate.js 读 colorSchemes.*.disabled fail-loud（exit 1）兜底，brand-check 拒绝以本配色校验；重启用只需删除 disabled 或置 false。"
     }
   },
   "typography": {

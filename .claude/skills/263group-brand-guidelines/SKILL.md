@@ -1,6 +1,6 @@
 ---
 name: 263group-brand-guidelines
-version: 1.1.0
+version: 1.1.1
 description: 263 品牌 VI 规范 — 提供品牌色板/字体/Logo/slogan/公司数据与品牌生成流程。**生成前必须先逐字完成「生成前确认」编号话术（使用场景/配色/输出格式/视觉风格，按场景分支问全），未确认不得开始生成。** 只要用户要为 263/二六三 做工作汇报（汇报/述职/周报/月报/季报/年报）、对外展示（介绍/宣传/发布会/客户材料）或任何品牌 PPT/网页/文档，即使没提"品牌/VI"也应使用此 skill。
 ---
 
@@ -66,7 +66,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板/字体/Logo/slogan/公�
 **你对用户说的每一句话，只能逐字来自下方编号话术。** 不允许改写、转述、拼接、加解释、加铺垫。一句话不在下方，就不对用户说；拿不准时用普通业务词（集团 Logo、网页文件、PPT 文件、集团红、通信蓝、正文、标题、页面、图表等），或回到下方找对应话术。
 
 1. **使用场景**：判断为「工作汇报」→ 逐字说：「根据您提供的资料，我判断这个 PPT 用于**工作汇报**。如果实际是用于**对外展示**，请告诉我，我会切换设计风格。」判断为「对外展示」→ 把两个说法对调。
-2. **配色方案**：逐字说：「用**集团红**还是**通信蓝**？（**通信蓝**暂不可选，当前仅集团红可选）」用户只能选集团红（通信蓝选项仅为告知存在，选定即视为集团红）→ 确认结果：`"colorScheme": "group-red"`。
+2. **配色方案**：逐字说：「用**集团红**还是**通信蓝**？（**通信蓝**暂不可选，当前仅集团红可选）」用户只能选集团红（通信蓝选项仅为告知存在，选定即视为集团红）→ 确认结果：`"colorScheme": "group-red"`。**通信蓝已数据层禁用**（`brand-tokens.json → colorSchemes.business-blue.disabled`）——即使写入 `"business-blue"`，generate.js 也会 fail-loud（exit 1）拒绝渲染。
 3. **输出格式**：逐字说：「要**网页文件**还是**PPT 文件**？」选「PPT 文件」→ 检查本次对话中**已客观存在且可直接调用**的、能直接产出 .pptx 版式的**外部能力载体**——已加载的专业PPT制作技能或设计类技能、已定义的 agent、已安装插件的技能、已连接且授权可用的设计类 MCP 工具（客观可查的事实，不是你的能力自评）。**263group-brand-guidelines 本身不算**——它只提供品牌数据，产不出 .pptx 版式；通用代码执行类工具/MCP 也不算（仍是你的代码能力）：
    - **已加载** → 有原生 PPTX 排版能力，把品牌数据（尺寸/字号/行距/图片规则）作为契约交给该技能/agent，直接按该路径生成；
    - **未加载** → 无原生能力，唯一 PPT 手段是写代码（python-pptx 等）→ 走 3a 把路径选择摆给用户。
@@ -107,7 +107,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板/字体/Logo/slogan/公�
 - **PPT 能力检查（第 3 题选「PPT 文件」时）**：原生 PPTX 排版能力只看一条客观事实——本次对话中**已客观存在且可直接调用**、能直接产出 .pptx 版式的**外部能力载体**：已加载的专业PPT制作技能/设计类技能、已定义的 agent、已安装插件的技能、已连接且授权可用的设计类 MCP 工具。**263group-brand-guidelines 不算**（品牌数据层，只产品牌数据与 HTML）。**你的代码能力（python-pptx 等）不算，通用代码执行类 MCP/工具也不算**（仍是代码能力伪装）。**agent 不能中途搜索/加载新插件/MCP/agent**（安装/连接是用户侧配置动作）。禁止以「我能用 python-pptx 精确实现规范」「263group-brand-guidelines 就是 PPT 技能」或「我能连一个 MCP」为由跳过 3a/3b；无现成能力 → 按无原生能力处理，走 3a。
 - **视觉风格推荐（第 4 题，仅对外展示）**：对外展示**一律推荐**「搭配额外专业美化技能」（受众在组织外部，专业美化是合理默认）——推荐依据第 3 题输出格式（选 PPT 文件 → 按 PPT 搜索方向；选网页文件 → 按网页搜索方向）。工作汇报不询问第 4 题（默认严格按模板排版）。
 - **视觉风格 · 搜索定向（第 4 题选「搭配额外专业美化技能」后）**：先承诺（「好的，为你搜索专业设计技能并使用」），**搜索按第 3 题输出格式定向执行**（第 3 题已先确认）——选「网页文件」→ 搜索网页/HTML 设计技能（如 frontend-design）；选「PPT 文件」→ 搜索专业PPT制作技能或设计类技能（若对话中已加载该能力，直接按「PPT 能力检查」路径处理，无需搜索）。**搜索载体写死**：对话中**已客观存在**的设计类能力（技能/agent/插件技能/已连接且授权可用的 MCP 工具）→ 直接用，不搜索；无现成能力 → **扫描当前可用能力列表**找匹配（不是去商店安装新插件/MCP——安装/连接是用户侧配置动作，agent 不能中途加载）。**搜索不到 → 回退话术**：「当前未找到可用的专业美化技能，将按严格模板排版。」（逐字，唯一输出源），按严格模板路径生成，禁止悄悄自行硬排或假装有设计能力。
-- 确认结果必须写入 pages.json：问题 1「工作汇报」→ `"scene": "template"`；「对外展示」→ 省略 `scene`。问题 2「集团红」→ `"colorScheme": "group-red"`；「通信蓝」**暂不可选**（选定即视为集团红，映射 `"colorScheme": "group-red"`——business-blue 未启用，禁止写入）。工作汇报封面唯一：`scene:"template"` 即红色位图封面，cover 不再需要 `background` 键
+- 确认结果必须写入 pages.json：问题 1「工作汇报」→ `"scene": "template"`；「对外展示」→ 省略 `scene`。问题 2「集团红」→ `"colorScheme": "group-red"`；「通信蓝」**暂不可选**（选定即视为集团红，映射 `"colorScheme": "group-red"`——business-blue 已数据层禁用 `disabled:true`，禁止写入；写入会被 generate.js fail-loud 拒绝）。工作汇报封面唯一：`scene:"template"` 即红色位图封面，cover 不再需要 `background` 键
 - **对外展示广告法合规审查（硬门禁）**：对外展示提纲文本在写入 pages.json 前必须对照 `ad-compliance.json` 完成广告法合规审查（见「工作流 → 广告法合规审查（仅对外展示）」）。命中 → **打断生成**，列出给用户改，循环至干净。generate.js 渲染时对 pages.json 文本做精确匹配兜底，命中 → exit(1)。**工作汇报（`scene:"template"`）不审查**
 
 ## 工作流
@@ -169,7 +169,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板/字体/Logo/slogan/公�
 
 | 字段 | 类型 | 说明 |
 |------|------|------|
-| `colorScheme` | string | `"group-red"`（默认）或 `"business-blue"` |
+| `colorScheme` | string | `"group-red"`（默认，唯一可用值）。`"business-blue"` 暂禁用（`brand-tokens.json → colorSchemes.business-blue.disabled` 为禁用开关）——通信蓝视觉未补齐，写入会被 generate.js fail-loud 拒绝 |
 | `logoSet` | string | `"group"`（默认，唯一可用值）。`"cloud"` 暂禁用（`brand-tokens.json → logos.cloud.disabled` 为禁用开关）——云通信蓝 Logo 仅在通信蓝色系下合规，通信蓝未开放前禁止使用 |
 | `scene` | string | `"template"`（工作汇报封面）或省略（对外展示封面） |
 | `companyName` | string | 公司全称，用于页脚 |
@@ -324,6 +324,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板/字体/Logo/slogan/公�
 | 改动范围 | 仅改写 | 默认全文件品牌化（**R4 是声明非确认题**） |
 
 **改写不问的题**：配色方案（集团红默认，通信蓝不可选）、输出格式（文件类型已定）、视觉风格/封面风格（生成型问题）。
+**改写遇蓝 / 云通信（硬门禁，内容无关）**：改写不因用户需求或文件内容切换配色 / Logo——**一律集团红 + 集团 Logo**，与文件内容、用户身份是否云通信无关。用户明确要求用蓝 / 用云通信 Logo → 告知「通信蓝暂不可选，当前仅集团红可用，Logo 一律集团 Logo」，按集团红处理（不代改、不暗示可切换）。改写输出由 brand-check 机器兜底：禁用配色色值 / 非集团 Logo（云通信等）→ 违规 exit 1，不交付。
 **为什么用途只在改写问**：新做产出的就是演示，处理已被场景 + 生成流程完全决定；阅读文档只有「改已有」才存在。
 
 ### 改写分支话术集（R1-R6，编号是 agent 内部书签，不暴露用户）
@@ -372,7 +373,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板/字体/Logo/slogan/公�
 | 渐变 | **封面禁红底**；内容页品牌红渐变可用；禁大面积黑/深灰用淡灰纯白代替 |
 | 无法归类 | gray 兜底 |
 | 图片/照片内容 | 不动（内容素材） |
-| Logo | 替换为集团 Logo（一律彩稿 `logo-group-color`；云通信 Logo 暂隐藏，禁止切 `logoSet:"cloud"`） |
+| Logo | 替换为集团 Logo（一律彩稿 `logo-group-color`；云通信 Logo 暂隐藏，禁止切 `logoSet:"cloud"`；brand-check 校验 Logo 身份兜底——非集团 Logo → 违规 exit 1） |
 | 图表颜色 | 遵循数据图表规范（chartPalette） |
 
 **执行前告知**：原文件为蓝色调时，先告知「原文件是蓝色调，会调整为集团红品牌色」再执行。
@@ -427,7 +428,7 @@ description: 263 品牌 VI 规范 — 提供品牌色板/字体/Logo/slogan/公�
 两套配色方案，通过 `brand-tokens.json` → `colorSchemes` 选择：
 
 - **集团红（group-red）**：主色 `#D0121B`，集团层面默认
-- **通信蓝（business-blue）**：主色 `#1677FF`，**暂不可选**（视觉未补齐，待官方确认后启用）；生成前确认问题 2 向用户标注「暂不可选」
+- **通信蓝（business-blue）**：主色 `#1677FF`，**暂不可选**（视觉未补齐，待官方确认后启用）；数据层禁用（`brand-tokens.json → colorSchemes.business-blue.disabled` 为开关，generate.js / brand-check 机器兜底，见「改写遇蓝 / 云通信」）；生成前确认问题 2 向用户标注「暂不可选」
 
 每个方案 9 个核心色值 + `semantic` 语义色。所有颜色从 JSON 读取，不硬编码。
 
@@ -639,6 +640,7 @@ PPTX ✅ Width=480pt, LockAspectRatio=true, 不设 Height
 **暂隐藏期生效规则：**
 - **一律使用集团 Logo**（`logos.group` 彩稿 `logo-group-color`），不受用户业务内容影响——用户内容涉及云通信（企业邮箱、直播、电话会议等）时**不得**自动切换云通信 Logo
 - 一律 `logoSet:"group"`（或省略），**禁止 `logoSet:"cloud"`**；`brand-tokens.json` → `logos.cloud` 保留作数据储备（`disabled:true` 为禁用开关，Agent 不得读取使用）；generate.js 读 `logos.*.disabled` 标志 fail-loud（exit 1）兜底拒绝渲染
+- 一律 `colorScheme:"group-red"`（或省略），**禁止 `colorScheme:"business-blue"`**；`brand-tokens.json` → `colorSchemes.business-blue` 保留作数据储备（`disabled:true` 为禁用开关，Agent 不得读取使用）；generate.js 读 `colorSchemes.*.disabled` 标志 fail-loud（exit 1）兜底拒绝渲染
 - Logo 文件路径一律从 `brand-tokens.json` → `logos.group` 读取
 
 ### 硬规则

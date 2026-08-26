@@ -22,9 +22,10 @@ if (!fs.existsSync(pagesPath)) {
 const tokens = JSON.parse(fs.readFileSync(resolveBase('brand-tokens.json'), 'utf-8'));
 const pages = JSON.parse(fs.readFileSync(pagesPath, 'utf-8'));
 
-// Validate colorScheme
-if (!pages.colorScheme || !tokens.colorSchemes[pages.colorScheme]) {
-  console.error('Invalid colorScheme: ' + pages.colorScheme + '. Must be one of: ' + Object.keys(tokens.colorSchemes).join(', '));
+// Validate colorScheme: 只允许已定义且未禁用的配色（数据驱动——禁用状态以 brand-tokens.json → colorSchemes.<name>.disabled 为准，通信蓝暂隐藏，见 SKILL.md「配色方案」）
+var enabledSchemes = Object.keys(tokens.colorSchemes).filter(function(k) { return !tokens.colorSchemes[k].disabled; });
+if (!pages.colorScheme || !tokens.colorSchemes[pages.colorScheme] || tokens.colorSchemes[pages.colorScheme].disabled) {
+  console.error('Invalid colorScheme: ' + pages.colorScheme + '. ' + (pages.colorScheme && tokens.colorSchemes[pages.colorScheme] && tokens.colorSchemes[pages.colorScheme].disabled ? '该配色在 brand-tokens.json → colorSchemes.' + pages.colorScheme + ' 标记为禁用（视觉未补齐，待官方确认后开放）。当前可用：' + enabledSchemes.join(', ') : 'Must be one of: ' + enabledSchemes.join(', ')));
   process.exit(1);
 }
 // Validate logoSet: 只允许 "group"（默认）或未禁用的已定义 Logo；未知值/禁用值 fail-loud（数据驱动——禁用状态以 brand-tokens.json → logos.<name>.disabled 为准，云通信 Logo 暂隐藏，见 SKILL.md「品牌上下文（Logo 按业务线切换）」）
@@ -71,7 +72,7 @@ function resolveBg(bgTemplate) {
 }
 
 // 元数据键统一跳过（token 对象里非值键）：backgrounds 的 note、colorSchemes 的 semantic（容器）/note（说明）——遍历时剔除，防被当背景模板/色值解析
-var TOKEN_META_KEYS = { note: 1, semantic: 1 };
+var TOKEN_META_KEYS = { note: 1, semantic: 1, disabled: 1 };
 var resolvedBg = { cover: {}, inner: {} };
 var bgPresets = tokens.backgrounds;
 var coverKeys = Object.keys(bgPresets.cover).filter(function (key) { return !TOKEN_META_KEYS[key]; });

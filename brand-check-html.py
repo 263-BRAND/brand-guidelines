@@ -25,6 +25,7 @@ import argparse
 import sys
 import os
 import re
+import base64
 
 if hasattr(sys.stdout, 'reconfigure'):
     try:
@@ -33,7 +34,7 @@ if hasattr(sys.stdout, 'reconfigure'):
     except Exception:
         pass
 
-META_KEYS = {'note'}
+META_KEYS = {'note', 'disabled'}
 
 # CSS 命名色映射（常见值；其余未知命名色返回原串 → 判违规；transparent → None 跳过）
 NAMED_COLORS = {
@@ -70,6 +71,8 @@ def build_whitelist(tokens, scheme):
     cs = tokens.get('colorSchemes', {}).get(scheme)
     if not cs:
         sys.exit('brand-check-html.py: 无效 scheme "%s"（brand-tokens.json 无该配色）。' % scheme)
+    if cs.get('disabled'):
+        sys.exit('brand-check-html.py: 配色 "%s" 已禁用（brand-tokens.json → colorSchemes.%s.disabled）——通信蓝视觉未补齐、暂不可校验，见 SKILL.md「配色方案」。' % (scheme, scheme))
     for k, v in cs.items():
         if k in META_KEYS:
             continue
@@ -243,6 +246,76 @@ def check_end_last(html):
         return ['结尾页（最后一个 .slide-page）缺少 .slogan-img——VI 标准结尾页必须居中 Logo + slogan PNG。']
     return []
 
+def check_disabled_scheme_colors(html, tokens):
+    """扫描禁用配色（如通信蓝 business-blue）的专属色值 → 违规（禁用即禁色，内容无关）。
+
+    只查与已启用配色（group-red）不共享的色值（#1677FF/#4A9BFF/#0055CC/#E6F0FF），
+    共享的 dark/gray/白/黑 属正常文字用色，不误报。"""
+    errs = []
+    enabled_vals = set()
+    for en in tokens.get('colorSchemes', {}).values():
+        if en.get('disabled'):
+            continue
+        for k, v in en.items():
+            if k in META_KEYS or not isinstance(v, str):
+                continue
+            enabled_vals.add(v.lower())
+    for scheme, cs in tokens.get('colorSchemes', {}).items():
+        if not cs.get('disabled'):
+            continue
+        for k, v in cs.items():
+            if k in META_KEYS or not isinstance(v, str) or len(v) != 7 or v[0] != '#':
+                continue
+            hv = v.lower()
+            if hv in enabled_vals:
+                continue  # 与已启用配色共享，非禁用专属
+            if re.search(re.escape(hv), html, re.I):
+                errs.append('HTML 含禁用配色 %s 的专属色（%s = %s）——通信蓝视觉未补齐暂不可用，应按集团红处理。' % (scheme, k, v))
+    return errs
+
+def check_logo_identity(html, tokens):
+    """嵌入 Logo（logo-color-img / logo-white-img）不得与禁用 Logo（logos.*.disabled，如云通信）内容一致 → 违规。
+
+    从 <style> 块 .logo-*-img { background:url(data:) } 与 <img src="data:..."> 提取，解码比对参考资产字节。"""
+    errs = []
+    banned = {}
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    for name, logo in tokens.get('logos', {}).items():
+        if not logo.get('disabled'):
+            continue
+        p = os.path.join(script_dir, logo.get('color', ''))
+        if os.path.exists(p):
+            with open(p, 'rb') as f:
+                banned[name] = f.read()
+    if not banned:
+        return errs  # 无禁用 Logo 参考 → 跳过（不误报）
+    found = []
+    for bm in STYLE_BLOCK.finditer(html):
+        for cm in CSS_RULE.finditer(bm.group(1)):
+            if cm.group(1) not in ('logo-color-img', 'logo-white-img'):
+                continue
+            um = BG_URL.search(cm.group(2))
+            if um and um.group(2).startswith('data:image/'):
+                found.append(um.group(2))
+    for im in IMG_TAG.finditer(html):
+        tag = im.group(0)
+        cm = IMG_CLASS.search(tag)
+        if not cm or not any(c in ('logo-color-img', 'logo-white-img') for c in cm.group(1).split()):
+            continue
+        sm = IMG_SRC.search(tag)
+        if sm and sm.group(1).startswith('data:image/'):
+            found.append(sm.group(1))
+    for data_uri in found:
+        try:
+            data = base64.b64decode(data_uri.split(',', 1)[1])
+        except Exception:
+            continue
+        for name, ref in banned.items():
+            if data == ref:
+                errs.append('Logo 内容与禁用 Logo（%s）一致——云通信 Logo 暂隐藏，Logo 一律集团 Logo，禁止替换。' % name)
+                return errs
+    return errs
+
 def main():
     ap = argparse.ArgumentParser(description='263 品牌合规检查（HTML 生成后闸门）')
     ap.add_argument('file', help='要检查的 .html 文件')
@@ -268,6 +341,8 @@ def main():
     if args.external:
         errors += check_font_external(html)
     errors += check_images_embedded(html)
+    errors += check_logo_identity(html, tokens)
+    errors += check_disabled_scheme_colors(html, tokens)
     errors += check_end_last(html)
 
     if errors:

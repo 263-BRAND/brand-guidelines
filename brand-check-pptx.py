@@ -46,7 +46,7 @@ def load_tokens():
     sys.exit('brand-check-pptx.py: 未找到 brand-tokens.json（需与脚本同目录或当前目录）。')
 
 # 与 generate.js buildColorWhitelist 同构：colorSchemes[scheme] 全部色值 + semantic 子容器 + chartPalette(series+muted)
-META_KEYS = {'note'}
+META_KEYS = {'note', 'disabled'}
 def build_color_whitelist(tokens, scheme):
     ws = {}
     def add(v):
@@ -55,6 +55,8 @@ def build_color_whitelist(tokens, scheme):
     cs = tokens.get('colorSchemes', {}).get(scheme)
     if not cs:
         sys.exit('brand-check-pptx.py: 无效 scheme "%s"（brand-tokens.json 无该配色）。' % scheme)
+    if cs.get('disabled'):
+        sys.exit('brand-check-pptx.py: 配色 "%s" 已禁用（brand-tokens.json → colorSchemes.%s.disabled）——通信蓝视觉未补齐、暂不可校验，见 SKILL.md「配色方案」。' % (scheme, scheme))
     for k, v in cs.items():
         if k in META_KEYS:
             continue
@@ -139,7 +141,20 @@ def rects_overlap(a, b):
 def is_red_bottom_hex(hexv):
     return hexv.lower() in RED_BOTTOM_HEXES
 
-def check_slide_shapes(slide_idx, shapes, whitelist):
+def load_banned_logo_bytes(tokens):
+    """禁用 Logo（logos.*.disabled，如云通信）的资产字节 → {name: bytes}。无参考则空 dict。"""
+    out = {}
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    for name, logo in tokens.get('logos', {}).items():
+        if not logo.get('disabled'):
+            continue
+        p = os.path.join(script_dir, logo.get('color', ''))
+        if os.path.exists(p):
+            with open(p, 'rb') as f:
+                out[name] = f.read()
+    return out
+
+def check_slide_shapes(slide_idx, shapes, whitelist, banned):
     """两遍扫描：先收集红底形状几何框，再检查文字框（几何相交 → 红底上文字必须白）。"""
     # 遍 1：收集红底填充形状的边界框 + 校验形状填充色白名单
     red_boxes = []
@@ -168,11 +183,15 @@ def check_slide_shapes(slide_idx, shapes, whitelist):
                 for cell in row.cells:
                     check_text_runs(slide_idx, '表格', cell.text_frame, whitelist, on_red)
 
-    # 遍 3：图片内嵌 + 图表系列色
+    # 遍 3：图片内嵌 + 禁用 Logo 识别 + 图表系列色
     for shape in shapes:
         if shape.shape_type == 13:  # MSO_SHAPE_TYPE.PICTURE
             try:
-                shape.image.blob
+                blob = shape.image.blob
+                for name, ref in banned.items():
+                    if blob == ref:
+                        report(slide_idx, '图片内容与禁用 Logo（%s）一致——云通信 Logo 暂隐藏，Logo 一律集团 Logo，禁止替换。' % name)
+                        break
             except Exception as e:
                 report(slide_idx, '图片使用外部路径链接（未内嵌二进制）。python-pptx 无法读取：%s。品牌图片必须内嵌。' % e)
         if shape.has_chart:
@@ -240,6 +259,7 @@ def main():
     whitelist = build_color_whitelist(tokens, args.scheme)
     if not whitelist:
         sys.exit('brand-check-pptx.py: 白名单为空——brand-tokens.json %s 无色值可查。' % args.scheme)
+    banned = load_banned_logo_bytes(tokens)
 
     try:
         from pptx import Presentation
@@ -254,7 +274,7 @@ def main():
 
     for idx, slide in enumerate(slides):
         shapes = list(slide.shapes)
-        check_slide_shapes(idx, shapes, whitelist)
+        check_slide_shapes(idx, shapes, whitelist, banned)
         check_end_slide(idx, shapes, is_last=(idx == n - 1))
 
     # 汇总
