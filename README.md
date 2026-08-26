@@ -140,6 +140,16 @@ cd brand-guidelines && git pull
 
 > 更新后需**新开对话**才能生效（Skill 在会话启动时加载）。
 
+##### 📣 关注更新（可选）——第一时间收到新版本通知
+
+**用 GitHub 关注 Release 通知**（推荐，发版自动提醒，无需自己检查）：
+
+1. 打开 [brand-guidelines 仓库](https://github.com/263-BRAND/brand-guidelines)
+2. 右上角 **Watch** → **Custom** → 勾选 **Releases** → **Apply**
+3. 之后每次发布新版本，GitHub 会在网页 / 邮件 / App 里通知你
+
+**不看 GitHub 也能自查**：每次让 Agent 生成时，它会先报「当前加载的品牌指南版本为 vX.Y.Z」——和本文顶部「当前版本」对比，不一致就说明装的不是最新版，按上文「日常更新」重装即可。
+
 ### 3. 开始使用
 
 从一句需求到拿到品牌合规文件，只需三步。
